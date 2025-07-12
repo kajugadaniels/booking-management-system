@@ -116,100 +116,25 @@
                         </div>
                         <div class="location-box v2">
                             <h4 class="title">Location</h4>
-                            <div class="text">Ford Shirley, 361 - 369 Stratford Road, Shirley, Solihull, B90 3BS
-                                Open today 9am - 6pm
+                            <div class="text">
+                                <strong>Address: </strong>{{ hotel.address }}, {{ hotel.district }}, {{ hotel.sector }}, {{ hotel.province }}, {{ hotel.country }}
                             </div>
-                            <a href="#" class="brand-btn">Get Directions<svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewbox="0 0 15 14" fill="none">
-                                <g clip-path="url(#clip0_881_14440)">
-                                <path d="M14.1111 0H5.55558C5.34062 0 5.16668 0.173943 5.16668 0.388901C5.16668 0.603859 5.34062 0.777802 5.55558 0.777802H13.1723L0.613941 13.3362C0.46202 13.4881 0.46202 13.7342 0.613941 13.8861C0.689884 13.962 0.789415 14 0.88891 14C0.988405 14 1.0879 13.962 1.16388 13.8861L13.7222 1.3277V8.94447C13.7222 9.15943 13.8962 9.33337 14.1111 9.33337C14.3261 9.33337 14.5 9.15943 14.5 8.94447V0.388901C14.5 0.173943 14.3261 0 14.1111 0Z" fill="#405FF2"></path>
-                                </g>
-                                <defs>
-                                <clippath id="clip0_881_14440">
-                                    <rect width="14" height="14" fill="white" transform="translate(0.5)"></rect>
-                                </clippath>
-                                </defs>
-                            </svg>
+                            <a href="#" class="brand-btn">
+                                Get Directions
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                    <g clip-path="url(#clip0_881_14440)">
+                                    <path d="M14.1111 0H5.55558C5.34062 0 5.16668 0.173943 5.16668 0.388901C5.16668 0.603859 5.34062 0.777802 5.55558 0.777802H13.1723L0.613941 13.3362C0.46202 13.4881 0.46202 13.7342 0.613941 13.8861C0.689884 13.962 0.789415 14 0.88891 14C0.988405 14 1.0879 13.962 1.16388 13.8861L13.7222 1.3277V8.94447C13.7222 9.15943 13.8962 9.33337 14.1111 9.33337C14.3261 9.33337 14.5 9.15943 14.5 8.94447V0.388901C14.5 0.173943 14.3261 0 14.1111 0Z" fill="#405FF2"></path>
+                                    </g>
+                                    <defs>
+                                        <clippath id="clip0_881_14440">
+                                            <rect width="14" height="14" fill="white" transform="translate(0.5)"></rect>
+                                        </clippath>
+                                    </defs>
+                                </svg>
                             </a>
                             <div class="goole-iframe">
-                                <iframe src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&t=&z=14&ie=UTF8&iwloc=B&output=embed">
-                                </iframe>
+                                <iframe src="{{ hotel.map_url }}"></iframe>
                             </div>
-                        </div>
-                        <div class="form-box v2">
-                            <h4 class="title">Financing Calculator</h4>
-                            <form class="row">
-                                <div class="col-lg-6">
-                                    <div class="form_boxes">
-                                        <label>Vehicle Price ($)</label>
-                                        <div class="drop-menu">
-                                            <div class="select">
-                                                <span>$25.000</span>
-                                            </div>
-                                            <input type="hidden" name="gender">
-                                            <ul class="dropdown" style="display: none;">
-                                                <li>$25.000</li>
-                                                <li>$25.000</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_boxes">
-                                        <label>Interest rate (%)</label>
-                                        <div class="drop-menu">
-                                            <div class="select">
-                                                <span>4</span>
-                                            </div>
-                                            <input type="hidden" name="gender">
-                                            <ul class="dropdown" style="display: none;">
-                                                <li>4</li>
-                                                <li>4</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_boxes">
-                                        <label>Period (month)</label>
-                                        <div class="drop-menu">
-                                            <div class="select">
-                                                <span>36</span>
-                                            </div>
-                                            <input type="hidden" name="gender">
-                                            <ul class="dropdown" style="display: none;">
-                                                <li>36</li>
-                                                <li>36</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_boxes">
-                                        <label>Down Payment ($)</label>
-                                        <div class="drop-menu">
-                                            <div class="select">
-                                                <span>4000</span>
-                                            </div>
-                                            <input type="hidden" name="gender">
-                                            <ul class="dropdown" style="display: none;">
-                                                <li>4000</li>
-                                                <li>4000</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-submit">
-                                        <button type="submit" class="theme-btn">Calculate<img src="images/arrow.svg" alt="">
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                            <ul class="form-list">
-                                <li><span>Monthly Payment</span>$687.70</li>
-                                <li><span>Total Amount to Pay</span>$687.70</li>
-                                <li><span>Total Interest Payment</span>$687.70</li>
-                            </ul>
                         </div>
                         <div class="main-review-box">
                             <div class="review-sec v2">

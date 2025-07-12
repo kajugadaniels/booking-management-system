@@ -19,7 +19,7 @@ class Hotel(models.Model):
     description = models.TextField()
     stars = models.IntegerField(choices=STAR_CHOICES)
     address = models.CharField(max_length=255)
-    map_url = models.URLField(blank=True, null=True)
+    map_url = models.TextField(blank=True, null=True)
 
     # Location fields
     country = models.CharField(max_length=100)
