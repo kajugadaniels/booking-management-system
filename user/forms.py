@@ -1,5 +1,5 @@
 from django import forms
-from account.models import *\
+from account.models import *
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
 
