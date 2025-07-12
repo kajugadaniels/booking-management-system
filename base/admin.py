@@ -74,3 +74,8 @@ class HotelRoomAdmin(admin.ModelAdmin):
     search_fields = ('name', 'hotel__name', 'room_type')
     list_per_page = 10
     inlines = [RoomImageInline, RoomAmenityInline, RoomReviewInline]
+
+@admin.register(Amenity)
+class AmenityAdmin(admin.ModelAdmin):
+    list_display = ('name', 'icon', 'created_at')
+    search_fields = ('name',)
