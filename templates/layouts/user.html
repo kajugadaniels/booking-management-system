@@ -18,7 +18,20 @@
 </head>
 <body>
 
-    {% block content %}{% endblock content %}
+    {% include 'pages/user/components/header.html' %}
+
+    <section class="dashboard-widget">
+        <div class="right-box">
+
+            {% include 'pages/user/components/sidebar.html' %}
+
+            <div class="content-column">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </section>
+
+    {% include 'pages/user/components/footer.html' %}
 
     <div class="scroll-to-top scroll-to-target" data-target="html">
         <span class="fa fa-angle-up"></span>
