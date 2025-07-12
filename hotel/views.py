@@ -170,9 +170,46 @@ def roomDetails(request, hotel_id, room_id):
                 booking = booking_form.save(commit=False)
                 booking.user = request.user
                 booking.room = room
+                booking.status = 'pending'
+
                 nights = (booking.check_out - booking.check_in).days
                 booking.total_price = nights * room.price_per_night
                 booking.save()
+
+                # Send confirmation email to user
+                user_subject = "Your Room Booking Has Been Received"
+                user_message = render_to_string('emails/user_booking_confirmation.html', {
+                    'user': request.user,
+                    'booking': booking,
+                    'room': room,
+                    'hotel': hotel,
+                    'settings': site_settings
+                })
+                send_mail(
+                    subject=user_subject,
+                    message='',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[request.user.email],
+                    html_message=user_message
+                )
+
+                # Send notification email to admin/site team
+                admin_subject = "New Room Booking Received"
+                admin_message = render_to_string('emails/admin_booking_notification.html', {
+                    'booking': booking,
+                    'user': request.user,
+                    'room': room,
+                    'hotel': hotel,
+                    'settings': site_settings
+                })
+                send_mail(
+                    subject=admin_subject,
+                    message='',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[settings.EMAIL_HOST_USER],  # or any admin list
+                    html_message=admin_message
+                )
+
                 messages.success(request, f"Booking confirmed for {nights} night(s)!")
                 return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
         else:
