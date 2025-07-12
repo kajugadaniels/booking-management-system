@@ -2,6 +2,7 @@ import os
 import random
 from account.models import *
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
 from imagekit.processors import ResizeToFill
@@ -91,3 +92,20 @@ class HotelImage(models.Model):
 
     def __str__(self):
         return f"Image of {self.hotel.name}"
+
+class HotelReview(models.Model):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='hotel_reviews')
+
+    rating = models.PositiveSmallIntegerField(choices=[(i, f'{i} Star') for i in range(1, 6)])
+    title = models.CharField(max_length=255)
+    review = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.name} - {self.hotel.name} ({self.rating}★)"
+
+    class Meta:
+        unique_together = ('hotel', 'user')
+        ordering = ['-created_at']
