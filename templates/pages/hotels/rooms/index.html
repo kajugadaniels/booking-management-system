@@ -51,12 +51,14 @@
                                 <div class="inner-box">
                                     <div class="image-box">
                                         <figure class="image">
-                                            <a href="#">
-                                                {% if room.image_url %}
-                                                    <img src="{{ room.image_url }}" alt="{{ room.instance.name }}" style="height: 320px; width: 340px;">
-                                                {% else %}
-                                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" alt="{{ room.instance.name }}">
-                                                {% endif %}
+                                            <a href="{% url 'hotel:roomDetails' %}">
+                                                {% with room.images.all|first as img %}
+                                                    {% if img and img.image %}
+                                                        <img src="{{ img.image.url }}" alt="{{ room.name }}" style="height: 320px; width: 340px;">
+                                                    {% else %}
+                                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" alt="{{ room.name }}">
+                                                    {% endif %}
+                                                {% endwith %}
                                             </a>
                                         </figure>
                                     </div>
