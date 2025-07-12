@@ -1,0 +1,68 @@
+{% load static %}
+
+<header class="boxcar-header header-style-ten">
+    <div class="header-inner">
+        <div class="inner-container">
+            <!-- Main box -->
+            <div class="c-box">
+                <div class="logo-inner">
+                    <div class="logo">
+                        <a href="{% url 'base:home' %}">
+                            <img src="{% static 'images/logo-b.png' %}" alt="" title="Pluto Booking">
+                        </a>
+                    </div>
+                </div>
+
+                <!--Nav Box-->
+                <div class="nav-out-bar">    
+                    <nav class="nav main-menu">
+                        <ul class="navigation" id="navbar">
+                            <ul class="navigation" id="navbar">
+                                <li>
+                                    <a href="{% url 'base:home' %}">Home</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'hotel:getHotels' %}">Hotels</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'car:getCars' %}">Cars</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'plane:getPlanes' %}">Plane Booking</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'base:contact' %}">Contact Us</a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </nav>
+                    <!-- Main Menu End-->
+                </div>
+
+                <div class="right-box">
+                    <a href="#" class="haeder-img">
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
+                    </a>
+                    <div class="mobile-navigation">
+                        <a href="#nav-mobile" title="">
+                            <svg width="22" height="11" viewBox="0 0 22 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="22" height="2" fill="white"/>
+                                <rect y="9" width="22" height="2" fill="white"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu  -->
+        </div>
+    </div>
+
+    <!-- Header Search -->
+    <div class="search-popup">
+        <span class="search-back-drop"></span>
+        <button class="close-search"><span class="fa fa-times"></span></button>
+    </div>
+    <!-- End Header Search -->
+
+    <div id="nav-mobile"></div>
+</header>
