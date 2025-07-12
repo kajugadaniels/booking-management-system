@@ -1,7 +1,5 @@
 from base.models import *
 from django.shortcuts import render, redirect
-from django.http import HttpResponseNotFound, HttpResponseServerError
-import traceback
 
 def home(request):
     site_settings = Setting.objects.first()
