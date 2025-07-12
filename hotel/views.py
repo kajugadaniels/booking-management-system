@@ -8,8 +8,6 @@ DEFAULT_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp
 
 def getHotels(request):
     site_settings = Setting.objects.first()
-
-    # Filters
     province_filter = request.GET.get('province')
     stars_filter = request.GET.get('stars')
 
@@ -25,25 +23,24 @@ def getHotels(request):
         except ValueError:
             pass
 
-    # Order by latest
     hotels = hotels.order_by('-created_at')
-
-    # Pagination
-    paginator = Paginator(hotels, 16)  # 16 per page
+    paginator = Paginator(hotels, 16)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Collect image URLs
     hotel_data = []
     for hotel in page_obj:
         image = HotelImage.objects.filter(hotel=hotel).first()
         image_url = image.image.url if image else DEFAULT_IMAGE
+        all_rooms = Room.objects.filter(hotel=hotel)
+        available_rooms = all_rooms.filter(is_available=True)
         hotel_data.append({
             'instance': hotel,
-            'image': image_url
+            'image': image_url,
+            'room_count': all_rooms.count(),
+            'available_rooms': available_rooms.count()
         })
 
-    # All provinces and star values for filter dropdowns
     provinces = Hotel.objects.values_list('province', flat=True).distinct()
     stars = Hotel.objects.values_list('stars', flat=True).distinct().order_by()
 
