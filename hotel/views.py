@@ -1,6 +1,8 @@
+from random import sample
 from base.models import *
 from hotel.models import *
 from django.db.models import Q
+from django.db.models import Prefetch
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
@@ -72,6 +74,22 @@ def hotelRooms(request, hotel_id):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Build enhanced room data list
+    room_data = []
+    for room in page_obj:
+        image = RoomImage.objects.filter(room=room).first()
+        image_url = image.image.url if image else DEFAULT_IMAGE
+
+        amenities = list(RoomAmenity.objects.filter(room=room).select_related('amenity'))
+        random_amenities = sample(amenities, min(3, len(amenities)))
+
+        room_data.append({
+            'instance': room,
+            'image_url': image_url,
+            'amenities': [ra.amenity.name for ra in random_amenities]
+        })
+
+    # Clean querystring for pagination
     get_params = request.GET.copy()
     if 'page' in get_params:
         del get_params['page']
@@ -81,6 +99,7 @@ def hotelRooms(request, hotel_id):
         'settings': site_settings,
         'hotel': hotel,
         'page_obj': page_obj,
+        'room_data': room_data,
         'cleaned_querystring': cleaned_querystring
     }
 
