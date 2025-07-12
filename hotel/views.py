@@ -1,8 +1,8 @@
 from base.models import *
 from hotel.models import *
 from django.db.models import Q
-from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404
 
 DEFAULT_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s"
 
@@ -63,14 +63,28 @@ def getHotels(request):
 
     return render(request, 'pages/hotels/index.html', context)
 
-def hotelRooms(request):
+def hotelRooms(request, hotel_id):
     site_settings = Setting.objects.first()
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+
+    rooms = HotelRoom.objects.filter(hotel=hotel).order_by('-created_at')
+    paginator = Paginator(rooms, 16)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    get_params = request.GET.copy()
+    if 'page' in get_params:
+        del get_params['page']
+    cleaned_querystring = get_params.urlencode()
 
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'hotel': hotel,
+        'page_obj': page_obj,
+        'cleaned_querystring': cleaned_querystring
     }
 
-    return render (request, 'pages/hotels/rooms/index.html', context)
+    return render(request, 'pages/hotels/rooms/index.html', context)
 
 def roomDetails(request):
     site_settings = Setting.objects.first()
