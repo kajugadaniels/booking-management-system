@@ -3,6 +3,7 @@ from base.models import *
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash, logout
 
 @login_required
 def dashboard(request):
@@ -67,8 +68,11 @@ def changePassword(request):
         if form.is_valid():
             user.set_password(form.cleaned_data['new_password'])
             user.save()
-            messages.success(request, "Password updated successfully.")
-            return redirect('user:changePassword')
+
+            # Log out user and redirect to login
+            logout(request)
+            messages.success(request, "Password updated successfully. Please log in with your new password.")
+            return redirect('auth:getLogin')
         else:
             messages.error(request, "Please correct the errors below.")
     else:
