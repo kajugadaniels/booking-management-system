@@ -464,6 +464,30 @@
                             </div>
                         </form>
 
+                        <script>
+                            const checkInInput = document.getElementById("id_check_in");
+                            const checkOutInput = document.getElementById("id_check_out");
+                            const pricePerNight = parseFloat("{{ room.price_per_night }}");
+                            const totalPriceDisplay = document.getElementById("total-price");
+
+                            function calculateTotal() {
+                                const checkIn = new Date(checkInInput.value);
+                                const checkOut = new Date(checkOutInput.value);
+                                const timeDiff = checkOut - checkIn;
+                                const nights = timeDiff / (1000 * 60 * 60 * 24);
+
+                                if (nights > 0) {
+                                    const total = nights * pricePerNight;
+                                    totalPriceDisplay.textContent = total.toFixed(2);
+                                } else {
+                                    totalPriceDisplay.textContent = "0.00";
+                                }
+                            }
+
+                            checkInInput.addEventListener("change", calculateTotal);
+                            checkOutInput.addEventListener("change", calculateTotal);
+                        </script>
+
                         <div class="contact-box">
                             <div class="icon-box">
                                 {% with hotel.images.all|first as hotel_image %}
