@@ -83,3 +83,17 @@ class Car(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+class CarImage(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='images')
+    image = ProcessedImageField(
+        upload_to=car_image_upload_path,
+        processors=[ResizeToFill(1280, 720)],
+        format='JPEG',
+        options={'quality': 90},
+    )
+    caption = models.CharField(max_length=255, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image of {self.car.name}"
