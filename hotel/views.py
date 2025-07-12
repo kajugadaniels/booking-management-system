@@ -44,6 +44,12 @@ def getHotels(request):
     provinces = Hotel.objects.values_list('province', flat=True).distinct()
     stars = Hotel.objects.values_list('stars', flat=True).distinct().order_by()
 
+    # Clean querystring: remove any duplicate 'page' key
+    get_params = request.GET.copy()
+    if 'page' in get_params:
+        del get_params['page']
+    cleaned_querystring = get_params.urlencode()
+
     context = {
         'settings': site_settings,
         'page_obj': page_obj,
@@ -51,7 +57,8 @@ def getHotels(request):
         'provinces': provinces,
         'stars': stars,
         'current_province': province_filter,
-        'current_stars': stars_filter
+        'current_stars': stars_filter,
+        'cleaned_querystring': cleaned_querystring,
     }
 
     return render(request, 'pages/hotels/index.html', context)
