@@ -8,5 +8,6 @@ app_name = 'auth'
 urlpatterns = [
     path('register/', getRegister, name="getRegister"),
     path('login/', getLogin, name="getLogin"),
+    path('logout/', logoutUser, name="getLogout"),
     path('forget-password/', forgetPassword, name="forgetPassword"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
