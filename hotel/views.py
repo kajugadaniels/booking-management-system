@@ -114,11 +114,24 @@ def hotelRooms(request, hotel_id):
 
     return render(request, 'pages/hotels/rooms/index.html', context)
 
-def roomDetails(request):
+def roomDetails(request, hotel_id, room_id):
     site_settings = Setting.objects.first()
+    hotel = get_object_or_404(Hotel, id=hotel_id)
+    room = get_object_or_404(HotelRoom, id=room_id, hotel=hotel)
+
+    images = RoomImage.objects.filter(room=room)
+    amenities = RoomAmenity.objects.filter(room=room).select_related('amenity')
+    reviews = RoomReview.objects.filter(room=room).select_related('user')
+    similar_rooms = HotelRoom.objects.filter(hotel=hotel).exclude(id=room.id)[:4]
 
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'hotel': hotel,
+        'room': room,
+        'images': images,
+        'amenities': amenities,
+        'reviews': reviews,
+        'similar_rooms': similar_rooms,
     }
 
-    return render (request, 'pages/hotels/rooms/show.html', context)
+    return render(request, 'pages/hotels/rooms/show.html', context)
