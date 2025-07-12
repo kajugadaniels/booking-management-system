@@ -1,13 +1,14 @@
 from random import sample
 from base.models import *
+from hotel.forms import *
 from hotel.models import *
 from django.db.models import Avg
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
-from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 
 DEFAULT_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s"
 

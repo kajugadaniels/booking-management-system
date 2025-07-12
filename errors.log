@@ -2092,3 +2092,29 @@ Traceback (most recent call last):
     raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
 django.template.exceptions.TemplateSyntaxError: Invalid filter: 'split'
 "GET /hotels/hotel/40/room/666/ HTTP/1.1" 500 249879
+Internal Server Error: /hotels/hotel/40/room/666/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\hotel\views.py", line 152, in roomDetails
+    review_form = RoomReviewForm()
+                  ^^^^^^^^^^^^^^
+NameError: name 'RoomReviewForm' is not defined
+"GET /hotels/hotel/40/room/666/ HTTP/1.1" 500 79229
+Internal Server Error: /hotels/hotel/40/room/666/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\hotel\views.py", line 151, in roomDetails
+    return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
+           ^^^^^^^^
+NameError: name 'redirect' is not defined
+"POST /hotels/hotel/40/room/666/ HTTP/1.1" 500 81750
