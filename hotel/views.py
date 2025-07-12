@@ -77,9 +77,18 @@ def hotelRooms(request, hotel_id):
     # Build enhanced room data list
     room_data = []
     for room in page_obj:
-        image = RoomImage.objects.filter(room=room).first()
-        image_url = image.image.url if image else DEFAULT_IMAGE
+        # Try getting a valid image
+        room_images = RoomImage.objects.filter(room=room)
+        image_url = DEFAULT_IMAGE
+        for img in room_images:
+            try:
+                if img.image and hasattr(img.image, 'url'):
+                    image_url = img.image.url
+                    break
+            except:
+                continue
 
+        # Get 3 random amenities
         amenities = list(RoomAmenity.objects.filter(room=room).select_related('amenity'))
         random_amenities = sample(amenities, min(3, len(amenities)))
 
