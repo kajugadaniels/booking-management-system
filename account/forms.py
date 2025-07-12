@@ -3,12 +3,23 @@ from account.models import *
 from django.core.exceptions import ValidationError
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, min_length=8)
-    confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}),
+        min_length=8,
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm your password'}),
+        label="Confirm Password"
+    )
 
     class Meta:
         model = User
         fields = ['name', 'email', 'phone_number', 'password', 'confirm_password']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Enter your full name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Enter your email address'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Enter your phone number'}),
+        }
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
