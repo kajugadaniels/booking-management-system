@@ -133,3 +133,17 @@ class HotelRoom(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+class RoomImage(models.Model):
+    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='images')
+    image = ProcessedImageField(
+        upload_to=room_image_upload_path,
+        processors=[ResizeToFill(1280, 720)],
+        format='JPEG',
+        options={'quality': 90},
+    )
+    caption = models.CharField(max_length=255, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image for {self.room.name}"
