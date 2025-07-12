@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from base.models import *
+from django.shortcuts import render, redirect
 
-# Create your views here.
+def dashboard(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/user/dashboard.html', context)
