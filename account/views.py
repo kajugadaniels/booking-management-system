@@ -6,15 +6,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-
-def getLogin(request):
-    site_settings = Setting.objects.first()
-
-    context = {
-        'settings': site_settings
-    }
-
-    return render (request, 'pages/auth/login.html', context)
+from django.contrib.auth import authenticate, login, logout
 
 def getRegister(request):
     from base.models import Setting
@@ -49,6 +41,29 @@ def getRegister(request):
     }
 
     return render(request, 'pages/auth/register.html', context)
+
+def getLogin(request):
+    from base.models import Setting
+    site_settings = Setting.objects.first()
+
+    if request.method == 'POST':
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data.get('user')
+            login(request, user)
+            messages.success(request, f"Welcome back, {user.name}!")
+            return redirect('base:home')  # Or any other landing page
+        else:
+            messages.error(request, "Login failed. Please check your credentials.")
+    else:
+        form = UserLoginForm()
+
+    context = {
+        'form': form,
+        'settings': site_settings
+    }
+
+    return render(request, 'pages/auth/login.html', context)
 
 def forgetPassword(request):
     site_settings = Setting.objects.first()
