@@ -109,3 +109,27 @@ class HotelReview(models.Model):
     class Meta:
         unique_together = ('hotel', 'user')
         ordering = ['-created_at']
+
+def room_image_upload_path(instance, filename):
+    base_filename, file_extension = os.path.splitext(filename)
+    return f'hotel-rooms/room_{slugify(instance.room.hotel.name)}_{slugify(instance.room.name)}_{timezone.now().strftime("%Y%m%d%H%M%S")}{file_extension}'
+
+class HotelRoom(models.Model):
+    hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, related_name='rooms')
+
+    name = models.CharField(max_length=255)
+    room_type = models.CharField(max_length=100)  # e.g. Deluxe King, Suite
+    description = models.TextField()
+    bed_type = models.CharField(max_length=100, help_text="e.g. 1 King Bed or 2 Twin Beds")
+    occupancy = models.PositiveIntegerField(help_text="Maximum number of guests")
+    size = models.CharField(max_length=50, help_text="e.g. 30 sqm")
+    price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    refundable = models.BooleanField(default=True)
+    is_available = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.hotel.name} - {self.name}"
+
+    class Meta:
+        ordering = ['-created_at']
