@@ -18,3 +18,12 @@ def roomBooking(request):
     }
 
     return render (request, 'pages/user/rooms/index.html', context)
+
+def carBooking(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/user/cars/index.html', context)
