@@ -50,7 +50,7 @@
                             <div class="service-block-thirteen">
                                 <div class="inner-box">
                                     <div class="image-box">
-                                        <figure class="image" style="height: 320px; width: 340px; overflow: hidden;">
+                                        <figure class="image" style="height: 300px; width: 320px; overflow: hidden;">
                                             <a href="{% url 'hotel:roomDetails' %}">
                                                 {% with room.images.all|first as img %}
                                                     {% if img and img.image %}
@@ -73,7 +73,7 @@
                                                 </a>
                                             </h4>
                                             <div class="text">
-                                                {{ room.description }}
+                                                {% comment %} {{ room.description }} {% endcomment %}
                                             </div>
                                             <div class="inspection-sec">
                                                 <div class="inspection-box">
@@ -129,19 +129,19 @@
                                                 </div>
                                             </div>
                                             <ul class="ul-cotent">
-                                                {% for amenity in room.amenities %}
-                                                    <li>
-                                                        <a href="#">
-                                                            {{ amenity }}
-                                                        </a>
-                                                    </li>
-                                                {% empty %}
-                                                    <li>
-                                                        <a href="#">
-                                                            No amenities listed
-                                                        </a>
-                                                    </li>
-                                                {% endfor %}
+                                                <ul class="ul-cotent">
+                                                    {% for room_amenity in room.room_amenities.all|slice:":3" %}
+                                                        <li>
+                                                            <a href="#" style="font-size: 10px;">
+                                                                {{ room_amenity.amenity.name }}
+                                                            </a>
+                                                        </li>
+                                                    {% empty %}
+                                                        <li>
+                                                            <a href="#">No amenities listed</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
                                             </ul>
                                         </div>
                                         <div class="content-box-two">
