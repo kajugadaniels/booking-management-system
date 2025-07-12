@@ -25,23 +25,19 @@
                 <div class="text">
                     Showing 1 to 16 of 1559 vehicles
                 </div>
-                <form class="d-flex">
+                <form class="d-flex" method="get">
                     <div class="form_boxes v3" style="padding-right: 30px;">
                         <small>Filter by</small>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>
-                                    Location
-                                </span>
+                                <span>{{ current_province|default:"Location" }}</span>
                                 <i class="fa fa-angle-down"></i>
                             </div>
-                            <input type="hidden" name="gender">
+                            <input type="hidden" name="province" id="province">
                             <ul class="dropdown" style="display: none;">
-                                <li>Kigali City</li>
-                                <li>Northern Province</li>
-                                <li>Southern Province</li>
-                                <li>Eastern Province</li>
-                                <li>Western Province</li>
+                                {% for province in provinces %}
+                                    <li onclick="document.getElementById('province').value='{{ province }}'; this.closest('form').submit();">{{ province }}</li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -49,14 +45,14 @@
                         <small>Filter Stars</small>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>
-                                    Stars
-                                </span>
+                                <span>{{ current_stars|default:"Stars" }}</span>
                                 <i class="fa fa-angle-down"></i>
                             </div>
-                            <input type="hidden" name="gender">
+                            <input type="hidden" name="stars" id="stars">
                             <ul class="dropdown" style="display: none;">
-                                <li>5 stars</li>
+                                {% for star in stars %}
+                                    <li onclick="document.getElementById('stars').value='{{ star }}'; this.closest('form').submit();">{{ star }} stars</li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
