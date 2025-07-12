@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Contact Submission</title>
+</head>
+<body>
+    <h2>Hello {{ user.name }},</h2>
+    <p>We’ve received your booking for <strong>{{ room.name }}</strong> at <strong>{{ hotel.name }}</strong>.</p>
+    <p>Check-in: <strong>{{ booking.check_in }}</strong><br>
+    Check-out: <strong>{{ booking.check_out }}</strong><br>
+    Guests: <strong>{{ booking.guests }}</strong></p>
+    <p>Total Price: <strong>${{ booking.total_price }}</strong></p>
+
+    <p>We’ll keep you updated as we confirm your reservation.</p>
+    <p>Thank you for choosing Pluto Booking!</p>
+</body>
+</html>
