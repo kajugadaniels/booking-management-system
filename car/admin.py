@@ -26,8 +26,27 @@ class CarAdmin(admin.ModelAdmin):
     list_filter = ('car_type', 'condition', 'fuel_type', 'transmission', 'color', 'is_available')
     search_fields = ('name', 'body', 'description')
     readonly_fields = ('created_at',)
-    inlines = [CarImageInline, CarFeatureInline, CarReviewInline]
     autocomplete_fields = ['car_type']
+    inlines = [CarImageInline, CarFeatureInline, CarReviewInline]
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('name', 'car_type', 'description')
+        }),
+        ('Specifications', {
+            'fields': (
+                'condition', 'fuel_type', 'transmission', 'doors', 'color', 
+                'year', 'body', 'engine_capacity', 'mileage'
+            )
+        }),
+        ('Pricing & Availability', {
+            'fields': ('price_per_day', 'is_available')
+        }),
+        ('Meta', {
+            'fields': ('created_at',),
+            'classes': ('collapse',),
+        }),
+    )
 
 @admin.register(CarBooking)
 class CarBookingAdmin(admin.ModelAdmin):
