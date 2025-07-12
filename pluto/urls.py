@@ -12,3 +12,5 @@ urlpatterns = [
     path('hotels/', include('hotel.urls')),
     path('planes/', include('plane.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'base.views.custom_404_view'
