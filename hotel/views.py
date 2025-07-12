@@ -2,8 +2,12 @@ from random import sample
 from base.models import *
 from hotel.models import *
 from django.db.models import Avg
+from django.contrib import messages
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 DEFAULT_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s"
 
@@ -117,22 +121,45 @@ def roomDetails(request, hotel_id, room_id):
     site_settings = Setting.objects.first()
     hotel = get_object_or_404(Hotel, id=hotel_id)
     room = get_object_or_404(HotelRoom, id=room_id, hotel=hotel)
-
-    images = RoomImage.objects.filter(room=room)
-    amenities = RoomAmenity.objects.filter(room=room).select_related('amenity')
+    images = room.images.all()
+    amenities = room.room_amenities.select_related('amenity')
     reviews = RoomReview.objects.filter(room=room).select_related('user')
-    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
     similar_rooms = HotelRoom.objects.filter(hotel=hotel).exclude(id=room.id)[:4]
+    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+
+    review_form = None
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            review_form = RoomReviewForm(request.POST)
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.user = request.user
+                review.room = room
+                review.save()
+
+                # Send thank-you email
+                subject = 'Thank You for Your Review!'
+                message = render_to_string('emails/review_thanks.html', {
+                    'user': request.user,
+                    'room': room,
+                    'settings': site_settings
+                })
+                send_mail(subject, '', settings.EMAIL_HOST_USER, [request.user.email], html_message=message)
+
+                messages.success(request, 'Your review has been submitted. Thank you!')
+                return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
+        else:
+            review_form = RoomReviewForm()
 
     context = {
         'settings': site_settings,
-        'hotel': hotel,
         'room': room,
+        'hotel': hotel,
         'images': images,
         'amenities': amenities,
         'reviews': reviews,
         'average_rating': round(average_rating, 1),
         'similar_rooms': similar_rooms,
+        'review_form': review_form
     }
-
     return render(request, 'pages/hotels/rooms/show.html', context)
