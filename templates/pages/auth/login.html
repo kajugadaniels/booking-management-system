@@ -2,6 +2,54 @@
 
 {% block content %}
 
-    Login
+    <section class="login-section layout-radius">
+        <div class="inner-container">
+            <div class="boxcar-title-three wow fadeInUp">
+                <h2>Sign In</h2>
+            </div>
+
+            <div class="right-box">
+                <div class="form-sec">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <div class="form-box">
+                                <form>
+                                    <div class="form_boxes">
+                                        <label>Email or Username</label>
+                                        <input type="text" name="name" placeholder="Creativelayer088" />
+                                    </div>
+                                    <div class="form_boxes">
+                                        <label>Password</label>
+                                        <input type="password" name="password" placeholder="********" />
+                                    </div>
+                                    <div class="btn-box">
+                                        <label class="contain">Remember
+                                            <input type="checkbox" checked="checked">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <a href="{% url 'auth:forgetPassword' %}" class="pasword-btn">
+                                            Forgotten password?
+                                        </a>
+                                    </div>
+                                    <div class="form-submit">
+                                        <button type="submit" class="theme-btn">
+                                            Login
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="btn-box-two">
+                                    <span>OR</span>
+                                    <div class="social-btns">
+                                        <a href="#" class="fb-btn"><i class="fa-brands fa-facebook-f"></i>Continue Facebook</a>
+                                        <a href="#" class="fb-btn two"><i class="fa-brands fa-google"></i>Continue Google</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 {% endblock content %}
