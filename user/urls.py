@@ -10,4 +10,5 @@ urlpatterns = [
     path('room-booking/', roomBooking, name="roomBooking"),
     path('car-booking/', carBooking, name="carBooking"),
     path('profile/', profile, name="profile"),
+    path('change-password/', changePassword, name="changePassword"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

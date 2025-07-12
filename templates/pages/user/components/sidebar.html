@@ -1,31 +1,37 @@
 <div class="side-bar" style="background: #050B20;">
     <ul class="nav-list">
         <li>
-            <a href="{% url 'user:dashboard' %}" style="font-size: 13px;">
+            <a href="{% url 'user:dashboard' %}">
                 <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash1.svg" alt="">
                 Dashboard
             </a>
         </li>
         <li>
-            <a href="{% url 'user:roomBooking' %}" style="font-size: 13px;">
-                <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash2.svg" alt="">
+            <a href="{% url 'user:roomBooking' %}">
+                <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash4.svg" alt="">
                 Room Booking
             </a>
         </li>
         <li>
-            <a href="{% url 'user:carBooking' %}" style="font-size: 13px;">
-                <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash3.svg" alt="">
+            <a href="{% url 'user:carBooking' %}">
+                <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash2.svg" alt="">
                 Car Booking
             </a>
         </li>
         <li>
-            <a href="{% url 'user:profile' %}" style="font-size: 13px;">
+            <a href="{% url 'user:profile' %}">
                 <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash7.svg" alt="">
                 My Profile
             </a>
         </li>
         <li>
-            <a href="{% url 'auth:getLogout' %}" style="font-size: 13px;">
+            <a href="{% url 'user:changePassword' %}">
+                <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash6.svg" alt="">
+                Change Password
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'auth:getLogout' %}">
                 <img src="https://creativelayers.net/themes/boxcar-html/images/icons/dash8.svg" alt="">
                 Logout
             </a>

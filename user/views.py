@@ -41,3 +41,13 @@ def profile(request):
     }
 
     return render (request, 'pages/user/profile.html', context)
+
+@login_required
+def changePassword(request):
+    site_settings = Setting.objects.first()
+
+    context = {
+        'settings': site_settings
+    }
+
+    return render (request, 'pages/user/change-password.html', context)
