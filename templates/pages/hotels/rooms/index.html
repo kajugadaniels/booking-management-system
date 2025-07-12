@@ -52,7 +52,7 @@
                                     <div class="image-box">
                                         <figure class="image">
                                             <a href="#">
-                                                <img src="https://image-tc.galaxy.tf/wijpeg-3aaubf2iwiw7oj1xvk1x1439s/serena-kigali-2023-grvw-024-room-04-prime-room.jpg?width=1600&height=1066" alt="" style="height: 320px; width: 340px;">
+                                                <img src="{{ room.image_url }}" alt="" style="height: 320px; width: 340px;">
                                             </a>
                                         </figure>
                                     </div>
@@ -86,7 +86,7 @@
                                                     </span>
                                                     <div class="info">
                                                         <span>Refundable</span>
-                                                        <small>{{ room.refundable }}</small>
+                                                        <small>{{ room.refundable|yesno:"Yes,No" }}</small>
                                                     </div>
                                                 </div>
                                                 <div class="inspection-box">
@@ -120,15 +120,19 @@
                                                 </div>
                                             </div>
                                             <ul class="ul-cotent">
-                                                <li>
-                                                    <a href="#">Bluetooth</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Keyless start</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Brake assist</a>
-                                                </li>
+                                                {% for amenity in room.amenities %}
+                                                    <li>
+                                                        <a href="#">
+                                                            {{ amenity }}
+                                                        </a>
+                                                    </li>
+                                                {% empty %}
+                                                    <li>
+                                                        <a href="#">
+                                                            No amenities listed
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
                                             </ul>
                                         </div>
                                         <div class="content-box-two">
