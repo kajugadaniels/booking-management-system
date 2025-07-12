@@ -52,7 +52,11 @@
                                     <div class="image-box">
                                         <figure class="image">
                                             <a href="#">
-                                                <img src="{{ room.image_url }}" alt="" style="height: 320px; width: 340px;">
+                                                {% if room.image_url %}
+                                                    <img src="{{ room.image_url }}" alt="{{ room.instance.name }}" style="height: 320px; width: 340px;">
+                                                {% else %}
+                                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" alt="{{ room.instance.name }}">
+                                                {% endif %}
                                             </a>
                                         </figure>
                                     </div>
