@@ -4,46 +4,57 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
+DEFAULT_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s"
+
 def getHotels(request):
     site_settings = Setting.objects.first()
 
+    # Filters
     province_filter = request.GET.get('province')
     stars_filter = request.GET.get('stars')
-    page_number = request.GET.get('page', 1)
 
-    hotels = Hotel.objects.filter(is_active=True)
+    hotels = Hotel.objects.all()
 
     if province_filter:
         hotels = hotels.filter(province__iexact=province_filter)
 
     if stars_filter:
         try:
-            stars = int(stars_filter)
-            hotels = hotels.filter(stars=stars)
+            stars_filter = int(stars_filter)
+            hotels = hotels.filter(stars=stars_filter)
         except ValueError:
             pass
 
+    # Order by latest
     hotels = hotels.order_by('-created_at')
 
-    # Attach default image if none exists
-    hotel_list = []
-    for hotel in hotels:
-        image = hotel.images.first()
-        hotel_list.append({
-            'hotel': hotel,
-            'image': image.image.url if image else "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s"
+    # Pagination
+    paginator = Paginator(hotels, 16)  # 16 per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Collect image URLs
+    hotel_data = []
+    for hotel in page_obj:
+        image = HotelImage.objects.filter(hotel=hotel).first()
+        image_url = image.image.url if image else DEFAULT_IMAGE
+        hotel_data.append({
+            'instance': hotel,
+            'image': image_url
         })
 
-    paginator = Paginator(hotel_list, 12)  # 12 hotels per page
-    page_obj = paginator.get_page(page_number)
+    # All provinces and star values for filter dropdowns
+    provinces = Hotel.objects.values_list('province', flat=True).distinct()
+    stars = Hotel.objects.values_list('stars', flat=True).distinct().order_by()
 
     context = {
         'settings': site_settings,
         'page_obj': page_obj,
-        'selected_province': province_filter,
-        'selected_stars': stars_filter,
-        'provinces': Hotel.objects.values_list('province', flat=True).distinct(),
-        'stars_options': [1, 2, 3, 4, 5]
+        'hotel_data': hotel_data,
+        'provinces': provinces,
+        'stars': stars,
+        'current_province': province_filter,
+        'current_stars': stars_filter
     }
 
     return render(request, 'pages/hotels/index.html', context)
