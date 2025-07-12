@@ -19,6 +19,15 @@ def howItWorks(request):
 
     return render (request, 'pages/how-it-works.html', context)
 
+def privacyPolicy(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/privacy-policy.html', context)
+
 def contact(request):
     settings = Setting.objects.first()
 
