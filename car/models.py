@@ -33,6 +33,16 @@ class Feature(models.Model):
         verbose_name = "Feature"
         verbose_name_plural = "Features"
 
+class CarBrand(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Car Brand"
+        verbose_name_plural = "Car Brands"
+
 class Car(models.Model):
     CONDITION_CHOICES = [
         ('new', 'New'),
