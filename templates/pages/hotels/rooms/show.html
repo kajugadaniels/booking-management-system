@@ -98,22 +98,20 @@
                         <div class="features-sec v2">
                             <h4 class="title">Features</h4>
                             <div class="row">
-                                {% regroup amenities by forloop.counter0|divisibleby:4 as amenity_chunks %}
-                                {% for column in amenities|slice:"0:100"|chunked:4 %}
-                                    <div class="list-column col-lg-3 col-md-6 col-sm-12">
-                                        <div class="inner-column">
-                                            <h6 class="title">Amenities</h6>
-                                            <ul class="feature-list">
-                                                {% for amenity in column %}
-                                                    <li>
-                                                        <i class="fa-solid fa-check"></i>
-                                                        {{ amenity.amenity.name }}
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
+                                <div class="list-column col-lg-12 col-md-12 col-sm-12">
+                                    <div class="inner-column">
+                                        <div style="display: flex; flex-wrap: wrap;">
+                                            {% for item in amenities %}
+                                                <div style="width: 25%; padding: 6px 10px; box-sizing: border-box;">
+                                                    <i class="fa-solid fa-check" style="margin-right: 6px; color: #28a745;"></i>
+                                                    {{ item.amenity.name }}
+                                                </div>
+                                            {% empty %}
+                                                <div style="width: 100%;">No amenities available</div>
+                                            {% endfor %}
                                         </div>
                                     </div>
-                                {% endfor %}
+                                </div>
                             </div>
                         </div>
                         <div class="location-box v2">
