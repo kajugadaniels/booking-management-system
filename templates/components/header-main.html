@@ -36,27 +36,53 @@
                     <!-- Main Menu End-->
                 </div>
                 <div class="right-box">
-                    <a href="{% url 'auth:getLogin' %}" title="" class="box-account">
-                        <span class="icon">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g clip-path="url(#clip0_147_6490)">
-                                    <path d="M7.99998 9.01221C3.19258 9.01221 0.544983 11.2865 0.544983 15.4161C0.544983 15.7386 0.806389 16.0001 1.12892 16.0001H14.871C15.1935 16.0001 15.455 15.7386 15.455 15.4161C15.455 11.2867 12.8074 9.01221 7.99998 9.01221ZM1.73411 14.8322C1.9638 11.7445 4.06889 10.1801 7.99998 10.1801C11.9311 10.1801 14.0362 11.7445 14.2661 14.8322H1.73411Z" fill="white"/>
-                                    <path d="M7.99999 0C5.79171 0 4.12653 1.69869 4.12653 3.95116C4.12653 6.26959 5.86415 8.15553 7.99999 8.15553C10.1358 8.15553 11.8735 6.26959 11.8735 3.95134C11.8735 1.69869 10.2083 0 7.99999 0ZM7.99999 6.98784C6.50803 6.98784 5.2944 5.62569 5.2944 3.95134C5.2944 2.3385 6.43231 1.16788 7.99999 1.16788C9.54259 1.16788 10.7056 2.36438 10.7056 3.95134C10.7056 5.62569 9.49196 6.98784 7.99999 6.98784Z" fill="white"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_147_6490">
-                                        <rect width="16" height="16" fill="white"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                        </span>
-                        Sign in
-                    </a>
-                    <div class="btn">
-                        <a href="{% url 'auth:getRegister' %}" class="header-btn-two">
-                            Sign Up
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'auth:getLogout' %}" title="" class="box-account">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                                    <defs>
+                                        <mask id="letsIconsSignOutCircleDuotoneLine0">
+                                            <g fill="none">
+                                                <circle cx="6" cy="6" r="6" fill="#fff" fill-opacity="0.25" transform="matrix(0 -1 -1 0 20 18)" />
+                                                <path stroke="#c0c0c0" stroke-opacity="0.25" stroke-width="0.6" d="M7.7 12a6.3 6.3 0 1 1 12.6 0a6.3 6.3 0 0 1-12.6 0Z" />
+                                                <path stroke="#fff" stroke-width="1.2" d="M8 18.928A8 8 0 1 0 8 5.072" />
+                                                <path fill="#fff" d="m2 12l-.469-.375l-.3.375l.3.375zm9 .6a.6.6 0 1 0 0-1.2zM5.531 6.625l-4 5l.938.75l4-5zm-4 5.75l4 5l.938-.75l-4-5zM2 12.6h9v-1.2H2z" />
+                                            </g>
+                                        </mask>
+                                    </defs>
+                                    <path fill="currentColor" d="M0 0h24v24H0z" mask="url(#letsIconsSignOutCircleDuotoneLine0)" />
+                                </svg>
+                            </div>
+                            Sign Out
                         </a>
-                    </div>
+                        <div class="btn">
+                            <a href="{% url 'user:dashboard' %}" class="header-btn-two btn-anim">
+                                Dashboard
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'auth:getLogin' %}" title="" class="box-account">
+                            <div class="icon">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_147_6490)">
+                                        <path d="M7.99998 9.01221C3.19258 9.01221 0.544983 11.2865 0.544983 15.4161C0.544983 15.7386 0.806389 16.0001 1.12892 16.0001H14.871C15.1935 16.0001 15.455 15.7386 15.455 15.4161C15.455 11.2867 12.8074 9.01221 7.99998 9.01221ZM1.73411 14.8322C1.9638 11.7445 4.06889 10.1801 7.99998 10.1801C11.9311 10.1801 14.0362 11.7445 14.2661 14.8322H1.73411Z" fill="white"/>
+                                        <path d="M7.99999 0C5.79171 0 4.12653 1.69869 4.12653 3.95116C4.12653 6.26959 5.86415 8.15553 7.99999 8.15553C10.1358 8.15553 11.8735 6.26959 11.8735 3.95134C11.8735 1.69869 10.2083 0 7.99999 0ZM7.99999 6.98784C6.50803 6.98784 5.2944 5.62569 5.2944 3.95134C5.2944 2.3385 6.43231 1.16788 7.99999 1.16788C9.54259 1.16788 10.7056 2.36438 10.7056 3.95134C10.7056 5.62569 9.49196 6.98784 7.99999 6.98784Z" fill="white"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_147_6490">
+                                            <rect width="16" height="16" fill="white"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+                            Sign In
+                        </a>
+                        <div class="btn">
+                            <a href="{% url 'auth:getRegister' %}" class="header-btn-two btn-anim">
+                                Sign Up
+                            </a>
+                        </div>
+                    {% endif %}
                     <div class="mobile-navigation">
                         <a href="#nav-mobile" title="">
                             <!-- <i class="fa fa-bars"></i> -->
