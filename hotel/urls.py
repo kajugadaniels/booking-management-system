@@ -7,4 +7,5 @@ app_name = 'hotel'
 
 urlpatterns = [
     path('', getHotels, name="getHotels"),
+    path('hotel/1/rooms', hotelRooms, name="getHotels"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -9,3 +9,12 @@ def getHotels(request):
     }
 
     return render (request, 'pages/hotels/index.html', context)
+
+def hotelRooms(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/hotels/rooms/index.html', context)
