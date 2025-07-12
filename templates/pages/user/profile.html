@@ -12,7 +12,8 @@
                 <div class="gallery-box">
                     <div class="inner-box">
                         <div class="image-box">
-                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" style="width: 190px; height: 167px;">
+                            <img src="{{ request.user.image.url if request.user.image else 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' }}" style="width: 190px; height: 167px;">
+
                             <div class="content-box">
                                 <ul class="social-icon">
                                     <li><a href="#"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/delet.svg"></a></li>
@@ -33,25 +34,40 @@
                 </div>
             </div>
             <div class="form-sec">
-                <form class="row">  
+                <form class="row" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
                     <div class="col-lg-4">
                         <div class="form_boxes">
-                            <label>Name</label>
-                            <input name="name" type="text" value="{{ request.user.name }}">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                            {{ form.name.errors }}
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form_boxes">
-                            <label>Email</label>
-                            <input name="email" type="email" value="{{ request.user.email }}">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                            {{ form.email.errors }}
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form_boxes">
-                            <label>Phone</label>
-                            <input name="phone" type="number" value="{{ request.user.phone_number }}">
+                            {{ form.phone_number.label_tag }}
+                            {{ form.phone_number }}
+                            {{ form.phone_number.errors }}
                         </div>
                     </div>
+
+                    <div class="col-lg-12">
+                        <div class="form_boxes">
+                            {{ form.image.label_tag }}
+                            {{ form.image }}
+                            {{ form.image.errors }}
+                        </div>
+                    </div>
+
                     <div class="form-submit">
                         <button type="submit" class="theme-btn">
                             Update Profile
