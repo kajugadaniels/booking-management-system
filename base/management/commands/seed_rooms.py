@@ -48,9 +48,6 @@ class Command(BaseCommand):
                     size=f"{random.randint(20, 60)} sqm",
                     price_per_night=round(random.uniform(min_price, max_price), 2),
                     refundable=random.choice([True, False]),
-                    breakfast_included=random.choice([True, False]),
-                    air_conditioning=True if hotel.stars >= 4 else False,
-                    balcony=random.choice([True, False]),
                     is_available=True,
                 )
 
