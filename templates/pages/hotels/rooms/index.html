@@ -50,13 +50,16 @@
                             <div class="service-block-thirteen">
                                 <div class="inner-box">
                                     <div class="image-box">
-                                        <figure class="image">
+                                        <figure class="image" style="height: 320px; width: 340px; overflow: hidden;">
                                             <a href="{% url 'hotel:roomDetails' %}">
                                                 {% with room.images.all|first as img %}
                                                     {% if img and img.image %}
-                                                        <img src="{{ img.image.url }}" alt="{{ room.name }}" style="height: 320px; width: 340px;">
+                                                        <img src="{{ img.image.url }}" alt="{{ room.name }}"
+                                                            style="height: 100%; width: 100%; object-fit: cover; display: block;">
                                                     {% else %}
-                                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" alt="{{ room.name }}">
+                                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s"
+                                                            alt="{{ room.name }}"
+                                                            style="height: 100%; width: 100%; object-fit: cover; display: block;">
                                                     {% endif %}
                                                 {% endwith %}
                                             </a>
