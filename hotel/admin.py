@@ -65,3 +65,11 @@ class HotelRoomAdmin(admin.ModelAdmin):
 class AmenityAdmin(admin.ModelAdmin):
     list_display = ('name', 'icon', 'created_at')
     search_fields = ('name',)
+
+@admin.register(RoomBooking)
+class RoomBookingAdmin(admin.ModelAdmin):
+    list_display = ('user', 'room', 'check_in', 'check_out', 'status', 'total_price', 'created_at')
+    list_filter = ('status', 'check_in', 'check_out')
+    search_fields = ('user__name', 'room__name')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('-created_at',)
