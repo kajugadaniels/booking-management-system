@@ -68,7 +68,7 @@ def hotelRooms(request, hotel_id):
     hotel = get_object_or_404(Hotel, id=hotel_id)
 
     rooms = HotelRoom.objects.filter(hotel=hotel).order_by('-created_at')
-    paginator = Paginator(rooms, 16)
+    paginator = Paginator(rooms, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
