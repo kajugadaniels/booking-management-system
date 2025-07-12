@@ -10,6 +10,15 @@ def home(request):
 
     return render (request, 'pages/index.html', context)
 
+def howItWorks(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/how-it-works.html', context)
+
 def contact(request):
     settings = Setting.objects.first()
 
