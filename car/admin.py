@@ -64,3 +64,8 @@ class CarTypeAdmin(admin.ModelAdmin):
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+
+@admin.register(CarBrand)
+class CarBrandAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
