@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 def getRegister(request):
@@ -64,6 +65,12 @@ def getLogin(request):
     }
 
     return render(request, 'pages/auth/login.html', context)
+
+@login_required
+def logoutUser(request):
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect('auth:getLogin')
 
 def forgetPassword(request):
     site_settings = Setting.objects.first()
