@@ -12,6 +12,9 @@ def car_image_upload_path(instance, filename):
     timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
     return f"cars/car_{slugify(instance.car.name)}_{timestamp}{file_extension}"
 
+def brand_thumbnail_upload_path(instance, filename):
+    base, ext = os.path.splitext(filename)
+    return f"brands/{instance.name.lower().replace(' ', '_')}_thumb{ext}"
 
 class CarType(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -35,6 +38,14 @@ class Feature(models.Model):
 
 class CarBrand(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    thumbnail = ProcessedImageField(
+        upload_to=brand_thumbnail_upload_path,
+        processors=[ResizeToFill(100, 100)],
+        format='JPEG',
+        options={'quality': 90},
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.name
