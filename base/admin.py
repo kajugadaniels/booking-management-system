@@ -8,3 +8,9 @@ class SettingAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         # Prevent more than one instance
         return not Setting.objects.exists()
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email', 'phone', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'phone')
+    readonly_fields = ('created_at',)
