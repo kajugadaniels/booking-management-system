@@ -1,8 +1,10 @@
 import os
 import random
+from account.models import *
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 
 class Setting(models.Model):
@@ -41,3 +43,37 @@ class Contact(models.Model):
     class Meta:
         verbose_name = "Contact"
         verbose_name_plural = "Contacts"
+
+def hotel_image_upload_path(instance, filename):
+    base_filename, file_extension = os.path.splitext(filename)
+    return f'hotels/hotel_{slugify(instance.hotel.name)}_{timezone.now().strftime("%Y%m%d%H%M%S")}{file_extension}'
+
+class Hotel(models.Model):
+    STAR_CHOICES = [(i, f'{i} Star') for i in range(1, 6)]
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    stars = models.IntegerField(choices=STAR_CHOICES)
+    address = models.CharField(max_length=255)
+    map_url = models.URLField(blank=True, null=True)
+
+    # Location fields
+    country = models.CharField(max_length=100)
+    province = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    sector = models.CharField(max_length=100)
+    cell = models.CharField(max_length=100)
+    village = models.CharField(max_length=100)
+
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
+
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-created_at']
