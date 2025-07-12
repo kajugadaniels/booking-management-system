@@ -12,8 +12,11 @@
                 <div class="gallery-box">
                     <div class="inner-box">
                         <div class="image-box">
-                            <img src="{{ request.user.image.url if request.user.image else 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' }}" style="width: 190px; height: 167px;">
-
+                            {% if request.user.image %}
+                                <img src="{{ request.user.image.url }}" style="width: 190px; height: 167px;">
+                            {% else %}
+                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" style="width: 190px; height: 167px;">
+                            {% endif %}
                             <div class="content-box">
                                 <ul class="social-icon">
                                     <li><a href="#"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/delet.svg"></a></li>
