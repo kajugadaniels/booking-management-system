@@ -17,14 +17,14 @@ class Command(BaseCommand):
     help = 'Seed HotelRoom records with realistic details per hotel, including amenities'
 
     def handle(self, *args, **kwargs):
-        hotels = list(range(1, 47))  # hotel IDs from 1 to 46
+        hotels = list(range(1, 41))  # hotel IDs from 1 to 46
         amenity_ids = list(Amenity.objects.values_list('id', flat=True))
         total_rooms = 0
 
         for hotel_id in hotels:
             num_rooms = random.randint(10, 23)
             # Determine hotel star-level for price tier (fetch from Hotel model)
-            from base.models import Hotel
+            from hotel.models import Hotel
             hotel = Hotel.objects.get(id=hotel_id)
             min_price = 30 + (hotel.stars - 3) * 20
             max_price = 80 + (hotel.stars - 3) * 40
