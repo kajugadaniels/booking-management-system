@@ -2,37 +2,37 @@ from base.models import *
 from django.shortcuts import render, redirect
 
 def home(request):
-    settings = Setting.objects.first()
+    site_settings = Setting.objects.first()
 
     context = {
-        'settings': settings
+        'settings': site_settings
     }
 
     return render (request, 'pages/index.html', context)
 
 def howItWorks(request):
-    settings = Setting.objects.first()
+    site_settings = Setting.objects.first()
 
     context = {
-        'settings': settings
+        'settings': site_settings
     }
 
     return render (request, 'pages/how-it-works.html', context)
 
 def privacyPolicy(request):
-    settings = Setting.objects.first()
+    site_settings = Setting.objects.first()
 
     context = {
-        'settings': settings
+        'settings': site_settings
     }
 
     return render (request, 'pages/privacy-policy.html', context)
 
 def contact(request):
-    settings = Setting.objects.first()
+    site_settings = Setting.objects.first()
 
     context = {
-        'settings': settings
+        'settings': site_settings
     }
 
     return render (request, 'pages/contact.html', context)
