@@ -1,5 +1,64 @@
 {% extends 'layouts/user.html' %}
 
 {% block content %}
-    
+    <div class="inner-column">
+        <div class="list-title">
+            <h3 class="title">Profile</h3>
+            <div class="text">Lorem ipsum dolor sit amet, consectetur.</div>
+        </div>
+        <div class="gallery-sec">
+            <div class="right-box-three">
+                <h6 class="title">Profile Image</h6>
+                <div class="gallery-box">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" style="width: 190px; height: 167px;">
+                            <div class="content-box">
+                                <ul class="social-icon">
+                                    <li><a href="#"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/delet.svg"></a></li>
+                                    <li><a href="#"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/delet1-1.svg"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="uplode-box">
+                            <div class="content-box">
+                                <a href="#">
+                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/uplode.svg">
+                                    <span>Upload</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text">Max file size is 1MB, Minimum dimension: 330x300 And Suitable files are .jpg & .png</div>
+                </div>
+            </div>
+            <div class="form-sec">
+                <form class="row">  
+                    <div class="col-lg-4">
+                        <div class="form_boxes">
+                            <label>Name</label>
+                            <input name="name" type="text" value="{{ request.user.name }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form_boxes">
+                            <label>Email</label>
+                            <input name="email" type="email" value="{{ request.user.email }}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form_boxes">
+                            <label>Phone</label>
+                            <input name="phone" type="number" value="{{ request.user.phone_number }}">
+                        </div>
+                    </div>
+                    <div class="form-submit">
+                        <button type="submit" class="theme-btn">
+                            Update Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
