@@ -147,3 +147,11 @@ class RoomImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.room.name}"
+
+class Amenity(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    icon = models.CharField(max_length=100, blank=True, help_text="Optional CSS class or icon path")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
