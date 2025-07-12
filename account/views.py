@@ -9,3 +9,12 @@ def getLogin(request):
     }
 
     return render (request, 'pages/auth/login.html', context)
+
+def getRegister(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/auth/register.html', context)
