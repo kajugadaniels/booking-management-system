@@ -22,16 +22,16 @@ class CarReviewInline(admin.StackedInline):
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('name', 'car_type', 'condition', 'fuel_type', 'price_per_day', 'is_available', 'created_at')
-    list_filter = ('car_type', 'condition', 'fuel_type', 'transmission', 'color', 'is_available')
+    list_display = ('name', 'car_brand', 'car_type', 'condition', 'fuel_type', 'price_per_day', 'is_available', 'created_at')
+    list_filter = ('car_brand', 'car_type', 'condition', 'fuel_type', 'transmission', 'color', 'is_available')
     search_fields = ('name', 'body', 'description')
     readonly_fields = ('created_at',)
-    autocomplete_fields = ['car_type']
+    autocomplete_fields = ['car_brand', 'car_type']
     inlines = [CarImageInline, CarFeatureInline, CarReviewInline]
 
     fieldsets = (
         ('Basic Information', {
-            'fields': ('name', 'car_type', 'description')
+            'fields': ('name', 'car_brand', 'car_type', 'description')
         }),
         ('Specifications', {
             'fields': (
