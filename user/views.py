@@ -27,3 +27,12 @@ def carBooking(request):
     }
 
     return render (request, 'pages/user/cars/index.html', context)
+
+def profile(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/user/profile.html', context)
