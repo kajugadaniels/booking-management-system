@@ -35,8 +35,11 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
 
     # Custom apps
+    'car',
+    'base',
+    'hotel',
+    'plane',
     'account',
-    'base'
 ]
 
 MIDDLEWARE = [
