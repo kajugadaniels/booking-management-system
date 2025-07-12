@@ -10,4 +10,5 @@ urlpatterns = [
     path('login/', getLogin, name="getLogin"),
     path('logout/', logoutUser, name="getLogout"),
     path('forget-password/', forgetPassword, name="forgetPassword"),
+    path('reset-password/<str:email>/', resetPassword, name="resetPassword"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
