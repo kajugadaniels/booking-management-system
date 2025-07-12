@@ -1,4 +1,6 @@
+from user.forms import *
 from base.models import *
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -35,12 +37,25 @@ def carBooking(request):
 @login_required
 def profile(request):
     site_settings = Setting.objects.first()
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect('user:profile')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = UserProfileForm(instance=user)
 
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'form': form,
     }
 
-    return render (request, 'pages/user/profile.html', context)
+    return render(request, 'pages/user/profile.html', context)
 
 @login_required
 def changePassword(request):
