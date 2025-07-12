@@ -75,6 +75,7 @@ class Car(models.Model):
     ]
 
     name = models.CharField(max_length=255)
+    car_brand = models.ForeignKey(CarBrand, on_delete=models.SET_NULL, null=True, blank=True)
     car_type = models.ForeignKey(CarType, on_delete=models.SET_NULL, null=True)
     condition = models.CharField(max_length=10, choices=CONDITION_CHOICES)
     fuel_type = models.CharField(max_length=20, choices=FUEL_TYPES)
