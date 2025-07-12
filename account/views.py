@@ -109,3 +109,42 @@ def forgetPassword(request):
     }
 
     return render(request, 'pages/auth/forget-password.html', context)
+
+def resetPassword(request, email):
+    site_settings = Setting.objects.first()
+    form = OTPVerificationForm()
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        messages.error(request, "Invalid password reset link.")
+        return redirect('auth:forgetPassword')
+
+    if request.method == 'POST':
+        form = OTPVerificationForm(request.POST)
+        if form.is_valid():
+            otp = form.cleaned_data['otp']
+            new_password = form.cleaned_data['new_password']
+            confirm_password = form.cleaned_data['confirm_password']
+
+            if user.reset_otp != otp:
+                messages.error(request, "Invalid OTP.")
+            elif timezone.now() - user.otp_created_at > timedelta(minutes=10):
+                messages.error(request, "OTP has expired.")
+            elif new_password != confirm_password:
+                messages.error(request, "Passwords do not match.")
+            else:
+                user.set_password(new_password)
+                user.reset_otp = None
+                user.otp_created_at = None
+                user.save()
+                messages.success(request, "Password updated successfully. Please log in.")
+                return redirect('auth:getLogin')
+
+    context = {
+        'form': form,
+        'email': email,
+        'settings': site_settings
+    }
+
+    return render(request, 'pages/auth/reset-password.html', context)
