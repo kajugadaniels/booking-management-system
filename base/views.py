@@ -9,3 +9,12 @@ def home(request):
     }
 
     return render (request, 'pages/index.html', context)
+
+def contact(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/contact.html', context)
