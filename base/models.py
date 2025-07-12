@@ -155,3 +155,13 @@ class Amenity(models.Model):
 
     def __str__(self):
         return self.name
+
+class RoomAmenity(models.Model):
+    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='room_amenities')
+    amenity = models.ForeignKey(Amenity, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('room', 'amenity')
+
+    def __str__(self):
+        return f"{self.room.name} - {self.amenity.name}"
