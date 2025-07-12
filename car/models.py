@@ -1,9 +1,11 @@
 import os
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
-from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from imagekit.models import ProcessedImageField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 def car_image_upload_path(instance, filename):
     base_filename, file_extension = os.path.splitext(filename)
@@ -109,3 +111,18 @@ class CarFeature(models.Model):
 
     def __str__(self):
         return f"{self.car.name} - {self.feature.name}"
+
+class CarReview(models.Model):
+    car = models.ForeignKey('Car', on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='car_reviews')
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    title = models.CharField(max_length=255)
+    review = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('car', 'user')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.name} - {self.car.name} ({self.rating}★)"
