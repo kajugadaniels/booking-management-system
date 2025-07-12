@@ -60,9 +60,23 @@ def profile(request):
 @login_required
 def changePassword(request):
     site_settings = Setting.objects.first()
+    user = request.user
+
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST, user=user)
+        if form.is_valid():
+            user.set_password(form.cleaned_data['new_password'])
+            user.save()
+            messages.success(request, "Password updated successfully.")
+            return redirect('user:changePassword')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = ChangePasswordForm(user=user)
 
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'form': form,
     }
 
-    return render (request, 'pages/user/change-password.html', context)
+    return render(request, 'pages/user/change-password.html', context)
