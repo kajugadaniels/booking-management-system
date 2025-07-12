@@ -60,13 +60,20 @@ class UserLoginForm(forms.Form):
             cleaned_data['user'] = user
         return cleaned_data
 
-from django import forms
-
 class PasswordResetRequestForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Enter your registered email'}))
 
 class OTPVerificationForm(forms.Form):
-    email = forms.CharField(widget=forms.HiddenInput())
-    otp = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'placeholder': 'Enter OTP'}))
-    new_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New Password'}))
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}))
+    otp = forms.CharField(
+        max_length=6,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter OTP'}),
+        label="OTP"
+    )
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'New Password'}),
+        label="New Password"
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm New Password'}),
+        label="Confirm Password"
+    )
