@@ -18,3 +18,12 @@ def hotelRooms(request):
     }
 
     return render (request, 'pages/hotels/rooms/index.html', context)
+
+def roomDetails(request):
+    settings = Setting.objects.first()
+
+    context = {
+        'settings': settings
+    }
+
+    return render (request, 'pages/hotels/rooms/show.html', context)
