@@ -1,6 +1,6 @@
 {% load static %}
 
-<header class="boxcar-header header-style-v1 header-default">
+<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
     <div class="header-inner">
         <div class="inner-container">
             <!-- Main box -->
@@ -37,7 +37,7 @@
                 </div>
                 <div class="right-box">
                     <a href="{% url 'auth:getLogin' %}" title="" class="box-account">
-                        <span class="icon">
+                        <div class="icon">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_147_6490)">
                                     <path d="M7.99998 9.01221C3.19258 9.01221 0.544983 11.2865 0.544983 15.4161C0.544983 15.7386 0.806389 16.0001 1.12892 16.0001H14.871C15.1935 16.0001 15.455 15.7386 15.455 15.4161C15.455 11.2867 12.8074 9.01221 7.99998 9.01221ZM1.73411 14.8322C1.9638 11.7445 4.06889 10.1801 7.99998 10.1801C11.9311 10.1801 14.0362 11.7445 14.2661 14.8322H1.73411Z" fill="white"/>
@@ -49,17 +49,16 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                        </span>
+                        </div>
                         Sign in
                     </a>
                     <div class="btn">
-                        <a href="{% url 'auth:getRegister' %}" class="header-btn-two">
+                        <a href="{% url 'auth:getRegister' %}" class="header-btn-two btn-anim">
                             Sign Up
                         </a>
                     </div>
                     <div class="mobile-navigation">
                         <a href="#nav-mobile" title="">
-                            <!-- <i class="fa fa-bars"></i> -->
                             <svg width="22" height="11" viewBox="0 0 22 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="22" height="2" fill="white"/>
                                 <rect y="9" width="22" height="2" fill="white"/>
