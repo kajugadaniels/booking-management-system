@@ -56,6 +56,8 @@ def getHotels(request):
     if 'page' in get_params:
         del get_params['page']
     cleaned_querystring = get_params.urlencode()
+    
+    
 
     context = {
         'settings': site_settings,
@@ -159,6 +161,23 @@ def roomDetails(request, hotel_id, room_id):
         else:
             review_form = RoomReviewForm()
 
+    # Booking logic
+    booking_form = None
+    if request.user.is_authenticated:
+        if request.method == 'POST' and 'book_room' in request.POST:
+            booking_form = RoomBookingForm(request.POST)
+            if booking_form.is_valid():
+                booking = booking_form.save(commit=False)
+                booking.user = request.user
+                booking.room = room
+                nights = (booking.check_out - booking.check_in).days
+                booking.total_price = nights * room.price_per_night
+                booking.save()
+                messages.success(request, f"Booking confirmed for {nights} night(s)!")
+                return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
+        else:
+            booking_form = RoomBookingForm()
+
     context = {
         'settings': site_settings,
         'room': room,
@@ -168,6 +187,7 @@ def roomDetails(request, hotel_id, room_id):
         'reviews': reviews,
         'average_rating': round(average_rating, 1),
         'similar_rooms': similar_rooms,
-        'review_form': review_form
+        'review_form': review_form,
+        'booking_form': booking_form,
     }
     return render(request, 'pages/hotels/rooms/show.html', context)
