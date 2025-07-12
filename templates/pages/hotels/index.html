@@ -65,7 +65,7 @@
                         <div class="inner-box">
                             <div class="image-box">
                                 <figure class="image">
-                                    <a href="{% url 'hotel:hotelRooms' %}">
+                                    <a href="{% url 'hotel:hotelRooms' hotel.instance.id %}">
                                         <img src="{{ hotel.image }}" alt="{{ hotel.instance.name }}" style="width: 329px; height: 220px;">
                                     </a>
                                 </figure>
@@ -87,7 +87,7 @@
                             </div>
                             <div class="content-box">
                                 <h6 class="title">
-                                    <a href="{% url 'hotel:hotelRooms' %}">{{ hotel.instance.name }}</a>
+                                    <a href="{% url 'hotel:hotelRooms' hotel.instance.id %}">{{ hotel.instance.name|truncatechars:23 }}</a>
                                 </h6>
                                 <ul>
                                     <li><i class="flaticon-gasoline-pump"></i>{{ hotel.instance.province }}</li>
@@ -97,7 +97,7 @@
                                 <div class="btn-box">
                                     <span>Rooms</span>
                                     <small>{{ hotel.room_count }}</small>
-                                    <a href="{% url 'hotel:hotelRooms' %}" class="details">
+                                    <a href="{% url 'hotel:hotelRooms' hotel.instance.id %}" class="details">
                                         View Details
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                                             <g clip-path="url(#clip0_601_4346)">
