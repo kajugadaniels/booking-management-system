@@ -1,8 +1,7 @@
 from random import sample
 from base.models import *
 from hotel.models import *
-from django.db.models import Q
-from django.db.models import Prefetch
+from django.db.models import Avg
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
@@ -122,6 +121,7 @@ def roomDetails(request, hotel_id, room_id):
     images = RoomImage.objects.filter(room=room)
     amenities = RoomAmenity.objects.filter(room=room).select_related('amenity')
     reviews = RoomReview.objects.filter(room=room).select_related('user')
+    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
     similar_rooms = HotelRoom.objects.filter(hotel=hotel).exclude(id=room.id)[:4]
 
     context = {
@@ -131,6 +131,7 @@ def roomDetails(request, hotel_id, room_id):
         'images': images,
         'amenities': amenities,
         'reviews': reviews,
+        'average_rating': round(average_rating, 1),
         'similar_rooms': similar_rooms,
     }
 
