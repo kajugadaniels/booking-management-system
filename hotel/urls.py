@@ -8,5 +8,5 @@ app_name = 'hotel'
 urlpatterns = [
     path('', getHotels, name="getHotels"),
     path('hotel/<int:hotel_id>/rooms/', hotelRooms, name="hotelRooms"),
-    path('hotel/1/room/1/', roomDetails, name="roomDetails"),
+    path('hotel/<int:hotel_id>/room/<int:room_id>/', roomDetails, name="roomDetails"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
