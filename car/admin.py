@@ -45,22 +45,3 @@ class CarTypeAdmin(admin.ModelAdmin):
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-
-@admin.register(CarImage)
-class CarImageAdmin(admin.ModelAdmin):
-    list_display = ('car', 'caption', 'uploaded_at')
-    readonly_fields = ('uploaded_at',)
-    search_fields = ('car__name',)
-
-@admin.register(CarReview)
-class CarReviewAdmin(admin.ModelAdmin):
-    list_display = ('car', 'user', 'rating', 'title', 'created_at')
-    search_fields = ('car__name', 'user__email', 'title')
-    readonly_fields = ('created_at',)
-
-@admin.register(CarFeature)
-class CarFeatureAdmin(admin.ModelAdmin):
-    list_display = ('car', 'feature')
-    search_fields = ('car__name', 'feature__name')
-    autocomplete_fields = ['car', 'feature']
-    list_filter = ('feature',)
