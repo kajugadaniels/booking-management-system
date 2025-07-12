@@ -20,3 +20,13 @@ class CarType(models.Model):
     class Meta:
         verbose_name = "Car Type"
         verbose_name_plural = "Car Types"
+
+class Feature(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Feature"
+        verbose_name_plural = "Features"
