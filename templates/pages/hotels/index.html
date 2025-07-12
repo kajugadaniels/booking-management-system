@@ -120,6 +120,8 @@
             <div class="pagination-sec">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
+
+                        {# Previous button — only if not on first page #}
                         {% if page_obj.has_previous %}
                             <li class="page-item">
                                 <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET %}&{{ request.GET.urlencode|safe }}{% endif %}" aria-label="Previous">
@@ -133,14 +135,9 @@
                             </li>
                         {% endif %}
 
+                        {# Previous page numbers before current (up to 3) #}
                         {% for num in page_obj.paginator.page_range %}
-                            {% if page_obj.number == num %}
-                                <li class="page-item">
-                                    <a class="page-link" href="#" style="border: 1px solid #050B20;">
-                                        {{ num }}
-                                    </a>
-                                </li>
-                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            {% if num < page_obj.number and num >= page_obj.number|add:'-3' %}
                                 <li class="page-item">
                                     <a class="page-link" href="?page={{ num }}{% if request.GET %}&{{ request.GET.urlencode|safe }}{% endif %}">
                                         {{ num }}
@@ -149,6 +146,25 @@
                             {% endif %}
                         {% endfor %}
 
+                        {# Current page — not clickable, with border #}
+                        <li class="page-item">
+                            <a class="page-link" href="#" style="border: 1px solid #050B20;">
+                                {{ page_obj.number }}
+                            </a>
+                        </li>
+
+                        {# Next page numbers after current (limit to 5) #}
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if num > page_obj.number and num <= page_obj.number|add:'5' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if request.GET %}&{{ request.GET.urlencode|safe }}{% endif %}">
+                                        {{ num }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {# Next button — only if not on last page #}
                         {% if page_obj.has_next %}
                             <li class="page-item">
                                 <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET %}&{{ request.GET.urlencode|safe }}{% endif %}" aria-label="Next">
@@ -169,6 +185,7 @@
                             </li>
                         {% endif %}
                     </ul>
+
                     <div class="text">
                         Showing results {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
                     </div>
