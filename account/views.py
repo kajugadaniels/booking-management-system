@@ -1,7 +1,10 @@
+import random
 from base.models import *
 from account.forms import *
 from account.models import *
+from datetime import timedelta
 from django.conf import settings
+from django.utils import timezone
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
@@ -74,9 +77,69 @@ def logoutUser(request):
 
 def forgetPassword(request):
     site_settings = Setting.objects.first()
-
     context = {
         'settings': site_settings
     }
 
-    return render (request, 'pages/auth/forget-password.html', context)
+    if request.method == 'POST':
+        if 'email' in request.POST:
+            email_form = PasswordResetRequestForm(request.POST)
+            otp_form = OTPVerificationForm()
+            if email_form.is_valid():
+                email = email_form.cleaned_data['email']
+                try:
+                    user = User.objects.get(email=email)
+                    otp = f"{random.randint(100000, 999999)}"
+                    user.reset_otp = otp
+                    user.otp_created_at = timezone.now()
+                    user.save()
+
+                    # Send OTP via email
+                    subject = 'Pluto Booking - Reset Your Password'
+                    message = render_to_string('emails/reset_otp.html', {
+                        'user': user,
+                        'otp': otp,
+                        'settings': site_settings
+                    })
+                    send_mail(subject, '', settings.EMAIL_HOST_USER, [user.email], html_message=message)
+
+                    messages.success(request, f"OTP sent to {user.email}. Please check your inbox.")
+                    context['step'] = 'verify'
+                    context['email'] = user.email
+                except User.DoesNotExist:
+                    messages.error(request, "No user found with this email.")
+            context['email_form'] = email_form
+            context['otp_form'] = otp_form
+
+        elif 'otp' in request.POST:
+            email_form = PasswordResetRequestForm()
+            otp_form = OTPVerificationForm(request.POST)
+            if otp_form.is_valid():
+                email = otp_form.cleaned_data['email']
+                otp = otp_form.cleaned_data['otp']
+                new_password = otp_form.cleaned_data['new_password']
+                confirm_password = otp_form.cleaned_data['confirm_password']
+
+                try:
+                    user = User.objects.get(email=email, reset_otp=otp)
+                    if timezone.now() - user.otp_created_at > timedelta(minutes=10):
+                        messages.error(request, "OTP has expired.")
+                    elif new_password != confirm_password:
+                        messages.error(request, "Passwords do not match.")
+                    else:
+                        user.set_password(new_password)
+                        user.reset_otp = None
+                        user.otp_created_at = None
+                        user.save()
+                        messages.success(request, "Password updated successfully. Please log in.")
+                        return redirect('auth:getLogin')
+                except User.DoesNotExist:
+                    messages.error(request, "Invalid OTP or email.")
+            context['step'] = 'verify'
+            context['otp_form'] = otp_form
+            context['email_form'] = email_form
+    else:
+        context['email_form'] = PasswordResetRequestForm()
+        context['otp_form'] = OTPVerificationForm()
+
+    return render(request, 'pages/auth/forget-password.html', context)
