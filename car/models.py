@@ -97,3 +97,15 @@ class CarImage(models.Model):
 
     def __str__(self):
         return f"Image of {self.car.name}"
+
+class CarFeature(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    feature = models.ForeignKey(Feature, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('car', 'feature')
+        verbose_name = "Car Feature"
+        verbose_name_plural = "Car Features"
+
+    def __str__(self):
+        return f"{self.car.name} - {self.feature.name}"
