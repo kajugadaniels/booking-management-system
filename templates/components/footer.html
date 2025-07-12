@@ -1,0 +1,164 @@
+{% load static %}
+
+<footer class="boxcar-footer footer-style-one v1 cus-st-1">
+    <div class="footer-top">
+        <div class="boxcar-container">
+            <div class="right-box">
+                <div class="top-left wow fadeInUp">
+                    <h6 class="title">
+                        Quick Booking
+                    </h6>
+                    <div class="text">
+                        Receive pricing updates, shopping tips & more!
+                    </div>
+                </div>
+                <div class="subscribe-form wow fadeInUp" data-wow-delay="100ms">
+                    <form method="post" action="#">
+                        <div class="form-group">
+                            <input type="email" name="email" class="email" value="" placeholder="Your e-mail address" required="">
+                            <button type="button" class="theme-btn btn-style-one hover-light">
+                                <span class="btn-title">Sign Up</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="widgets-section">
+        <div class="boxcar-container">
+            <div class="row">
+                <!-- Footer COlumn -->
+                <div class="footer-column-two col-lg-9 col-md-6 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="footer-widget links-widget wow fadeInUp">
+                                <h4 class="widget-title">Useful Links</h4>
+                                <div class="widget-content">
+                                    <ul class="user-links style-two">
+                                        <li>
+                                            <a href="{% url 'base:how-it-work' %}">How It Works</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'base:contact' %}">Contact Us</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="footer-widget links-widget wow fadeInUp" data-wow-delay="100ms">
+                                <h4 class="widget-title">Hotels</h4>
+                                <div class="widget-content">
+                                    <ul class="user-links style-two">
+                                        <li>
+                                            <a href="#">
+                                                5 Star
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="footer-widget links-widget wow fadeInUp" data-wow-delay="200ms">
+                                <h4 class="widget-title">Cars</h4>
+                                <div class="widget-content">
+                                    <ul class="user-links style-two">
+                                        <li>
+                                            <a href="#">Toyota</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Audi</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Kia</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">BMW</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="footer-widget links-widget wow fadeInUp" data-wow-delay="300ms">
+                                <h4 class="widget-title">Plane Booking</h4>
+                                <div class="widget-content">
+                                    <ul class="user-links style-two">
+                                        <li>
+                                            <a href="#">Book a Plane</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer column -->
+                <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-widget social-widget wow fadeInUp" data-wow-delay="400ms">
+                        <h4 class="widget-title">
+                            Download App
+                        </h4>
+                        <div class="widget-content">
+                            <a href="#" class="store">
+                                <img src="{% static 'images/icons/apple.png' %}">
+                                <span>Download on the</span>
+                                <h6 class="title">Apple Store</h6>
+                            </a>
+                            <a href="#" class="store two">
+                                <img src="{% static 'images/icons/play.png' %}">
+                                <span>Get in on</span>
+                                <h6 class="title">Google Play</h6>
+                            </a>
+                            <div class="social-icons">
+                                <h6 class="title">Connect With Us</h6>
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  Footer Bottom -->
+    <div class="footer-bottom">
+        <div class="boxcar-container">
+            <div class="inner-container">
+                <div class="copyright-text wow fadeInUp">
+                    © {% now "Y" %} Pluto Booking. All rights reserved. Developed by <a href="https://www.nexcodes.dev/" target="_blank">NE<span style="color: red;">X</span>CODE</a>
+                </div>
+                <ul class="footer-nav wow fadeInUp" data-wow-delay="100ms">
+                    <li>
+                        <a href="#">Terms & Conditions</a>
+                    </li>
+                    <li>
+                        <a href="#">Privacy Notice</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
