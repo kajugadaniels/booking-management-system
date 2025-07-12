@@ -17,8 +17,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'hotel:hotelRooms' %}">
-                            Hotel Selena
+                        <a href="{% url 'hotel:hotelRooms' hotel.id %}">
+                            {{ hotel.name }}
                         </a>
                     </li>
                     <li>
@@ -30,21 +30,18 @@
                 <h2>
                     Hotel Room Details
                 </h2>
-                <div class="text">2.0 D5 PowerPulse Momentum 5dr AWD Geartronic Estate</div>
-                <ul class="spectes-list v2">
-                    <li><span><img src="images/resource/insep1-6.svg">Schudule Test Drive</span></li>
-                    <li><span><img src="images/resource/spec1-5.svg">Car Brochure</span></li>
-                    <li><span><img src="images/resource/insep1-12.svg">View Vin Report</span></li>
-                </ul>
+
                 <div class="content-box">
                     <div class="btn-box v2">
                         <div class="share-btn">
                             <span>Share</span>
-                            <a href="#" class="share"><img src="images/resource/share.svg"></a>
+                            <a href="#" class="share">
+                                <img src="https://creativelayers.net/themes/boxcar-html/images/resource/share.svg">
+                            </a>
                         </div>
                         <div class="share-btn">
                             <span>Save</span>
-                            <a href="#" class="share"><img src="images/resource/share1-1.svg"></a>
+                            <a href="#" class="share"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/share1-1.svg"></a>
                         </div>
                     </div>
                 </div>
@@ -55,19 +52,37 @@
                         <div class="gallery-sec">
                             <div class="image-column wrap-gallery-box">
                                 <div class="inner-column inventry-slider-two">
-                                    <div class="image-box">
-                                        <figure class="image"><a href="https://image-tc.galaxy.tf/wijpeg-az58279xt5cdgk9cem6kfloma/earlymorning74-header.jpg" data-fancybox="gallery"><img src="https://image-tc.galaxy.tf/wijpeg-az58279xt5cdgk9cem6kfloma/earlymorning74-header.jpg" alt=""></a></figure>
-                                        
-                                    </div>
-                                    <div class="image-box">
-                                        <figure class="image"><a href="https://image-tc.galaxy.tf/wijpeg-dcppwsmkclr5aapwpcnd9esqy/junior-suite.jpg" data-fancybox="gallery"><img src="https://image-tc.galaxy.tf/wijpeg-az58279xt5cdgk9cem6kfloma/earlymorning74-header.jpg" alt=""></a></figure>
-                                    </div>
+
+                                    {# Display all room images as clickable Fancybox thumbnails #}
+                                    {% for image in images %}
+                                        <div class="image-box">
+                                            <figure class="image">
+                                                <a href="{{ image.image.url }}" data-fancybox="gallery">
+                                                    <img src="{{ image.image.url }}" alt="{{ room.name }} image {{ forloop.counter }}" style="object-fit: cover;">
+                                                </a>
+                                            </figure>
+                                        </div>
+                                    {% empty %}
+                                        <div class="image-box">
+                                            <figure class="image">
+                                                <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" data-fancybox="gallery">
+                                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" alt="No image available">
+                                                </a>
+                                            </figure>
+                                        </div>
+                                    {% endfor %}
                                 </div>
+
                                 <div class="content-box">
                                     <ul class="video-list">
-                                        <li><a href="https://www.youtube.com/watch?v=7e90gBu4pas" data-fancybox="gallery2"><img src="images/resource/video1-1.svg">Video</a></li>
-                                        <li><a href="#"><img src="images/resource/video1-2.svg">360 View</a></li>
-                                        <li><a href="https://image-tc.galaxy.tf/wijpeg-az58279xt5cdgk9cem6kfloma/earlymorning74-header.jpg" data-fancybox="gallery"><img src="images/resource/video1-4.svg">All Photos</a></li>
+                                        {% if images %}
+                                            <li>
+                                                <a href="{{ images.0.image.url }}" data-fancybox="gallery">
+                                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/video1-4.svg">
+                                                    All Photos
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>
@@ -75,72 +90,30 @@
                         <!-- description-sec -->
                         <div class="description-sec v2">
                             <h4 class="title">Description</h4>
-                            <div class="text two">Quisque imperdiet dignissim enim dictum finibus. 
-                                Sed consectetutr convallis enim eget laoreet. Aenean vitae nisl 
-                                mollis, porta risus vel, dapibus lectus. Etiam ac suscipit eros, 
-                                eget maximus
-                            </div>
-                            <div class="text">Etiam sit amet ex pharetra, venenatis ante vehicula, 
-                                gravida sapien. Fusce eleifend vulputate nibh, non cursus augue placerat 
-                                pellentesque. Sed venenatis risus nec felis mollis, in pharetra urna euismod. 
-                                Morbi aliquam ut turpis sit amet ultrices. Vestibulum mattis blandit nisl, 
-                                et tristique elit scelerisque nec. Fusce eleifend laoreet dui eget aliquet. 
-                                Ut rutrum risus et nunc pretium scelerisque. 
+                            <div class="text two">
+                                {{ room.description }}
                             </div>
                         </div>
                         <!-- features-sec -->
                         <div class="features-sec v2">
                             <h4 class="title">Features</h4>
                             <div class="row">
-                                <!-- list-column -->
-                                <div class="list-column col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-column">
-                                        <h6 class="title">Interior</h6>
-                                        <ul class="feature-list">
-                                            <li><i class="fa-solid fa-check"></i>Air Conditioner</li>
-                                            <li><i class="fa-solid fa-check"></i>Digital Odometer</li>
-                                            <li><i class="fa-solid fa-check"></i>Leather Seats</li>
-                                            <li><i class="fa-solid fa-check"></i>Heater</li>
-                                            <li><i class="fa-solid fa-check"></i>Tachometer</li>
-                                        </ul>
+                                {% regroup amenities by forloop.counter0|divisibleby:4 as amenity_chunks %}
+                                {% for column in amenities|slice:"0:100"|chunked:4 %}
+                                    <div class="list-column col-lg-3 col-md-6 col-sm-12">
+                                        <div class="inner-column">
+                                            <h6 class="title">Amenities</h6>
+                                            <ul class="feature-list">
+                                                {% for amenity in column %}
+                                                    <li>
+                                                        <i class="fa-solid fa-check"></i>
+                                                        {{ amenity.amenity.name }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- list-column -->
-                                <div class="list-column col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-column">
-                                        <h6 class="title">Exterior</h6>
-                                        <ul class="feature-list">
-                                            <li><i class="fa-solid fa-check"></i>Fog Lights Front</li>
-                                            <li><i class="fa-solid fa-check"></i>Rain Sensing Wipe</li>
-                                            <li><i class="fa-solid fa-check"></i>Rear Spoiler</li>
-                                            <li><i class="fa-solid fa-check"></i>Sun Roof</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- list-column -->
-                                <div class="list-column col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-column">
-                                        <h6 class="title">Safety</h6>
-                                        <ul class="feature-list">
-                                            <li><i class="fa-solid fa-check"></i>Brake Assist</li>
-                                            <li><i class="fa-solid fa-check"></i>Child Safety Locks</li>
-                                            <li><i class="fa-solid fa-check"></i>Traction Control</li>
-                                            <li><i class="fa-solid fa-check"></i>Power Door Locks</li>
-                                            <li><i class="fa-solid fa-check"></i>Driver Air Bag</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- list-column -->
-                                <div class="list-column col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-column">
-                                        <h6 class="title">Comfort & Convenience</h6>
-                                        <ul class="feature-list">
-                                            <li><i class="fa-solid fa-check"></i>Power Steering</li>
-                                            <li><i class="fa-solid fa-check"></i>Vanity Mirror</li>
-                                            <li><i class="fa-solid fa-check"></i>Trunk Light</li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="location-box v2">
