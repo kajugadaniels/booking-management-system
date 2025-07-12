@@ -165,3 +165,19 @@ class RoomAmenity(models.Model):
 
     def __str__(self):
         return f"{self.room.name} - {self.amenity.name}"
+
+class RoomReview(models.Model):
+    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    rating = models.PositiveSmallIntegerField(choices=[(i, f'{i} Star') for i in range(1, 6)])
+    title = models.CharField(max_length=255)
+    review = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.name} - {self.room.name} ({self.rating}★)"
+
+    class Meta:
+        unique_together = ('room', 'user')
+        ordering = ['-created_at']
