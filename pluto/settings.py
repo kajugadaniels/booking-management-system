@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     # Custom apps
     'car',
     'base',
+    'user',
     'hotel',
     'plane',
     'account',
