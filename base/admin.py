@@ -32,8 +32,11 @@ class HotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'stars', 'country', 'province', 'district', 'is_active', 'created_at')
     list_filter = ('stars', 'country', 'province', 'is_active')
     search_fields = ('name', 'address', 'district', 'village')
+    list_per_page = 10
+
     inlines = [HotelImageInline, HotelReviewInline]
     readonly_fields = ('created_at',)
+
     fieldsets = (
         ('Basic Info', {
             'fields': ('name', 'description', 'stars', 'address', 'map_url', 'is_active')
