@@ -4,6 +4,7 @@ from hotel.forms import *
 from hotel.models import *
 from django.db.models import Avg
 from django.contrib import messages
+from django.db import IntegrityError
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
@@ -133,22 +134,28 @@ def roomDetails(request, hotel_id, room_id):
         if request.method == 'POST':
             review_form = RoomReviewForm(request.POST)
             if review_form.is_valid():
-                review = review_form.save(commit=False)
-                review.user = request.user
-                review.room = room
-                review.save()
+                # Check if user has already submitted a review for this room
+                if RoomReview.objects.filter(user=request.user, room=room).exists():
+                    messages.warning(request, "You have already submitted a review for this room.")
+                else:
+                    review = review_form.save(commit=False)
+                    review.user = request.user
+                    review.room = room
+                    try:
+                        review.save()
+                        # Send thank-you email
+                        subject = 'Thank You for Your Review!'
+                        message = render_to_string('emails/review_thanks.html', {
+                            'user': request.user,
+                            'room': room,
+                            'settings': site_settings
+                        })
+                        send_mail(subject, '', settings.EMAIL_HOST_USER, [request.user.email], html_message=message)
 
-                # Send thank-you email
-                subject = 'Thank You for Your Review!'
-                message = render_to_string('emails/review_thanks.html', {
-                    'user': request.user,
-                    'room': room,
-                    'settings': site_settings
-                })
-                send_mail(subject, '', settings.EMAIL_HOST_USER, [request.user.email], html_message=message)
-
-                messages.success(request, 'Your review has been submitted. Thank you!')
-                return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
+                        messages.success(request, 'Your review has been submitted. Thank you!')
+                        return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
+                    except IntegrityError:
+                        messages.error(request, "You have already submitted a review for this room.")
         else:
             review_form = RoomReviewForm()
 
