@@ -60,6 +60,8 @@ class UserLoginForm(forms.Form):
             cleaned_data['user'] = user
         return cleaned_data
 
+from django import forms
+
 class PasswordResetRequestForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Enter your registered email'}))
 
