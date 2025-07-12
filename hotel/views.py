@@ -32,7 +32,7 @@ def getHotels(request):
     for hotel in page_obj:
         image = HotelImage.objects.filter(hotel=hotel).first()
         image_url = image.image.url if image else DEFAULT_IMAGE
-        all_rooms = Room.objects.filter(hotel=hotel)
+        all_rooms = HotelRoom.objects.filter(hotel=hotel)
         available_rooms = all_rooms.filter(is_available=True)
         hotel_data.append({
             'instance': hotel,

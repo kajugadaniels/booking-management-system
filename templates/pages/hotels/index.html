@@ -70,7 +70,7 @@
                                     </a>
                                 </figure>
                                 <span>
-                                    Latest
+                                    {{ hotel.available_rooms }} Available
                                 </span>
                                 <a class="icon-box">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -89,15 +89,14 @@
                                 <h6 class="title">
                                     <a href="{% url 'hotel:hotelRooms' %}">{{ hotel.instance.name }}</a>
                                 </h6>
-                                <div class="text">{{ hotel.instance.description|truncatechars:50 }}</div>
                                 <ul>
                                     <li><i class="flaticon-gasoline-pump"></i>{{ hotel.instance.province }}</li>
                                     <li><i class="flaticon-speedometer"></i>{{ hotel.instance.stars }} Stars</li>
                                     <li><i class="flaticon-gearbox"></i>{{ hotel.instance.created_at|date:"Y" }}</li>
                                 </ul>
                                 <div class="btn-box">
-                                    <span>${{ hotel.instance.price }}</span>
-                                    <small>${{ hotel.instance.discount_price }}</small>
+                                    <span>Rooms</span>
+                                    <small>{{ hotel.room_count }}</small>
                                     <a href="{% url 'hotel:hotelRooms' %}" class="details">
                                         View Details
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -123,7 +122,7 @@
                     <ul class="pagination">
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&province={{ current_province }}&stars={{ current_stars }}" aria-label="Previous">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET %}&{{ request.GET.urlencode|safe }}{% endif %}" aria-label="Previous">
                                     <span aria-hidden="true">
                                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z" fill="#050B20"/>
@@ -137,13 +136,13 @@
                         {% for num in page_obj.paginator.page_range %}
                             {% if page_obj.number == num %}
                                 <li class="page-item">
-                                    <a class="page-link" href="#">
+                                    <a class="page-link" href="#" style="border: 1px solid #050B20;">
                                         {{ num }}
                                     </a>
                                 </li>
                             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ num }}&province={{ current_province }}&stars={{ current_stars }}">
+                                    <a class="page-link" href="?page={{ num }}{% if request.GET %}&{{ request.GET.urlencode|safe }}{% endif %}">
                                         {{ num }}
                                     </a>
                                 </li>
@@ -152,7 +151,7 @@
 
                         {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}&province={{ current_province }}&stars={{ current_stars }}" aria-label="Next">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET %}&{{ request.GET.urlencode|safe }}{% endif %}" aria-label="Next">
                                     <span aria-hidden="true">
                                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_2880_6407)">
