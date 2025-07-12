@@ -59,3 +59,12 @@ class UserLoginForm(forms.Form):
                 raise forms.ValidationError("This account is inactive.")
             cleaned_data['user'] = user
         return cleaned_data
+
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Enter your registered email'}))
+
+class OTPVerificationForm(forms.Form):
+    email = forms.CharField(widget=forms.HiddenInput())
+    otp = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'placeholder': 'Enter OTP'}))
+    new_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'New Password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}))
