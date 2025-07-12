@@ -81,10 +81,14 @@ def forgetPassword(request):
         'settings': site_settings
     }
 
+    email_form = PasswordResetRequestForm()
+    otp_form = OTPVerificationForm()
+
     if request.method == 'POST':
-        if 'email' in request.POST:
+        action = request.POST.get('action')
+
+        if action == 'send_otp':
             email_form = PasswordResetRequestForm(request.POST)
-            otp_form = OTPVerificationForm()
             if email_form.is_valid():
                 email = email_form.cleaned_data['email']
                 try:
@@ -94,7 +98,6 @@ def forgetPassword(request):
                     user.otp_created_at = timezone.now()
                     user.save()
 
-                    # Send OTP via email
                     subject = 'Pluto Booking - Reset Your Password'
                     message = render_to_string('emails/reset_otp.html', {
                         'user': user,
@@ -108,11 +111,8 @@ def forgetPassword(request):
                     context['email'] = user.email
                 except User.DoesNotExist:
                     messages.error(request, "No user found with this email.")
-            context['email_form'] = email_form
-            context['otp_form'] = otp_form
 
-        elif 'otp' in request.POST:
-            email_form = PasswordResetRequestForm()
+        elif action == 'verify_otp':
             otp_form = OTPVerificationForm(request.POST)
             if otp_form.is_valid():
                 email = otp_form.cleaned_data['email']
@@ -135,11 +135,11 @@ def forgetPassword(request):
                         return redirect('auth:getLogin')
                 except User.DoesNotExist:
                     messages.error(request, "Invalid OTP or email.")
+
             context['step'] = 'verify'
-            context['otp_form'] = otp_form
-            context['email_form'] = email_form
-    else:
-        context['email_form'] = PasswordResetRequestForm()
-        context['otp_form'] = OTPVerificationForm()
+            context['email'] = request.POST.get('email')
+
+    context['email_form'] = email_form
+    context['otp_form'] = otp_form
 
     return render(request, 'pages/auth/forget-password.html', context)
