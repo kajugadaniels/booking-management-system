@@ -51,7 +51,7 @@
                                 <div class="inner-box">
                                     <div class="image-box">
                                         <figure class="image" style="height: 300px; width: 320px; overflow: hidden;">
-                                            <a href="{% url 'hotel:roomDetails' %}">
+                                            <a href="{% url 'hotel:roomDetails' room.hotel.id room.id %}">
                                                 {% with room.images.all|first as img %}
                                                     {% if img and img.image %}
                                                         <img src="{{ img.image.url }}" alt="{{ room.name }}"
@@ -68,7 +68,7 @@
                                     <div class="right-box">
                                         <div class="content-box">
                                             <h4 class="title">
-                                                <a href="{% url 'hotel:roomDetails' %}">
+                                                <a href="{% url 'hotel:roomDetails' room.hotel.id room.id %}">
                                                     {{ room.name }}
                                                 </a>
                                             </h4>
@@ -163,7 +163,7 @@
                                             <h4 class="title">
                                                 ${{ room.price_per_night }}
                                             </h4>
-                                            <a href="{% url 'hotel:roomDetails' %}" class="button" style="display: flex;">
+                                            <a href="{% url 'hotel:roomDetails' room.hotel.id room.id %}" class="button" style="display: flex;">
                                                 View Details
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-top: 8px;">
                                                     <g clip-path="url(#clip0_989_6940)">
