@@ -1,0 +1,2 @@
+Internal Server Error: /test-500/
+"GET /test-500/ HTTP/1.1" 500 214
