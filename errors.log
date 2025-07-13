@@ -3170,3 +3170,123 @@ Traceback (most recent call last):
     raise NoReverseMatch(msg)
 django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' not found. 'carDetails' is not a valid view function or pattern name.
 "POST /cars/car/98/ HTTP/1.1" 500 99916
+Internal Server Error: /cars/car/98/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 181, in carDetails
+    return redirect('hotel:carDetails', car_id=car.id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' not found. 'carDetails' is not a valid view function or pattern name.
+"POST /cars/car/98/ HTTP/1.1" 500 102752
+Internal Server Error: /cars/car/98/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 181, in carDetails
+    return redirect('hotel:carDetails', car=car.id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' not found. 'carDetails' is not a valid view function or pattern name.
+"POST /cars/car/98/ HTTP/1.1" 500 102993
+Internal Server Error: /cars/car/98/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 181, in carDetails
+    return redirect('hotel:carDetails', car=car.id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' not found. 'carDetails' is not a valid view function or pattern name.
+"POST /cars/car/98/ HTTP/1.1" 500 103008
+Internal Server Error: /cars/car/98/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 181, in carDetails
+    return redirect('car:carDetails', car=car.id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' not found. 'carDetails' is not a valid view function or pattern name.
+"POST /cars/car/98/ HTTP/1.1" 500 103004
+Internal Server Error: /cars/car/98/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 181, in carDetails
+    return redirect('car:carDetails', car=car.id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' not found. 'carDetails' is not a valid view function or pattern name.
+"POST /cars/car/98/ HTTP/1.1" 500 103004

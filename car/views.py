@@ -178,7 +178,7 @@ def carDetails(request, id):
                 )
 
                 messages.success(request, f"Booking confirmed for {nights} night(s)!")
-                return redirect('hotel:carDetails', car_id=car.id)
+                return redirect('car:carDetails', car=car.id)
         else:
             booking_form = CarBookingForm()
 
