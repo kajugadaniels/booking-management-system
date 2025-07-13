@@ -78,12 +78,42 @@ def room_image_upload_path(instance, filename):
     return f'hotel-rooms/room_{slugify(instance.room.hotel.name)}_{slugify(instance.room.name)}_{timezone.now().strftime("%Y%m%d%H%M%S")}{file_extension}'
 
 class HotelRoom(models.Model):
+    ROOM_TYPE_CHOICES = [
+        ("single", "Single Room"),
+        ("double", "Double Room"),
+        ("twin", "Twin Room"),
+        ("triple", "Triple Room"),
+        ("quad", "Quad Room"),
+        ("queen", "Queen Room"),
+        ("king", "King Room"),
+        ("standard", "Standard Room"),
+        ("deluxe", "Deluxe Room"),
+        ("superior", "Superior Room"),
+        ("executive", "Executive Room"),
+        ("junior_suite", "Junior Suite"),
+        ("suite", "Suite"),
+        ("penthouse", "Penthouse Suite"),
+        ("family", "Family Room"),
+        ("accessible", "Accessible Room"),
+        ("studio", "Studio"),
+        ("connecting", "Connecting Rooms"),
+        ("presidential", "Presidential Suite"),
+        ("executive_suite", "Executive Suite"),
+    ]
+
+    BED_TYPE_CHOICES = [
+        ("king", "King Bed"),
+        ("queen", "Queen Bed"),
+        ("twin", "Twin Beds"),
+        ("double", "Double Bed"),
+    ]
+
     hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, related_name='rooms')
 
     name = models.CharField(max_length=255)
-    room_type = models.CharField(max_length=100)  # e.g. Deluxe King, Suite
+    room_type = models.CharField(max_length=50, choices=ROOM_TYPE_CHOICES)
     description = models.TextField()
-    bed_type = models.CharField(max_length=100, help_text="e.g. 1 King Bed or 2 Twin Beds")
+    bed_type = models.CharField(max_length=50, choices=BED_TYPE_CHOICES)
     occupancy = models.PositiveIntegerField(help_text="Maximum number of guests")
     size = models.CharField(max_length=50, help_text="e.g. 30 sqm")
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
