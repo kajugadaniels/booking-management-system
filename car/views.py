@@ -88,7 +88,7 @@ def carDetails(request, id):
     car = get_object_or_404(Car, id=id)
 
     images = car.images.all()
-    features = CarFeature.objects.filter(car=car).select_related('feature')
+    features = Feature.objects.filter(carfeature__car=car)
     reviews = car.reviews.select_related('user').all()
 
     context = {
