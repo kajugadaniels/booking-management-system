@@ -88,3 +88,43 @@
         </div>
     </div>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Handle all dropdown filter menus
+        document.querySelectorAll('.drop-menu').forEach(dropdown => {
+            const select = dropdown.querySelector('.select');
+            const options = dropdown.querySelector('.dropdown');
+            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+            const labelSpan = select.querySelector('span');
+
+            // Toggle dropdown visibility
+            select.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent closing immediately
+                closeAllDropdowns(); // Close others
+                options.style.display = options.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Handle option selection
+            options.querySelectorAll('li').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    const value = option.getAttribute('data-value');
+                    const label = option.textContent.trim();
+
+                    hiddenInput.value = value;
+                    labelSpan.textContent = label;
+                    options.style.display = 'none';
+                });
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            closeAllDropdowns();
+        });
+
+        function closeAllDropdowns() {
+            document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
+        }
+    });
+</script>
