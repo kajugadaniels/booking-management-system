@@ -2,10 +2,12 @@ import os
 from django.db import models
 from account.managers import *
 from django.utils import timezone
+from django.dispatch import receiver
 from django.utils.text import slugify
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_delete, pre_save
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 def user_image_path(instance, filename):
@@ -61,3 +63,27 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.slug:
             self.slug = slugify(self.name)
         super(User, self).save(*args, **kwargs)
+
+# ✅ Delete profile image file when user is deleted
+@receiver(post_delete, sender=User)
+def delete_user_image_file(sender, instance, **kwargs):
+    if instance.image and instance.image.storage.exists(instance.image.name):
+        instance.image.delete(save=False)
+
+# ✅ Delete old image file when user updates their profile picture
+@receiver(pre_save, sender=User)
+def auto_delete_old_user_image_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return  # New user, no existing image to replace
+
+    try:
+        old_instance = User.objects.get(pk=instance.pk)
+    except User.DoesNotExist:
+        return
+
+    old_image = old_instance.image
+    new_image = instance.image
+
+    if old_image and old_image != new_image:
+        if old_image.storage.exists(old_image.name):
+            old_image.delete(save=False)
