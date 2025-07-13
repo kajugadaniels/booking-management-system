@@ -6,7 +6,6 @@ from random import sample
 from hotel.models import *
 from django.conf import settings
 from django.contrib import messages
-from collections import OrderedDict
 from django.db.models import Avg, Q
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
@@ -20,19 +19,14 @@ def home(request):
     car_brands = list(CarBrand.objects.all())
     car_brands = random.sample(car_brands, min(6, len(car_brands)))
 
-    # 2. Hotels by province
-    provinces = ['Kigali', 'North', 'South', 'East', 'West']
-    hotels_by_province = OrderedDict()
+    # 2. Hotels: based on rating or fallback to stars
+    rated_hotels = Hotel.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
+    if rated_hotels.exists():
+        hotels = rated_hotels.order_by('-avg_rating')[:12]
+    else:
+        hotels = Hotel.objects.order_by('-stars')[:12]
 
-    for province in provinces:
-        hotels_qs = Hotel.objects.filter(province__iexact=province).annotate(avg_rating=Avg('reviews__rating'))
-
-        if hotels_qs.filter(avg_rating__isnull=False).exists():
-            hotels = hotels_qs.order_by('-avg_rating')[:12]
-        else:
-            hotels = hotels_qs.order_by('-stars')[:12]
-
-        hotels_by_province[province] = sample(list(hotels), min(6, len(hotels)))
+    hotels = sample(list(hotels), min(6, len(hotels)))  # Random 6 from selected
 
     # 3. Hotel Rooms: high-rated or fallback to price
     rated_rooms = HotelRoom.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
