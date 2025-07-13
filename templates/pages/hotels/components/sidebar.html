@@ -228,7 +228,7 @@
             const options = dropdown.querySelector('.dropdown');
             const labelSpan = select.querySelector('span');
             const isMulti = dropdown.classList.contains('multi-select');
-            const hiddenName = dropdown.dataset.name || 'value';
+            const dropdownName = dropdown.getAttribute('data-name') || dropdown.querySelector('input[type="hidden"]')?.name;
 
             // Toggle dropdown
             select.addEventListener('click', e => {
@@ -241,88 +241,106 @@
                 option.addEventListener('click', () => {
                     const value = option.getAttribute('data-value');
                     const label = option.textContent.trim();
+                    const dataLabel = option.getAttribute('data-label') || label;
 
                     if (isMulti) {
                         option.classList.toggle('selected');
-
                         const exists = dropdown.querySelector(`input[name="amenities"][value="${value}"]`);
 
                         if (exists) {
                             exists.remove();
-                            removeAmenityTag(dropdown, value);
+                            removeAmenityBox(value);
                         } else {
                             const input = document.createElement('input');
                             input.type = 'hidden';
                             input.name = 'amenities';
                             input.value = value;
                             dropdown.appendChild(input);
-
-                            renderAmenityTag(dropdown, value, label);
+                            addAmenityBox(value, dataLabel);
                         }
 
                         const count = dropdown.querySelectorAll('input[name="amenities"]').length;
                         labelSpan.textContent = count ? `${count} selected` : 'Any';
                     } else {
+                        // Handle single-select dropdowns (room_type, bed_type, refundable)
                         dropdown.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
                         option.classList.add('selected');
+                        labelSpan.textContent = dataLabel;
 
-                        const input = dropdown.querySelector('input[type="hidden"]');
-                        if (input) input.value = value;
-                        labelSpan.textContent = label;
+                        const hiddenInput = dropdown.querySelector(`input[name="${dropdownName}"]`);
+                        if (hiddenInput) hiddenInput.value = value;
+
                         options.style.display = 'none';
                     }
                 });
             });
+
+            // Pre-attached amenities checkboxes
+            if (isMulti && dropdownName === 'amenities') {
+                const selectedBox = document.querySelector('.selected-amenities');
+                if (selectedBox) {
+                    selectedBox.querySelectorAll('label input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.addEventListener('change', function () {
+                            const label = this.closest('label');
+                            const value = label.getAttribute('data-id');
+                            if (!this.checked) {
+                                removeAmenity(value);
+                            }
+                        });
+                    });
+                }
+            }
         });
 
-        // Remove amenity tag and its hidden input
-        function removeAmenityTag(dropdown, value) {
-            const tag = dropdown.querySelector(`.amenity-tag[data-value="${value}"]`);
-            if (tag) tag.remove();
+        function removeAmenity(value) {
+            removeAmenityBox(value);
+            const hiddenInput = document.querySelector(`input[name="amenities"][value="${value}"]`);
+            if (hiddenInput) hiddenInput.remove();
 
-            const input = dropdown.querySelector(`input[name="amenities"][value="${value}"]`);
-            if (input) input.remove();
+            const listItem = document.querySelector(`.drop-menu.multi-select li[data-value="${value}"]`);
+            if (listItem) listItem.classList.remove('selected');
 
-            const labelSpan = dropdown.querySelector('.select span');
-            const count = dropdown.querySelectorAll('input[name="amenities"]').length;
-            labelSpan.textContent = count ? `${count} selected` : 'Any';
-
-            // Unselect the option in dropdown list
-            const option = dropdown.querySelector(`li[data-value="${value}"]`);
-            if (option) option.classList.remove('selected');
+            const labelSpan = document.querySelector('.drop-menu.multi-select .select span');
+            const remaining = document.querySelectorAll('input[name="amenities"]').length;
+            labelSpan.textContent = remaining ? `${remaining} selected` : 'Any';
         }
 
-        // Render selected amenity tag above dropdown
-        function renderAmenityTag(dropdown, value, label) {
-            let container = dropdown.querySelector('.selected-amenities');
-            if (!container) {
-                container = document.createElement('div');
-                container.className = 'selected-amenities';
-                dropdown.insertBefore(container, dropdown.firstChild);
-            }
+        function removeAmenityBox(value) {
+            const tag = document.querySelector(`.selected-amenities label[data-id="${value}"]`);
+            if (tag) tag.remove();
+        }
 
-            const tag = document.createElement('span');
-            tag.className = 'amenity-tag';
-            tag.setAttribute('data-value', value);
-            tag.innerHTML = `${label} <span class="remove-tag" title="Remove">&times;</span>`;
-            container.appendChild(tag);
+        function addAmenityBox(value, labelText) {
+            const container = document.querySelector('.selected-amenities');
+            if (!container) return;
 
-            tag.querySelector('.remove-tag').addEventListener('click', (e) => {
-                e.stopPropagation();
-                removeAmenityTag(dropdown, value);
+            const label = document.createElement('label');
+            label.className = 'contain';
+            label.setAttribute('data-id', value);
+            label.style.marginLeft = '10px';
+            label.innerHTML = `
+                ${labelText}
+                <input type="checkbox" checked>
+                <span class="checkmark"></span>
+            `;
+            container.appendChild(label);
+
+            const checkbox = label.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', function () {
+                if (!this.checked) {
+                    removeAmenity(value);
+                }
             });
         }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', () => {
-            closeAllDropdowns();
-        });
 
         function closeAllDropdowns() {
             document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
         }
 
-        // Disable submit buttons on filter submit
+        // Close dropdowns on outside click
+        document.addEventListener('click', () => closeAllDropdowns());
+
+        // Prevent double submit
         const filterForm = document.querySelector('form.filter-form, form');
         if (filterForm) {
             filterForm.addEventListener('submit', () => {
