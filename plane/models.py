@@ -15,6 +15,14 @@ class PlaneBooking(models.Model):
         ('round_trip', 'Round Trip'),
     ]
 
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('cancelled', 'Cancelled'),
+        ('checked_in', 'Checked In'),
+        ('checked_out', 'Checked Out'),
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='plane_bookings')
 
     full_name = models.CharField(max_length=255)
@@ -35,6 +43,7 @@ class PlaneBooking(models.Model):
     num_infants = models.PositiveIntegerField(default=0)
 
     notes = models.TextField(blank=True, help_text="Any special requests or additional info")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
