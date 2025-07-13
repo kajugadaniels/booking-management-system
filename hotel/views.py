@@ -75,16 +75,37 @@ def getHotels(request):
 def hotelRooms(request, hotel_id):
     site_settings = Setting.objects.first()
     hotel = get_object_or_404(Hotel, id=hotel_id)
-
     rooms = HotelRoom.objects.filter(hotel=hotel).order_by('-created_at')
+
+    # Apply filters
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    occupancy = request.GET.get('occupancy')
+    bed_type = request.GET.get('bed_type')
+    refundable = request.GET.get('refundable')
+    selected_amenities = request.GET.getlist('amenities')
+
+    if min_price:
+        rooms = rooms.filter(price_per_night__gte=min_price)
+    if max_price:
+        rooms = rooms.filter(price_per_night__lte=max_price)
+    if occupancy:
+        rooms = rooms.filter(occupancy=occupancy)
+    if bed_type:
+        rooms = rooms.filter(bed_type__iexact=bed_type)
+    if refundable in ['true', 'false']:
+        rooms = rooms.filter(refundable=(refundable == 'true'))
+    if selected_amenities:
+        for amenity_id in selected_amenities:
+            rooms = rooms.filter(room_amenities__amenity_id=amenity_id)
+
+    rooms = rooms.distinct()
     paginator = Paginator(rooms, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Build enhanced room data list
     room_data = []
     for room in page_obj:
-        # Try getting a valid image
         room_images = RoomImage.objects.filter(room=room)
         image_url = DEFAULT_IMAGE
         for img in room_images:
@@ -95,7 +116,6 @@ def hotelRooms(request, hotel_id):
             except:
                 continue
 
-        # Get 3 random amenities
         amenities = list(RoomAmenity.objects.filter(room=room).select_related('amenity'))
         random_amenities = sample(amenities, min(3, len(amenities)))
 
@@ -105,18 +125,22 @@ def hotelRooms(request, hotel_id):
             'amenities': [ra.amenity.name for ra in random_amenities]
         })
 
-    # Clean querystring for pagination
     get_params = request.GET.copy()
     if 'page' in get_params:
         del get_params['page']
     cleaned_querystring = get_params.urlencode()
+
+    all_bed_types = HotelRoom.objects.values_list('bed_type', flat=True).distinct()
+    all_amenities = Amenity.objects.all()
 
     context = {
         'settings': site_settings,
         'hotel': hotel,
         'page_obj': page_obj,
         'room_data': room_data,
-        'cleaned_querystring': cleaned_querystring
+        'cleaned_querystring': cleaned_querystring,
+        'bed_types': all_bed_types,
+        'amenities': all_amenities,
     }
 
     return render(request, 'pages/hotels/rooms/index.html', context)
