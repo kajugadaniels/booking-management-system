@@ -6,12 +6,14 @@ from django.core.management.base import BaseCommand
 fake = Faker()
 
 # Realistic room types from industry sources
-ROOM_TYPES = [
-    "Single Room", "Double Room", "Twin Room", "Triple Room", "Quad Room",
-    "Queen Room", "King Room", "Standard Room", "Deluxe Room", "Superior Room",
-    "Executive Room", "Junior Suite", "Suite", "Penthouse Suite", "Family Room",
-    "Accessible Room", "Studio", "Connecting Rooms", "Presidential Suite", "Executive Suite"
+ROOM_TYPE_CHOICES = [
+    "single", "double", "twin", "triple", "quad",
+    "queen", "king", "standard", "deluxe", "superior",
+    "executive", "junior_suite", "suite", "penthouse", "family",
+    "accessible", "studio", "connecting", "presidential", "executive_suite"
 ]
+
+BED_TYPE_CHOICES = ["king", "queen", "twin", "double"]
 
 class Command(BaseCommand):
     help = 'Seed HotelRoom records with realistic details per hotel, including amenities'
@@ -30,7 +32,7 @@ class Command(BaseCommand):
             max_price = 80 + (hotel.stars - 3) * 40
 
             for _ in range(num_rooms):
-                room_type = random.choice(ROOM_TYPES)
+                room_type = random.choice(ROOM_TYPE_CHOICES)
                 room_name = f"{room_type} {fake.word().capitalize()}"
                 occupancy = \
                     1 if "Single" in room_type else \
@@ -41,9 +43,9 @@ class Command(BaseCommand):
                 room = HotelRoom.objects.create(
                     hotel_id=hotel_id,
                     name=room_name,
-                    room_type=room_type,
+                    room_type=random.choice(ROOM_TYPE_CHOICES),
                     description=fake.paragraph(nb_sentences=4),
-                    bed_type=random.choice(["King Bed", "Queen Bed", "Twin Beds", "Double Bed"]),
+                    bed_type=random.choice(BED_TYPE_CHOICES),
                     occupancy=occupancy,
                     size=f"{random.randint(20, 60)} sqm",
                     price_per_night=round(random.uniform(min_price, max_price), 2),
