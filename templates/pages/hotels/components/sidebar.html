@@ -4,6 +4,26 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form_boxes">
+                        <label>Room Type</label>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>{{ request.GET.room_type|default:"Any" }}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <input type="hidden" name="room_type" value="{{ request.GET.room_type }}">
+                            <ul class="dropdown" style="display: none;">
+                                <li data-value="">Any</li>
+                                {% for key, label in room_types %}
+                                    <li data-value="{{ key }}" {% if request.GET.room_type == key %}class="selected"{% endif %}>
+                                        {{ label }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form_boxes">
                         <label>Bed Type</label>
                         <div class="drop-menu">
                             <div class="select">
