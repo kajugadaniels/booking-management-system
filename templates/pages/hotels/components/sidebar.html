@@ -1,23 +1,24 @@
 <style>
-    .scrollable-dropdown {
-        max-height: 200px;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: #ccc transparent;
-    }
+/* Ensure dropdown is scrollable with max height */
+.drop-menu .dropdown {
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: #ccc transparent !important;
+}
 
-    .scrollable-dropdown::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .scrollable-dropdown::-webkit-scrollbar-thumb {
-        background-color: #ccc;
-        border-radius: 4px;
-    }
-
-    .scrollable-dropdown::-webkit-scrollbar-track {
-        background: transparent;
-    }
+/* Webkit scroll (Chrome, Edge, Safari) */
+.drop-menu .dropdown::-webkit-scrollbar {
+    width: 6px !important;
+}
+.drop-menu .dropdown::-webkit-scrollbar-thumb {
+    background-color: #ccc !important;
+    border-radius: 4px !important;
+}
+.drop-menu .dropdown::-webkit-scrollbar-track {
+    background: transparent !important;
+}
 </style>
 
 <form method="get">
@@ -33,7 +34,7 @@
                                 <i class="fa fa-angle-down"></i>
                             </div>
                             <input type="hidden" name="room_type" value="{{ request.GET.room_type }}">
-                            <ul class="dropdown scrollable-dropdown" style="display: none;">
+                            <ul class="dropdown scrollable-dropdown">
                                 <li data-value="">Any</li>
                                 {% for key, label in room_types %}
                                     <li data-value="{{ key }}" {% if request.GET.room_type == key %}class="selected"{% endif %}>
