@@ -68,9 +68,9 @@ def brands(request):
 
     # Sorting
     if sort_by == 'oldest':
-        brands = brands.order_by('created_at')
+        brands = brands.order_by('id')
     else:
-        brands = brands.order_by('-created_at')
+        brands = brands.order_by('-id')
 
     # Pagination
     paginator = Paginator(brands, 12)  # 12 per page
