@@ -141,8 +141,8 @@ def carDetails(request, id):
                 booking.car = car
                 booking.status = 'pending'
 
-                nights = (booking.dropoff_date - booking.pickup_date).days
-                booking.total_price = nights * car.price_per_day
+                days = (booking.dropoff_date - booking.pickup_date).days
+                booking.total_price = days * car.price_per_day
                 booking.save()
 
                 # Send confirmation email to user
@@ -177,8 +177,8 @@ def carDetails(request, id):
                     html_message=admin_message
                 )
 
-                messages.success(request, f"Booking confirmed for {nights} night(s)!")
-                return redirect('car:carDetails', car=car.id)
+                messages.success(request, f"Booking confirmed for {days} day(s)!")
+                return redirect('car:carDetails', id=car.id)
         else:
             booking_form = CarBookingForm()
 
