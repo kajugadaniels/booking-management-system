@@ -1194,3 +1194,91 @@ log
 static
 tz
 "GET / HTTP/1.1" 500 145
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\base\views.py", line 44, in home
+    cars = Car.objects.all('-price_per_day')[:6]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: BaseManager.all() takes 1 positional argument but 2 were given
+"GET / HTTP/1.1" 500 145
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\base\views.py", line 44, in home
+    cars = Car.objects.all('-price_per_day')[:6]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: BaseManager.all() takes 1 positional argument but 2 were given
+"GET / HTTP/1.1" 500 145
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\base\views.py", line 44, in home
+    cars = Car.objects.all().order_by('-avg_rating')[:6]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\db\models\sql\query.py", line 2174, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'avg_rating' into field. Choices are: body, bookings, car_brand, car_brand_id, car_type, car_type_id, carfeature, color, condition, created_at, description, doors, engine_capacity, fuel_type, id, images, is_available, mileage, name, price_per_day, reviews, transmission, year
+"GET / HTTP/1.1" 500 145
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\base\views.py", line 44, in home
+    cars = Car.objects.all().order_by('-avg_rating')[:6]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\db\models\sql\query.py", line 2174, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'avg_rating' into field. Choices are: body, bookings, car_brand, car_brand_id, car_type, car_type_id, carfeature, color, condition, created_at, description, doors, engine_capacity, fuel_type, id, images, is_available, mileage, name, price_per_day, reviews, transmission, year
+"GET / HTTP/1.1" 500 145
+Internal Server Error: /cars/car/22/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 127, in carDetails
+    return redirect('car:carDetails', car_id=car.id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' with keyword arguments '{'car_id': 22}' not found. 1 pattern(s) tried: ['cars/car/(?P<id>[0-9]+)/\\Z']
+"POST /cars/car/22/ HTTP/1.1" 500 145

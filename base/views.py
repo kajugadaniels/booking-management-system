@@ -10,7 +10,6 @@ from django.db.models import Avg, Q
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
-from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
 
 def home(request):
@@ -41,9 +40,7 @@ def home(request):
     if rated_cars.exists():
         cars = rated_cars.order_by('-avg_rating')[:6]
     else:
-        cars = Car.objects.annotate(
-            avg_rating=Coalesce(Avg('reviews__rating'), 0)
-        ).order_by('-avg_rating', '-price_per_day')[:6]
+        cars = Car.objects.order_by('-price_per_day')[:6]
 
     context = {
         'settings': site_settings,
