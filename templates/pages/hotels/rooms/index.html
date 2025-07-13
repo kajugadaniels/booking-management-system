@@ -28,7 +28,9 @@
                 <div class="col-xl-9 col-md-12 col-sm-12">
                     <div class="right-box">
                         <div class="text-box">
-                            <div class="text">Showing 1 to 16 of 1559 vehicles</div>
+                            <div class="text">
+                                Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} rooms
+                            </div>
                             <form>
                                 <div class="form_boxes v3">
                                     <small>Sort by</small>
