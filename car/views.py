@@ -1,7 +1,7 @@
 from car.models import *
 from base.models import *
-from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404
 
 def getCars(request):
     site_settings = Setting.objects.first()
@@ -83,11 +83,20 @@ def getCars(request):
 
     return render(request, 'pages/cars/index.html', context)
 
-def carDetails(request):
+def carDetails(request, id):
     site_settings = Setting.objects.first()
+    car = get_object_or_404(Car, id=id)
+
+    images = car.images.all()
+    features = CarFeature.objects.filter(car=car).select_related('feature')
+    reviews = car.reviews.select_related('user').all()
 
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'car': car,
+        'images': images,
+        'features': features,
+        'reviews': reviews,
     }
 
-    return render (request, 'pages/cars/show.html', context)
+    return render(request, 'pages/cars/show.html', context)
