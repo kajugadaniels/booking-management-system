@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Contact Submission</title>
+</head>
+<body>
+    <h2>Hello {{ user.name }},</h2>
+    <p>We’ve received your booking for <strong>{{ car.name }}</strong>.</p>
+    <p>Pick Up Date: <strong>{{ booking.pickup_date }}</strong><br>
+    Drop Off Date: <strong>{{ booking.dropoff_date }}</strong><br>
+    <p>Total Price: <strong>${{ booking.total_price }}</strong></p>
+
+    <p>We’ll keep you updated as we confirm your reservation.</p>
+    <p>Thank you for choosing Pluto Booking!</p>
+</body>
+</html>
