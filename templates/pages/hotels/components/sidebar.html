@@ -94,10 +94,29 @@
                         </div>
                     </div>
                 </div>
+                <!-- Selected Amenities Checkboxes -->
+                <div class="col-lg-12">
+                    <div class="categories-box border-none-bottom m-0">
+                        <h6 class="title">Amenities</h6>
+                        <div class="cheak-box selected-amenities" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                            {% for amenity in amenities %}
+                                {% if amenity.id in selected_amenities %}
+                                    <label class="contain" data-id="{{ amenity.id }}" style="margin-left: 10px;">
+                                        {{ amenity.name }}
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amenities Multi-Select Dropdown -->
                 <div class="col-lg-12">
                     <div class="form_boxes">
                         <label>Amenities</label>
-                        <div class="drop-menu multi-select">
+                        <div class="drop-menu multi-select" data-name="amenities">
                             <div class="select">
                                 <span>
                                     {% if selected_amenities %}
@@ -108,7 +127,7 @@
                                 </span>
                                 <i class="fa fa-angle-down"></i>
                             </div>
-                            <!-- Hidden inputs for each selected amenity -->
+
                             {% for amenity in amenities %}
                                 {% if amenity.id in selected_amenities %}
                                     <input type="hidden" name="amenities" value="{{ amenity.id }}">
@@ -118,6 +137,7 @@
                             <ul class="dropdown scrollable-dropdown">
                                 {% for amenity in amenities %}
                                     <li data-value="{{ amenity.id }}"
+                                        data-label="{{ amenity.name }}"
                                         class="{% if amenity.id in selected_amenities %}selected{% endif %}">
                                         {{ amenity.name }}
                                     </li>
