@@ -76,6 +76,7 @@ def getCars(request):
         # Required for filter form
         'car_brands': CarBrand.objects.all(),
         'car_types': CarType.objects.all(),
+        'car_color_choices': dict(Car.COLOR_CHOICES),
         'car_features': Feature.objects.all(),
         'selected_features': list(map(int, features)) if features else [],
     }
