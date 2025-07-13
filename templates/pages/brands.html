@@ -65,7 +65,9 @@
                             <div class="content-box">
                                 <h6 class="title"><a href="#">{{ brand.name }}</a></h6>
                                 <div class="text">Explore cars from {{ brand.name }}</div>
-                                <a href="#" class="deal-btn">See More</a>
+                                <a href="{% url 'car:getCars' %}?car_brand={{ brand.id }}" class="deal-btn">
+                                    See Cars
+                                </a>
                             </div>
                         </div>
                     </div>
