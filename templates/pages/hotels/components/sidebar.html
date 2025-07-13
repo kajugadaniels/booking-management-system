@@ -69,20 +69,24 @@
                         <input type="number" name="occupancy" value="{{ request.GET.occupancy }}">
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <button type="submit" class="side-btn-three mb-3" style="background-color: transparent; text-align: center;">
                         Apply Filters
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" fill="none">
-                            <g clip-path="url(#clip0_881_10193)">
-                                <path d="M13.6111 0H5.05558C4.84062 0 4.66668 0.173943 4.66668 0.388901C4.66668 0.603859 4.84062 0.777802 5.05558 0.777802H12.6723L0.113941 13.3362C-0.0379805 13.4881 -0.0379805 13.7342 0.113941 13.8861C0.189884 13.962 0.289415 14 0.38891 14C0.488405 14 0.5879 13.962 0.663879 13.8861L13.2222 1.3277V8.94447C13.2222 9.15943 13.3962 9.33337 13.6111 9.33337C13.8261 9.33337 14 9.15943 14 8.94447V0.388901C14 0.173943 13.8261 0 13.6111 0Z" fill="#050B20"></path>
-                            </g>
-                            <defs>
-                                <clippath id="clip0_881_10193">
-                                    <rect width="14" height="14" fill="white"></rect>
-                                </clippath>
-                            </defs>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M20.058 9.723c.948-.534 1.423-.801 1.682-1.232c.26-.43.26-.949.26-1.987v-.69c0-1.326 0-1.99-.44-2.402C21.122 3 20.415 3 19 3H5c-1.414 0-2.121 0-2.56.412S2 4.488 2 5.815v.69c0 1.037 0 1.556.26 1.986s.733.698 1.682 1.232l2.913 1.64c.636.358.955.537 1.183.735c.474.411.766.895.898 1.49c.064.284.064.618.064 1.285v2.67c0 .909 0 1.364.252 1.718c.252.355.7.53 1.594.88c1.879.734 2.818 1.101 3.486.683S15 19.452 15 17.542v-2.67c0-.666 0-1 .064-1.285a2.68 2.68 0 0 1 .899-1.49" />
                         </svg>
                     </button>
+                </div>
+                <div class="col-lg-6">
+                    <a href="?{% if request.resolver_match.kwargs.hotel_id %}hotel_id={{ request.resolver_match.kwargs.hotel_id }}{% endif %}" style="background-color: transparent; text-align: center;">
+                        Reset Filters
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 21 21">
+                            <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                                <path d="M14.5 3.5c2.414 1.377 4 4.022 4 7a8 8 0 1 1-8-8" />
+                                <path d="M14.5 7.5v-4h4" />
+                            </g>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
@@ -126,5 +130,17 @@
         function closeAllDropdowns() {
             document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
         }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterForm = document.querySelector('form.filter-form, form'); // Match your form
+        if (!filterForm) return;
+
+        filterForm.addEventListener('submit', () => {
+            const buttons = filterForm.querySelectorAll('button[type="submit"], a.side-btn-three');
+            buttons.forEach(btn => btn.disabled = true);
+        });
     });
 </script>
