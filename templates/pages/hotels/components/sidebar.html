@@ -7,19 +7,31 @@
                         <label>Bed Type</label>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>{{ request.GET.bed_type|default:"Any" }}</span>
+                                <span>
+                                    {% with request.GET.bed_type as selected_bed %}
+                                        {% for key, label in bed_types.choices %}
+                                            {% if key == selected_bed %}
+                                                {{ label }}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if not selected_bed %}
+                                            Any
+                                        {% endif %}
+                                    {% endwith %}
+                                </span>
                                 <i class="fa fa-angle-down"></i>
                             </div>
                             <input type="hidden" name="bed_type" value="{{ request.GET.bed_type }}">
                             <ul class="dropdown" style="display: none;">
                                 <li data-value="">Any</li>
-                                {% for bed in bed_types %}
-                                    <li data-value="{{ bed }}">{{ bed }}</li>
+                                {% for key, label in bed_types.choices %}
+                                    <li data-value="{{ key }}">{{ label }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-12">
                     <div class="form_boxes">
                         <label>Refundable</label>
