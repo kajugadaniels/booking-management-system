@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, pre_save
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 def car_image_upload_path(instance, filename):
@@ -55,6 +56,30 @@ class CarBrand(models.Model):
     class Meta:
         verbose_name = "Car Brand"
         verbose_name_plural = "Car Brands"
+
+# ✅ Delete thumbnail file when CarBrand is deleted
+@receiver(post_delete, sender=CarBrand)
+def delete_car_brand_thumbnail(sender, instance, **kwargs):
+    if instance.thumbnail and instance.thumbnail.storage.exists(instance.thumbnail.name):
+        instance.thumbnail.delete(save=False)
+
+# ✅ Delete old thumbnail file when CarBrand thumbnail is updated
+@receiver(pre_save, sender=CarBrand)
+def auto_delete_old_car_brand_thumbnail_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return  # New brand, no previous image
+
+    try:
+        old_instance = CarBrand.objects.get(pk=instance.pk)
+    except CarBrand.DoesNotExist:
+        return
+
+    old_image = old_instance.thumbnail
+    new_image = instance.thumbnail
+
+    if old_image and old_image != new_image:
+        if old_image.storage.exists(old_image.name):
+            old_image.delete(save=False)
 
 class Car(models.Model):
     CONDITION_CHOICES = [
