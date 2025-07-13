@@ -10,15 +10,33 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash, logout
 
+
 @login_required
 def dashboard(request):
     site_settings = Setting.objects.first()
 
+    user = request.user
+
+    total_car_bookings = CarBooking.objects.filter(user=user).count()
+    total_room_bookings = RoomBooking.objects.filter(user=user).count()
+    total_plane_bookings = PlaneBooking.objects.filter(user=user).count()
+
+    # Placeholder values for future features
+    total_favorites = 0
+    total_saved_searches = 0
+    total_messages = 0
+
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'total_car_bookings': total_car_bookings,
+        'total_room_bookings': total_room_bookings,
+        'total_plane_bookings': total_plane_bookings,
+        'total_favorites': total_favorites,
+        'total_saved_searches': total_saved_searches,
+        'total_messages': total_messages,
     }
 
-    return render (request, 'pages/user/dashboard.html', context)
+    return render(request, 'pages/user/dashboard.html', context)
 
 @login_required
 def roomBooking(request):
