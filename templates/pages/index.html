@@ -102,13 +102,13 @@
                                 </div>
                                 <div class="content-box">
                                     <h6 class="title">
-                                        <a href="{% url 'hotel:hotelRooms' hotel.id %}">
+                                        <a href="{% url 'hotel:hotelRooms' hotel.id %}" style="font-size: 14px;">
                                             {{ hotel.name }}
                                         </a>
                                     </h6>
                                     <div class="btn-box">
-                                        <span>Available Rooms</span>
-                                        <small>{{ hotel.available_rooms }}</small>
+                                        <span>Reviews</span>
+                                        <small>{{ hotel.reviews.all|length }}</small>
                                         <a href="{% url 'hotel:hotelRooms' hotel.id %}" class="details">
                                             View Details
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
