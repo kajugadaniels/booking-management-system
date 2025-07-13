@@ -1,3 +1,26 @@
+<style>
+    /* Ensure dropdown is scrollable with max height */
+    .drop-menu .dropdown {
+        max-height: 200px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: #ccc transparent !important;
+    }
+
+    /* Webkit scroll (Chrome, Edge, Safari) */
+    .drop-menu .dropdown::-webkit-scrollbar {
+        width: 6px !important;
+    }
+    .drop-menu .dropdown::-webkit-scrollbar-thumb {
+        background-color: #ccc !important;
+        border-radius: 4px !important;
+    }
+    .drop-menu .dropdown::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+</style>
+
 <form method="get" class="filter-form">
     <div class="inventory-sidebar">
         <div class="inventroy-widget widget-location">
@@ -18,6 +41,7 @@
                                         <span>Any</span>
                                     {% endif %}
                                 {% endwith %}
+                                <i class="fa fa-angle-down"></i>
                             </div>
                             <input type="hidden" name="car_brand" value="{{ request.GET.car_brand }}">
                             <ul class="dropdown scrollable-dropdown">
@@ -48,6 +72,7 @@
                                         <span>Any</span>
                                     {% endif %}
                                 {% endwith %}
+                                <i class="fa fa-angle-down"></i>
                             </div>
                             <input type="hidden" name="car_type" value="{{ request.GET.car_type }}">
                             <ul class="dropdown scrollable-dropdown">
