@@ -92,11 +92,36 @@ def carBooking(request):
 def planeBooking(request):
     site_settings = Setting.objects.first()
 
+    query = request.GET.get('q', '')
+    sort_by = request.GET.get('sort', 'latest')
+
+    bookings = PlaneBooking.objects.filter(user=request.user)
+
+    if query:
+        bookings = bookings.filter(
+            Q(full_name__icontains=query) |
+            Q(origin__icontains=query) |
+            Q(destination__icontains=query) |
+            Q(email__icontains=query)
+        )
+
+    if sort_by == 'oldest':
+        bookings = bookings.order_by('created_at')
+    else:
+        bookings = bookings.order_by('-created_at')
+
+    paginator = Paginator(bookings, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'bookings': page_obj,
+        'query': query,
+        'sort_by': sort_by,
     }
 
-    return render (request, 'pages/user/planes/index.html', context)
+    return render(request, 'pages/user/planes/index.html', context)
 
 @login_required
 def profile(request):
