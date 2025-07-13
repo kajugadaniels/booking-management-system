@@ -36,6 +36,16 @@ def carBooking(request):
     return render (request, 'pages/user/cars/index.html', context)
 
 @login_required
+def planeBooking(request):
+    site_settings = Setting.objects.first()
+
+    context = {
+        'settings': site_settings
+    }
+
+    return render (request, 'pages/user/planes/index.html', context)
+
+@login_required
 def profile(request):
     site_settings = Setting.objects.first()
     user = request.user
