@@ -97,6 +97,8 @@ def carDetails(request, id):
     features = Feature.objects.filter(carfeature__car=car)
     reviews = car.reviews.select_related('user').all()
     average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+    car_brand = car.car_brand
+    similar_cars = Car.objects.filter(car_brand=car_brand, is_available=True).exclude(id=car.id)[:4]
 
     review_form = None
     if request.user.is_authenticated:
@@ -135,6 +137,7 @@ def carDetails(request, id):
         'features': features,
         'reviews': reviews,
         'average_rating': round(average_rating, 1),
+        'similar_cars': similar_cars,
         'review_form': review_form,
     }
 
