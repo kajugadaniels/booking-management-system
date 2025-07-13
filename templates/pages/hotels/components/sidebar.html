@@ -1,24 +1,53 @@
 <style>
-/* Ensure dropdown is scrollable with max height */
-.drop-menu .dropdown {
-    max-height: 200px !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    scrollbar-width: thin !important;
-    scrollbar-color: #ccc transparent !important;
-}
+    /* Ensure dropdown is scrollable with max height */
+    .drop-menu .dropdown {
+        max-height: 200px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: #ccc transparent !important;
+    }
 
-/* Webkit scroll (Chrome, Edge, Safari) */
-.drop-menu .dropdown::-webkit-scrollbar {
-    width: 6px !important;
-}
-.drop-menu .dropdown::-webkit-scrollbar-thumb {
-    background-color: #ccc !important;
-    border-radius: 4px !important;
-}
-.drop-menu .dropdown::-webkit-scrollbar-track {
-    background: transparent !important;
-}
+    /* Webkit scroll (Chrome, Edge, Safari) */
+    .drop-menu .dropdown::-webkit-scrollbar {
+        width: 6px !important;
+    }
+    .drop-menu .dropdown::-webkit-scrollbar-thumb {
+        background-color: #ccc !important;
+        border-radius: 4px !important;
+    }
+    .drop-menu .dropdown::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+
+    .selected-amenities {
+        margin-bottom: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .amenity-tag {
+        background: #e8f0ff;
+        border: 1px solid #b3d4fc;
+        border-radius: 15px;
+        padding: 4px 10px;
+        font-size: 13px;
+        color: #00376b;
+        display: inline-flex;
+        align-items: center;
+        cursor: default;
+    }
+
+    .amenity-tag .remove-tag {
+        margin-left: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #777;
+    }
+    .amenity-tag .remove-tag:hover {
+        color: #d00;
+    }
 </style>
 
 <form method="get">
@@ -171,97 +200,98 @@
 </form>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.drop-menu').forEach(dropdown => {
-        const select = dropdown.querySelector('.select');
-        const options = dropdown.querySelector('.dropdown');
-        const labelSpan = select.querySelector('span');
-        const isMulti = dropdown.classList.contains('multi-select');
-
-        // Toggle dropdown visibility
-        select.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeAllDropdowns();
-            options.style.display = options.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Handle single or multi selection
-        options.querySelectorAll('li').forEach(option => {
-            option.addEventListener('click', (e) => {
-                const value = option.getAttribute('data-value');
-                const text = option.textContent.trim();
-
-                if (isMulti) {
-                    // Toggle selected class
-                    option.classList.toggle('selected');
-
-                    // Remove old input if exists
-                    const oldInput = dropdown.querySelector(`input[name="amenities"][value="${value}"]`);
-                    if (oldInput) {
-                        oldInput.remove();
-                    } else {
-                        // Create new hidden input
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'amenities';
-                        input.value = value;
-                        dropdown.appendChild(input);
-                    }
-
-                    // Update label
-                    const selectedCount = dropdown.querySelectorAll('input[name="amenities"]').length;
-                    labelSpan.textContent = selectedCount ? `${selectedCount} selected` : 'Any';
-                } else {
-                    // Single select behavior
-                    dropdown.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
-                    option.classList.add('selected');
-                    dropdown.querySelector('input[type="hidden"]').value = value;
-                    labelSpan.textContent = text;
-                    options.style.display = 'none';
-                }
-            });
-        });
-    });
-
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', () => {
-        closeAllDropdowns();
-    });
-
-    function closeAllDropdowns() {
-        document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
-    }
-});
-</script>
-
-<script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Handle all dropdown filter menus
-        document.querySelectorAll('.drop-menu').forEach(dropdown => {
+        const dropdowns = document.querySelectorAll('.drop-menu');
+
+        dropdowns.forEach(dropdown => {
             const select = dropdown.querySelector('.select');
             const options = dropdown.querySelector('.dropdown');
-            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
             const labelSpan = select.querySelector('span');
+            const isMulti = dropdown.classList.contains('multi-select');
+            const hiddenName = dropdown.dataset.name || 'value';
 
-            // Toggle dropdown visibility
-            select.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent closing immediately
-                closeAllDropdowns(); // Close others
+            // Toggle dropdown
+            select.addEventListener('click', e => {
+                e.stopPropagation();
+                closeAllDropdowns();
                 options.style.display = options.style.display === 'block' ? 'none' : 'block';
             });
 
-            // Handle option selection
             options.querySelectorAll('li').forEach(option => {
-                option.addEventListener('click', (e) => {
+                option.addEventListener('click', () => {
                     const value = option.getAttribute('data-value');
                     const label = option.textContent.trim();
 
-                    hiddenInput.value = value;
-                    labelSpan.textContent = label;
-                    options.style.display = 'none';
+                    if (isMulti) {
+                        option.classList.toggle('selected');
+
+                        const exists = dropdown.querySelector(`input[name="amenities"][value="${value}"]`);
+
+                        if (exists) {
+                            exists.remove();
+                            removeAmenityTag(dropdown, value);
+                        } else {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = 'amenities';
+                            input.value = value;
+                            dropdown.appendChild(input);
+
+                            renderAmenityTag(dropdown, value, label);
+                        }
+
+                        const count = dropdown.querySelectorAll('input[name="amenities"]').length;
+                        labelSpan.textContent = count ? `${count} selected` : 'Any';
+                    } else {
+                        dropdown.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                        option.classList.add('selected');
+
+                        const input = dropdown.querySelector('input[type="hidden"]');
+                        if (input) input.value = value;
+                        labelSpan.textContent = label;
+                        options.style.display = 'none';
+                    }
                 });
             });
         });
+
+        // Remove amenity tag and its hidden input
+        function removeAmenityTag(dropdown, value) {
+            const tag = dropdown.querySelector(`.amenity-tag[data-value="${value}"]`);
+            if (tag) tag.remove();
+
+            const input = dropdown.querySelector(`input[name="amenities"][value="${value}"]`);
+            if (input) input.remove();
+
+            const labelSpan = dropdown.querySelector('.select span');
+            const count = dropdown.querySelectorAll('input[name="amenities"]').length;
+            labelSpan.textContent = count ? `${count} selected` : 'Any';
+
+            // Unselect the option in dropdown list
+            const option = dropdown.querySelector(`li[data-value="${value}"]`);
+            if (option) option.classList.remove('selected');
+        }
+
+        // Render selected amenity tag above dropdown
+        function renderAmenityTag(dropdown, value, label) {
+            let container = dropdown.querySelector('.selected-amenities');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'selected-amenities';
+                dropdown.insertBefore(container, dropdown.firstChild);
+            }
+
+            const tag = document.createElement('span');
+            tag.className = 'amenity-tag';
+            tag.setAttribute('data-value', value);
+            tag.innerHTML = `${label} <span class="remove-tag" title="Remove">&times;</span>`;
+            container.appendChild(tag);
+
+            tag.querySelector('.remove-tag').addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeAmenityTag(dropdown, value);
+            });
+        }
 
         // Close dropdowns when clicking outside
         document.addEventListener('click', () => {
@@ -271,17 +301,14 @@ document.addEventListener('DOMContentLoaded', () => {
         function closeAllDropdowns() {
             document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
         }
-    });
-</script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const filterForm = document.querySelector('form.filter-form, form'); // Match your form
-        if (!filterForm) return;
-
-        filterForm.addEventListener('submit', () => {
-            const buttons = filterForm.querySelectorAll('button[type="submit"], a.side-btn-three');
-            buttons.forEach(btn => btn.disabled = true);
-        });
+        // Disable submit buttons on filter submit
+        const filterForm = document.querySelector('form.filter-form, form');
+        if (filterForm) {
+            filterForm.addEventListener('submit', () => {
+                const buttons = filterForm.querySelectorAll('button[type="submit"], a.side-btn-three');
+                buttons.forEach(btn => btn.disabled = true);
+            });
+        }
     });
 </script>
