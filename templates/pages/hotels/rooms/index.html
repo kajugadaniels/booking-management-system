@@ -31,13 +31,13 @@
                             <div class="text">
                                 Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} rooms
                             </div>
-                            <form method="get" id="sortForm">
+                            <form method="get" id="sortForm" class="d-flex">
                                 {% for key, value in request.GET.items %}
                                     {% if key != 'sort' and key != 'page' %}
                                         <input type="hidden" name="{{ key }}" value="{{ value }}">
                                     {% endif %}
                                 {% endfor %}
-                                <div class="form_boxes v3">
+                                <div class="form_boxes v3" style="padding-right: 30px;">
                                     <small>Sort by</small>
                                     <div class="drop-menu">
                                         <div class="select">
@@ -59,6 +59,19 @@
                                             <li data-value="price_desc">Price: High to Low</li>
                                         </ul>
                                     </div>
+                                </div>
+                                <div class="form_boxes v3" style="padding-right: 30px;">
+                                    <a href="{% url 'hotel:getHotels' %}">
+                                        <small>
+                                            Reset Filter
+                                        </small>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 21 21">
+                                            <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                                                <path d="M14.5 3.5c2.414 1.377 4 4.022 4 7a8 8 0 1 1-8-8" />
+                                                <path d="M14.5 7.5v-4h4" />
+                                            </g>
+                                        </svg>
+                                    </a>
                                 </div>
                             </form>
                         </div>
@@ -148,7 +161,7 @@
                                                 <ul class="ul-cotent">
                                                     {% for room_amenity in room.room_amenities.all|slice:":3" %}
                                                         <li>
-                                                            <a href="#" style="font-size: 10px;">
+                                                            <a href="#" style="font-size: 12px;">
                                                                 {{ room_amenity.amenity.name }}
                                                             </a>
                                                         </li>

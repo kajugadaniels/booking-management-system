@@ -30,10 +30,15 @@
                         <div class="text">
                             Showing {{ cars.start_index }} to {{ cars.end_index }} of {{ cars.paginator.count }} vehicles
                         </div>
-                        <form method="get" id="sort-form">
-                            <div class="form_boxes v3">
+                        <form method="get" id="sortForm" class="d-flex">
+                            {% for key, value in request.GET.items %}
+                                {% if key != 'sort' and key != 'page' %}
+                                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                                {% endif %}
+                            {% endfor %}
+                            <div class="form_boxes v3" style="padding-right: 30px;">
                                 <small>Sort by</small>
-                                <div class="drop-menu height-auto" id="sort-dropdown">
+                                <div class="drop-menu">
                                     <div class="select">
                                         <span>
                                             {% if request.GET.sort == 'price_asc' %}
@@ -53,6 +58,19 @@
                                         <li data-value="price_desc">Price: High to Low</li>
                                     </ul>
                                 </div>
+                            </div>
+                            <div class="form_boxes v3">
+                                <a href="{% url 'car:getCars' %}">
+                                    <small>
+                                        Reset Filter
+                                    </small>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 21 21">
+                                        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                                            <path d="M14.5 3.5c2.414 1.377 4 4.022 4 7a8 8 0 1 1-8-8" />
+                                            <path d="M14.5 7.5v-4h4" />
+                                        </g>
+                                    </svg>
+                                </a>
                             </div>
                         </form>
                     </div>
@@ -229,35 +247,54 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const sortDropdown = document.getElementById('sort-dropdown');
-            const select = sortDropdown.querySelector('.select');
-            const options = sortDropdown.querySelector('.dropdown');
-            const hiddenInput = sortDropdown.querySelector('input[name="sort"]');
+            const sortForm = document.getElementById('sortForm');
+            const dropdown = sortForm.querySelector('.drop-menu');
+            const select = dropdown.querySelector('.select');
+            const dropdownList = dropdown.querySelector('.dropdown');
+            const hiddenInput = dropdown.querySelector('input[name="sort"]');
             const labelSpan = select.querySelector('span');
-            const form = document.getElementById('sort-form');
 
-            select.addEventListener('click', e => {
+            let isDropdownOpen = false;
+
+            // Toggle dropdown
+            select.addEventListener('click', (e) => {
                 e.stopPropagation();
-                options.style.display = options.style.display === 'block' ? 'none' : 'block';
+                closeAllDropdowns(); // close others
+                dropdownList.style.display = 'block';
+                isDropdownOpen = true;
             });
 
-            options.querySelectorAll('li').forEach(option => {
-                option.addEventListener('click', () => {
-                    const value = option.getAttribute('data-value');
-                    const text = option.textContent.trim();
+            // Handle selection
+            dropdownList.querySelectorAll('li').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const value = item.getAttribute('data-value');
+                    const text = item.textContent.trim();
 
                     hiddenInput.value = value;
                     labelSpan.textContent = text;
-                    options.style.display = 'none';
 
-                    form.submit();
+                    dropdownList.style.display = 'none';
+                    isDropdownOpen = false;
+
+                    sortForm.submit();
                 });
             });
 
-            // Close dropdown on outside click
+            // Close if click outside
             document.addEventListener('click', () => {
-                options.style.display = 'none';
+                if (isDropdownOpen) {
+                    dropdownList.style.display = 'none';
+                    isDropdownOpen = false;
+                }
             });
+
+            // Helper: close other dropdowns on the page (optional reuse across other filters)
+            function closeAllDropdowns() {
+                document.querySelectorAll('.drop-menu .dropdown').forEach(d => {
+                    d.style.display = 'none';
+                });
+            }
         });
     </script>
 
