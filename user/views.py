@@ -1,6 +1,11 @@
 from user.forms import *
+from car.models import *
 from base.models import *
+from plane.models import *
+from hotel.models import *
+from django.db.models import Q
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash, logout
@@ -19,11 +24,36 @@ def dashboard(request):
 def roomBooking(request):
     site_settings = Setting.objects.first()
 
+    # Get search query and sorting option from GET params
+    query = request.GET.get('q', '')
+    sort_by = request.GET.get('sort', 'latest')
+
+    bookings = RoomBooking.objects.filter(user=request.user)
+
+    if query:
+        bookings = bookings.filter(
+            Q(room__name__icontains=query) |
+            Q(room__hotel__name__icontains=query)
+        )
+
+    # Sorting
+    if sort_by == 'oldest':
+        bookings = bookings.order_by('created_at')
+    else:
+        bookings = bookings.order_by('-created_at')
+
+    paginator = Paginator(bookings, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'bookings': page_obj,
+        'query': query,
+        'sort_by': sort_by,
     }
 
-    return render (request, 'pages/user/rooms/index.html', context)
+    return render(request, 'pages/user/rooms/index.html', context)
 
 @login_required
 def carBooking(request):
