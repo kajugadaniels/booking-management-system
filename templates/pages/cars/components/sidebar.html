@@ -8,8 +8,16 @@
                         <label>Brand</label>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>{{ request.GET.car_brand|default:"Any" }}</span>
-                                <i class="fa fa-angle-down"></i>
+                                {% with request.GET.car_brand as selected_brand_id %}
+                                    {% for brand in car_brands %}
+                                        {% if brand.id|stringformat:"s" == selected_brand_id %}
+                                            <span>{{ brand.name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not selected_brand_id %}
+                                        <span>Any</span>
+                                    {% endif %}
+                                {% endwith %}
                             </div>
                             <input type="hidden" name="car_brand" value="{{ request.GET.car_brand }}">
                             <ul class="dropdown scrollable-dropdown">
@@ -30,8 +38,16 @@
                         <label>Type</label>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>{{ request.GET.car_type|default:"Any" }}</span>
-                                <i class="fa fa-angle-down"></i>
+                                {% with request.GET.car_type as selected_type_id %}
+                                    {% for type in car_types %}
+                                        {% if type.id|stringformat:"s" == selected_type_id %}
+                                            <span>{{ type.name }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not selected_type_id %}
+                                        <span>Any</span>
+                                    {% endif %}
+                                {% endwith %}
                             </div>
                             <input type="hidden" name="car_type" value="{{ request.GET.car_type }}">
                             <ul class="dropdown scrollable-dropdown">
