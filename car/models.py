@@ -2,9 +2,11 @@ import os
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.dispatch import receiver
 from django.utils.text import slugify
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
+from django.db.models.signals import post_delete
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 def car_image_upload_path(instance, filename):
@@ -121,6 +123,12 @@ class CarImage(models.Model):
 
     def __str__(self):
         return f"Image of {self.car.name}"
+
+# Delete image file from media folder when model is deleted
+@receiver(post_delete, sender=CarImage)
+def delete_car_image_file(sender, instance, **kwargs):
+    if instance.image and instance.image.storage.exists(instance.image.name):
+        instance.image.delete(save=False)
 
 class CarFeature(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
