@@ -7,5 +7,5 @@ app_name = 'car'
 
 urlpatterns = [
     path('', getCars, name="getCars"),
-    path('car/1/', carDetails, name="carDetails"),
+    path('car/<int:id>/', carDetails, name="carDetails"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
