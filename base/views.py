@@ -6,6 +6,7 @@ from random import sample
 from hotel.models import *
 from django.conf import settings
 from django.contrib import messages
+from collections import OrderedDict
 from django.db.models import Avg, Q
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
