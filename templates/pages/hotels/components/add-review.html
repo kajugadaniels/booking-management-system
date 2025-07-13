@@ -1,0 +1,55 @@
+{% if user.is_authenticated %}
+    <div class="reply-c-box">
+        <div class="Reply-sec">
+            <h6 class="title">
+                Leave a Reply
+            </h6>
+            <div class="text">
+                Your email address will not be published. Required fields are marked *
+            </div>
+        </div>
+        <form method="post" class="row">
+            {% csrf_token %}
+            <div class="col-lg-6">
+                <div class="form_boxes">
+                    <label>Rating</label>
+                    {{ review_form.rating }}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form_boxes">
+                    <label>Title</label>
+                    {{ review_form.title }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form_boxes v2">
+                    <label>Review</label>
+                    {{ review_form.review }}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-submit">
+                    <button type="submit" class="theme-btn">
+                        Post Review
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" fill="none">
+                            <g clip-path="url(#clip0_711_3214)">
+                                <path d="M13.6106 0H5.05509C4.84013 0 4.66619 0.173943 4.66619 0.388901C4.66619 0.603859 4.84013 0.777802 5.05509 0.777802H12.6719L0.113453 13.3362C-0.0384687 13.4881 -0.0384687 13.7342 0.113453 13.8861C0.189396 13.962 0.288927 14 0.388422 14C0.487917 14 0.587411 13.962 0.663391 13.8861L13.2218 1.3277V8.94447C13.2218 9.15943 13.3957 9.33337 13.6107 9.33337C13.8256 9.33337 13.9996 9.15943 13.9996 8.94447V0.388901C13.9995 0.173943 13.8256 0 13.6106 0Z" fill="white"></path>
+                            </g>
+                            <defs>
+                                <clippath id="clip0_711_3214">
+                                <rect width="14" height="14" fill="white"></rect>
+                                </clippath>
+                            </defs>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% else %}
+    <div class="alert alert-info mt-4">
+        <strong>Please log in</strong> to leave a review.
+        <a href="{% url 'auth:getLogin' %}?next={{ request.path }}">Log in</a>
+    </div>
+{% endif %}
