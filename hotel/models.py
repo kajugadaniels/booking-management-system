@@ -4,9 +4,11 @@ from account.models import *
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.dispatch import receiver
 from django.utils.text import slugify
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
+from django.db.models.signals import post_delete, pre_save
 
 def hotel_image_upload_path(instance, filename):
     base_filename, file_extension = os.path.splitext(filename)
@@ -128,7 +130,7 @@ class HotelRoom(models.Model):
         ordering = ['-created_at']
 
 class RoomImage(models.Model):
-    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='images')
+    room = models.ForeignKey('HotelRoom', on_delete=models.CASCADE, related_name='images')
     image = ProcessedImageField(
         upload_to=room_image_upload_path,
         processors=[ResizeToFill(1280, 720)],
@@ -140,6 +142,30 @@ class RoomImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.room.name}"
+
+# ✅ Delete image file when RoomImage is deleted
+@receiver(post_delete, sender=RoomImage)
+def delete_room_image_file(sender, instance, **kwargs):
+    if instance.image and instance.image.storage.exists(instance.image.name):
+        instance.image.delete(save=False)
+
+# ✅ Delete old file when RoomImage is updated with a new image
+@receiver(pre_save, sender=RoomImage)
+def auto_delete_old_room_image_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return  # New object, no image to replace
+
+    try:
+        old_instance = RoomImage.objects.get(pk=instance.pk)
+    except RoomImage.DoesNotExist:
+        return
+
+    old_image = old_instance.image
+    new_image = instance.image
+
+    if old_image and old_image != new_image:
+        if old_image.storage.exists(old_image.name):
+            old_image.delete(save=False)
 
 class Amenity(models.Model):
     name = models.CharField(max_length=100, unique=True)
