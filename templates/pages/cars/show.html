@@ -467,7 +467,7 @@
                             document.addEventListener("DOMContentLoaded", function () {
                                 const checkInInput = document.getElementById("id_pickup_date");
                                 const checkOutInput = document.getElementById("id_dropoff_date");
-                                const pricePerDayparseFloat("{{ car.price_per_day");
+                                const pricePerDay = parseFloat("{{ car.price_per_day }}");
                                 const totalPriceDisplay = document.getElementById("total-price");
 
                                 // Disable past dates for check-in and check-out

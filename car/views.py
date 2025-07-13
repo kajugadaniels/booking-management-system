@@ -191,7 +191,7 @@ def carDetails(request, id):
         'average_rating': round(average_rating, 1),
         'similar_cars': similar_cars,
         'review_form': review_form,
-        'booking_form': booking_form
+        'booking_form': booking_form,
     }
 
     return render(request, 'pages/cars/show.html', context)
