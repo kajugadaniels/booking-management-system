@@ -45,7 +45,7 @@ class Hotel(models.Model):
         ordering = ['-created_at']
 
 class HotelImage(models.Model):
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='images')
+    hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, related_name='images')
     image = ProcessedImageField(
         upload_to=hotel_image_upload_path,
         processors=[ResizeToFill(1280, 720)],
@@ -57,6 +57,30 @@ class HotelImage(models.Model):
 
     def __str__(self):
         return f"Image of {self.hotel.name}"
+
+# ✅ Delete image file when HotelImage is deleted
+@receiver(post_delete, sender=HotelImage)
+def delete_hotel_image_file(sender, instance, **kwargs):
+    if instance.image and instance.image.storage.exists(instance.image.name):
+        instance.image.delete(save=False)
+
+# ✅ Delete old image file when HotelImage is updated
+@receiver(pre_save, sender=HotelImage)
+def auto_delete_old_hotel_image_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return  # New object, no old file
+
+    try:
+        old_instance = HotelImage.objects.get(pk=instance.pk)
+    except HotelImage.DoesNotExist:
+        return
+
+    old_image = old_instance.image
+    new_image = instance.image
+
+    if old_image and old_image != new_image:
+        if old_image.storage.exists(old_image.name):
+            old_image.delete(save=False)
 
 class HotelReview(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='reviews')
