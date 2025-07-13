@@ -1,6 +1,10 @@
 from base.forms import *
 from base.models import *
+from car.models import *
+from random import sample
+from hotel.models import *
 from django.conf import settings
+from django.db.models import Avg
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
@@ -9,11 +13,41 @@ from django.template.loader import render_to_string
 def home(request):
     site_settings = Setting.objects.first()
 
+    # 1. Car Brands
+    car_brands = CarBrand.objects.only('name', 'thumbnail')
+
+    # 2. Hotels: based on rating or fallback to stars
+    rated_hotels = Hotel.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
+    if rated_hotels.exists():
+        hotels = rated_hotels.order_by('-avg_rating')[:12]
+    else:
+        hotels = Hotel.objects.order_by('-stars')[:12]
+
+    hotels = sample(list(hotels), min(6, len(hotels)))  # Random 6 from selected
+
+    # 3. Hotel Rooms: high-rated or fallback to price
+    rated_rooms = HotelRoom.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
+    if rated_rooms.exists():
+        rooms = rated_rooms.order_by('-avg_rating')[:6]
+    else:
+        rooms = HotelRoom.objects.order_by('-price_per_night')[:6]
+
+    # 4. Cars: high-rated or fallback to price
+    rated_cars = Car.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
+    if rated_cars.exists():
+        cars = rated_cars.order_by('-avg_rating')[:6]
+    else:
+        cars = Car.objects.order_by('-price_per_day')[:6]
+
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'car_brands': car_brands,
+        'hotels': hotels,
+        'rooms': rooms,
+        'cars': cars,
     }
 
-    return render (request, 'pages/index.html', context)
+    return render(request, 'pages/index.html', context)
 
 def howItWorks(request):
     site_settings = Setting.objects.first()
