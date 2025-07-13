@@ -19,21 +19,36 @@
                 </ul>
             </div>
         </div>
+
         <div class="gallery-sec-two wrap-gallery-box style-1">
             <div class="row inventy-slider wrap-slider-gallery">
-                {% for image in images %}
-                    <div class="image-column col-lg-3 col-md-6 col-sm-12">
+                {% if images %}
+                    {% for image in images %}
+                        <div class="image-column col-lg-3 col-md-6 col-sm-12">
+                            <div class="inner-column">
+                                <div class="image-box">
+                                    <figure class="image">
+                                        <a href="{{ image.image.url }}" data-fancybox="gallery">
+                                            <img src="{{ image.image.url }}" alt="{{ image.caption|default:'Car Image' }}">
+                                        </a>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="image-column col-lg-12 col-md-12 col-sm-12">
                         <div class="inner-column">
                             <div class="image-box">
                                 <figure class="image">
-                                    <a href="{{ image.image.url }}" data-fancybox="gallery">
-                                        <img src="{{ image.image.url }}" alt="{{ image.caption|default:'Car Image' }}">
+                                    <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" data-fancybox="gallery">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" alt="Default Car Image">
                                     </a>
                                 </figure>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
 
             <div class="content-box">
@@ -51,21 +66,15 @@
                         </a>
                     </li>
                     <li>
-                        {% if images %}
-                            <a href="{{ images.0.image.url }}" data-fancybox="gallery">
-                                <img src="https://creativelayers.net/themes/boxcar-html/images/resource/video1-4.svg">
-                                All Photos
-                            </a>
-                        {% else %}
-                            <a href="#">
-                                <img src="https://creativelayers.net/themes/boxcar-html/images/resource/video1-4.svg">
-                                All Photos
-                            </a>
-                        {% endif %}
+                        <a href="{% if images %}{{ images.0.image.url }}{% else %}https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s{% endif %}" data-fancybox="gallery">
+                            <img src="https://creativelayers.net/themes/boxcar-html/images/resource/video1-4.svg">
+                            All Photos
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
+
         <div class="boxcar-container">
             <div class="boxcar-title-three">
                 <h2>Volvo XC90</h2>
