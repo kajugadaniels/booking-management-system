@@ -408,62 +408,50 @@
                 </div>
                 <div class="side-bar-column v2 col-lg-4 col-md-12 col-sm-12">
                     <div class="inner-column">
-                        <div class="contact-box-two">
-                            <span>Our Price</span>
-                            <h3 class="title">$45,900</h3>
-                            <small>Instant Saving : $7.000</small>
-                            <div class="btn-box">
-                                <a href="#" class="side-btn"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/tag.svg">Make An Offer Price</a>
-                            </div>
-                        </div>
-                        <div class="contact-box">
-                            <div class="icon-box">
-                                <img src="https://creativelayers.net/themes/boxcar-html/images/resource/volvo.svg">
-                            </div>
-                            <div class="content-box">
-                                <h6 class="title">Volvo Cars Marin</h6>
-                                <div class="text">619 Francisco Blvd E, San Rafael, CA 94901</div>
-                                <ul class="contact-list">
-                                    <li><a href="#"><div class="image-box"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/phone1-1.svg"></div>Get Directions</a></li>
-                                    <li><a href="#"><div class="image-box"><img src="https://creativelayers.net/themes/boxcar-html/images/resource/phone1-2.svg"></div>+76 956 039 967</a></li>
-                                </ul>
-                                <div class="btn-box">
-                                    <a href="#" class="side-btn">Message Dealer<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" fill="none">
-                                        <g clip-path="url(#clip0_881_7563)">
-                                          <path d="M13.6111 0H5.05558C4.84062 0 4.66668 0.173943 4.66668 0.388901C4.66668 0.603859 4.84062 0.777802 5.05558 0.777802H12.6723L0.113941 13.3362C-0.0379805 13.4881 -0.0379805 13.7342 0.113941 13.8861C0.189884 13.962 0.289415 14 0.38891 14C0.488405 14 0.5879 13.962 0.663879 13.8861L13.2222 1.3277V8.94447C13.2222 9.15943 13.3962 9.33337 13.6111 9.33337C13.8261 9.33337 14 9.15943 14 8.94447V0.388901C14 0.173943 13.8261 0 13.6111 0Z" fill="white"></path>
-                                        </g>
-                                        <defs>
-                                          <clippath id="clip0_881_7563">
-                                            <rect width="14" height="14" fill="white"></rect>
-                                          </clippath>
-                                        </defs>
-                                      </svg>
-                                    </a>
-                                    <a href="#" class="side-btn two">Chat Via Whatsapp<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" fill="none">
-                                        <g clip-path="url(#clip0_881_8744)">
-                                          <path d="M13.6111 0H5.05558C4.84062 0 4.66668 0.173943 4.66668 0.388901C4.66668 0.603859 4.84062 0.777802 5.05558 0.777802H12.6723L0.113941 13.3362C-0.0379805 13.4881 -0.0379805 13.7342 0.113941 13.8861C0.189884 13.962 0.289415 14 0.38891 14C0.488405 14 0.5879 13.962 0.663879 13.8861L13.2222 1.3277V8.94447C13.2222 9.15943 13.3962 9.33337 13.6111 9.33337C13.8261 9.33337 14 9.15943 14 8.94447V0.388901C14 0.173943 13.8261 0 13.6111 0Z" fill="#60C961"></path>
-                                        </g>
-                                        <defs>
-                                          <clippath id="clip0_881_8744">
-                                            <rect width="14" height="14" fill="white"></rect>
-                                          </clippath>
-                                        </defs>
-                                      </svg>
-                                    </a>
-                                    <a href="#" class="side-btn-three">View all stock at this dealer<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" fill="none">
-                                        <g clip-path="url(#clip0_881_10193)">
-                                          <path d="M13.6111 0H5.05558C4.84062 0 4.66668 0.173943 4.66668 0.388901C4.66668 0.603859 4.84062 0.777802 5.05558 0.777802H12.6723L0.113941 13.3362C-0.0379805 13.4881 -0.0379805 13.7342 0.113941 13.8861C0.189884 13.962 0.289415 14 0.38891 14C0.488405 14 0.5879 13.962 0.663879 13.8861L13.2222 1.3277V8.94447C13.2222 9.15943 13.3962 9.33337 13.6111 9.33337C13.8261 9.33337 14 9.15943 14 8.94447V0.388901C14 0.173943 13.8261 0 13.6111 0Z" fill="#050B20"></path>
-                                        </g>
-                                        <defs>
-                                          <clippath id="clip0_881_10193">
-                                            <rect width="14" height="14" fill="white"></rect>
-                                          </clippath>
-                                        </defs>
-                                      </svg>
-                                    </a>
+                        <form method="POST" class="contact-box-two v2">
+                            {% csrf_token %}
+                            <span>Price Per Day</span>
+                            <h3 class="title">${{ car.price_per_day }}</h3>
+
+                            {{ booking_form.non_field_errors }}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form_boxes">
+                                        {{ booking_form.check_in.label_tag }} {{ booking_form.check_in }}
+                                        {{ booking_form.check_in.errors }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form_boxes">
+                                        {{ booking_form.check_out.label_tag }} {{ booking_form.check_out }}
+                                        {{ booking_form.check_out.errors }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form_boxes">
+                                        {{ booking_form.guests.label_tag }} {{ booking_form.guests }}
+                                        {{ booking_form.guests.errors }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form_boxes">
+                                        {{ booking_form.special_requests.label_tag }} {{ booking_form.special_requests }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="btn-box">
+                                <button type="submit" name="book_room" class="side-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                        <g fill="none">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M14 22h-4c-3.771 0-5.657 0-6.828-1.172S2 17.771 2 14v-2c0-3.771 0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172S22 8.229 22 12v2c0 3.771 0 5.657-1.172 6.828c-.653.654-1.528.943-2.828 1.07M7 4V2.5M17 4V2.5M21.5 9H10.75M2 9h3.875" />
+                                            <path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0" />
+                                        </g>
+                                    </svg>
+                                    Book Car Now
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
