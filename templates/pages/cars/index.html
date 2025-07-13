@@ -81,7 +81,7 @@
                                     <div class="inner-box">
                                         <div class="image-box">
                                             <figure class="image" style="width: 329px; height: 220px; overflow: hidden;">
-                                                <a href="{% url 'car:carDetails' %}">
+                                                <a href="{% url 'car:carDetails' car.id %}">
                                                     {% with car.images.all|first as img %}
                                                         {% if img and img.image %}
                                                             <img src="{{ img.image.url }}" alt="{{ car.name }}"
@@ -109,7 +109,7 @@
                                         </div>
                                         <div class="content-box">
                                             <h6 class="title">
-                                                <a href="#">
+                                                <a href="{% url 'car:carDetails' car.id %}">
                                                     {{ car.name }}
                                                 </a>
                                             </h6>
@@ -133,7 +133,7 @@
                                             <div class="btn-box">
                                                 <span>Per Day</span>
                                                 <small>${{ car.price_per_day }}</small>
-                                                <a href="{% url 'car:carDetails' %}" class="details">
+                                                <a href="{% url 'car:carDetails' car.id %}" class="details">
                                                     View Details
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                                                         <g clip-path="url(#clip0_601_4346)">
