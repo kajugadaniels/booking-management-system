@@ -139,7 +139,7 @@ def hotelRooms(request, hotel_id):
         del get_params['page']
     cleaned_querystring = get_params.urlencode()
 
-    all_bed_types = HotelRoom.objects.values_list('bed_type', flat=True).distinct()
+    all_bed_types = HotelRoom.BED_TYPE_CHOICES
     all_amenities = Amenity.objects.all()
 
     context = {
