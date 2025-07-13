@@ -216,3 +216,71 @@
         </div>
     </div>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.drop-menu');
+
+    dropdowns.forEach(dropdown => {
+        const select = dropdown.querySelector('.select');
+        const options = dropdown.querySelector('.dropdown');
+        const labelSpan = select.querySelector('span');
+        const isMulti = dropdown.classList.contains('multi-select');
+        const name = dropdown.dataset.name || dropdown.querySelector('input[type="hidden"]')?.name;
+
+        // Toggle dropdown open/close
+        select.addEventListener('click', e => {
+            e.stopPropagation();
+            document.querySelectorAll('.drop-menu .dropdown').forEach(el => el.style.display = 'none');
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Handle option clicks
+        options.querySelectorAll('li').forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                const label = option.textContent.trim();
+
+                if (isMulti) {
+                    option.classList.toggle('selected');
+
+                    const exists = dropdown.querySelector(`input[name="${name}"][value="${value}"]`);
+                    if (exists) {
+                        exists.remove();
+                        document.querySelector(`.selected-amenities label[data-id="${value}"]`)?.remove();
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = name;
+                        input.value = value;
+                        dropdown.appendChild(input);
+
+                        const featureLabel = document.createElement('label');
+                        featureLabel.className = 'contain';
+                        featureLabel.setAttribute('data-id', value);
+                        featureLabel.innerHTML = `${label}<input type="checkbox" checked><span class="checkmark"></span>`;
+                        document.querySelector('.selected-amenities')?.appendChild(featureLabel);
+                    }
+
+                    const count = dropdown.querySelectorAll(`input[name="${name}"]`).length;
+                    labelSpan.textContent = count ? `${count} selected` : 'Any';
+                } else {
+                    dropdown.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                    option.classList.add('selected');
+                    labelSpan.textContent = label;
+
+                    const hiddenInput = dropdown.querySelector(`input[name="${name}"]`);
+                    if (hiddenInput) hiddenInput.value = value;
+
+                    options.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Close dropdowns if click outside
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.drop-menu .dropdown').forEach(el => el.style.display = 'none');
+    });
+});
+</script>
