@@ -1,3 +1,25 @@
+<style>
+    .scrollable-dropdown {
+        max-height: 200px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+    }
+
+    .scrollable-dropdown::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .scrollable-dropdown::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+
+    .scrollable-dropdown::-webkit-scrollbar-track {
+        background: transparent;
+    }
+</style>
+
 <form method="get">
     <div class="inventory-sidebar">
         <div class="inventroy-widget widget-location">
@@ -11,7 +33,7 @@
                                 <i class="fa fa-angle-down"></i>
                             </div>
                             <input type="hidden" name="room_type" value="{{ request.GET.room_type }}">
-                            <ul class="dropdown" style="display: none;">
+                            <ul class="dropdown scrollable-dropdown" style="display: none;">
                                 <li data-value="">Any</li>
                                 {% for key, label in room_types %}
                                     <li data-value="{{ key }}" {% if request.GET.room_type == key %}class="selected"{% endif %}>
