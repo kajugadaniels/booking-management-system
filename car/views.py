@@ -122,7 +122,7 @@ def carDetails(request, id):
                         send_mail(subject, '', settings.EMAIL_HOST_USER, [request.user.email], html_message=message)
 
                         messages.success(request, 'Your review has been submitted. Thank you!')
-                        return redirect('hotel:carDetails', car_id=car.id)
+                        return redirect('car:carDetails', car_id=car.id)
                     except IntegrityError:
                         messages.error(request, "You have already submitted a review for this car.")
         else:
@@ -135,6 +135,7 @@ def carDetails(request, id):
         'features': features,
         'reviews': reviews,
         'average_rating': round(average_rating, 1),
+        'review_form': review_form,
     }
 
     return render(request, 'pages/cars/show.html', context)
