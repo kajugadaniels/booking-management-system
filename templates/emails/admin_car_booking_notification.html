@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Contact Submission</title>
+</head>
+<body>
+    <h2>New Car Booking Received</h2>
+    <p><strong>{{ user.name }}</strong> has booked <strong>{{ car.name }}</strong>.</p>
+
+    <ul>
+        <li>Email: {{ user.email }}</li>
+        <li>Guests: {{ booking.guests }}</li>
+        <li>Pick Up Date: {{ booking.pickup_date }}</li>
+        <li>Drop Off Date: {{ booking.dropoff_date }}</li>
+        <li>Total: ${{ booking.total_price }}</li>
+    </ul>
+
+    <p>Visit the admin panel to review and manage this booking.</p>
+</body>
+</html>
