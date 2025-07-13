@@ -114,7 +114,7 @@ def carDetails(request, id):
                         review.save()
                         # Send thank-you email
                         subject = 'Thank You for Your Review!'
-                        message = render_to_string('emails/review_thanks.html', {
+                        message = render_to_string('emails/car_review_thanks.html', {
                             'user': request.user,
                             'car': car,
                             'settings': site_settings
