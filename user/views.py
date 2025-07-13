@@ -42,7 +42,7 @@ def roomBooking(request):
     else:
         bookings = bookings.order_by('-created_at')
 
-    paginator = Paginator(bookings, 6)
+    paginator = Paginator(bookings, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -75,7 +75,7 @@ def carBooking(request):
     else:
         bookings = bookings.order_by('-created_at')
 
-    paginator = Paginator(bookings, 6)
+    paginator = Paginator(bookings, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

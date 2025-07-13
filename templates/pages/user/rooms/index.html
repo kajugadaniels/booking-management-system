@@ -6,7 +6,9 @@
             <h3 class="title">
                 Room Booking History
             </h3>
-            <div class="text">Lorem ipsum dolor sit amet, consectetur.</div>
+            <div class="text">
+                Here is a summary of your room booking history.
+            </div>
         </div>
         <div class="my-listing-table wrap-listing">
             <div class="cart-table">
@@ -159,7 +161,7 @@
                                 <!-- Page numbers with ellipsis -->
                                 {% for num in bookings.paginator.page_range %}
                                     {% if num == bookings.number %}
-                                        <li class="page-item active"><a class="page-link" href="#" style="border: 1px solid #050B20;">{{ num }}</a></li>
+                                        <li class="page-item"><a class="page-link" href="#" style="border: 1px solid #050B20;">{{ num }}</a></li>
                                     {% elif num <= bookings.number|add:'2' and num >= bookings.number|add:'-2' %}
                                         <li class="page-item"><a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ num }}">{{ num }}</a></li>
                                     {% elif num == 1 or num == bookings.paginator.num_pages %}
