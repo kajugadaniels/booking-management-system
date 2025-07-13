@@ -272,33 +272,50 @@
             const dropdown = sortForm.querySelector('.drop-menu');
             const select = dropdown.querySelector('.select');
             const dropdownList = dropdown.querySelector('.dropdown');
-            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
-            const span = select.querySelector('span');
+            const hiddenInput = dropdown.querySelector('input[name="sort"]');
+            const labelSpan = select.querySelector('span');
+
+            let isDropdownOpen = false;
 
             // Toggle dropdown
             select.addEventListener('click', (e) => {
                 e.stopPropagation();
-                dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
+                closeAllDropdowns(); // close others
+                dropdownList.style.display = 'block';
+                isDropdownOpen = true;
             });
 
-            // Select option
+            // Handle selection
             dropdownList.querySelectorAll('li').forEach(item => {
-                item.addEventListener('click', () => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     const value = item.getAttribute('data-value');
-                    const label = item.textContent.trim();
+                    const text = item.textContent.trim();
 
                     hiddenInput.value = value;
-                    span.textContent = label;
-                    dropdownList.style.display = 'none';
+                    labelSpan.textContent = text;
 
-                    sortForm.submit();  // auto submit
+                    dropdownList.style.display = 'none';
+                    isDropdownOpen = false;
+
+                    sortForm.submit();
                 });
             });
 
-            // Close dropdown if clicked outside
+            // Close if click outside
             document.addEventListener('click', () => {
-                dropdownList.style.display = 'none';
+                if (isDropdownOpen) {
+                    dropdownList.style.display = 'none';
+                    isDropdownOpen = false;
+                }
             });
+
+            // Helper: close other dropdowns on the page (optional reuse across other filters)
+            function closeAllDropdowns() {
+                document.querySelectorAll('.drop-menu .dropdown').forEach(d => {
+                    d.style.display = 'none';
+                });
+            }
         });
     </script>
 
