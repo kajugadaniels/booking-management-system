@@ -3042,3 +3042,107 @@ Traceback (most recent call last):
     raise NoReverseMatch(msg)
 django.urls.exceptions.NoReverseMatch: Reverse for 'carDetails' with no arguments not found. 1 pattern(s) tried: ['cars/car/(?P<id>[0-9]+)/\\Z']
 "GET /cars/ HTTP/1.1" 500 270095
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 93, in carDetails
+    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+                     ^^^^^^^
+UnboundLocalError: cannot access local variable 'reviews' where it is not associated with a value
+"GET /cars/car/93/ HTTP/1.1" 500 76976
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 93, in carDetails
+    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+                     ^^^^^^^
+UnboundLocalError: cannot access local variable 'reviews' where it is not associated with a value
+"GET /cars/car/93/ HTTP/1.1" 500 76976
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 93, in carDetails
+    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+                     ^^^^^^^
+UnboundLocalError: cannot access local variable 'reviews' where it is not associated with a value
+"GET /cars/car/93/ HTTP/1.1" 500 76976
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 93, in carDetails
+    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+                     ^^^^^^^
+UnboundLocalError: cannot access local variable 'reviews' where it is not associated with a value
+"GET /cars/car/93/ HTTP/1.1" 500 76976
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 100, in carDetails
+    'features': features,
+                          
+NameError: name 'average_rating' is not defined
+"GET /cars/car/93/ HTTP/1.1" 500 76816
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 100, in carDetails
+    'features': features,
+                          
+NameError: name 'average_rating' is not defined
+"GET /cars/car/93/ HTTP/1.1" 500 76816
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 100, in carDetails
+    'features': features,
+                          
+NameError: name 'average_rating' is not defined
+"GET /cars/car/93/ HTTP/1.1" 500 76816
+Internal Server Error: /cars/car/93/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\car\views.py", line 100, in carDetails
+    'features': features,
+                          
+NameError: name 'average_rating' is not defined
+"GET /cars/car/93/ HTTP/1.1" 500 76816

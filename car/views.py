@@ -1,5 +1,6 @@
 from car.models import *
 from base.models import *
+from django.db.models import Avg
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
@@ -90,6 +91,7 @@ def carDetails(request, id):
     images = car.images.all()
     features = Feature.objects.filter(carfeature__car=car)
     reviews = car.reviews.select_related('user').all()
+    average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
 
     context = {
         'settings': site_settings,
@@ -97,6 +99,7 @@ def carDetails(request, id):
         'images': images,
         'features': features,
         'reviews': reviews,
+        'average_rating': round(average_rating, 1),
     }
 
     return render(request, 'pages/cars/show.html', context)
