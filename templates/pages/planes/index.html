@@ -1,26 +1,120 @@
 {% extends 'layouts/app.html' %}
 
 {% block content %}
-
-    <section class="contact-us-section layout-radius">
-        <div class="boxcar-container">
-            <!-- boxcar-title -->
-            <div class="boxcar-title-three wow fadeInUp">
-                <ul class="breadcrumb">
-                    <li>
-                        <a href="{% url 'base:home' %}">Home</a>
-                    </li>
-                    <li>
-                        <span>
-                            Plane Booking
-                        </span>
-                    </li>
-                </ul>
-                <h2>
-                    Coming Soon!!!
-                </h2>
-            </div>
+<section class="contact-us-section layout-radius">
+    <div class="boxcar-container">
+        <div class="boxcar-title-three wow fadeInUp">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'base:home' %}">Home</a></li>
+                <li><span>Plane Booking</span></li>
+            </ul>
+            <h2>Book Your Flight</h2>
         </div>
-    </section>
 
-{% endblock content %}
+        {% if user.is_authenticated %}
+        <div class="contact-form">
+            <form method="post" class="contact-box-two v2">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="row">
+                    <div class="col-lg-4 mb-3">
+                        <div class="form_boxes">
+                            {{ form.full_name.label_tag }} {{ form.full_name }}
+                            {{ form.full_name.errors }}
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-3">
+                        <div class="form_boxes">
+                            {{ form.email.label_tag }} {{ form.email }}
+                            {{ form.email.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <div class="form_boxes">
+                            {{ form.phone_number.label_tag }} {{ form.phone_number }}
+                            {{ form.phone_number.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <div class="form_boxes">
+                            {{ form.trip_type.label_tag }} {{ form.trip_type }}
+                            {{ form.trip_type.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mb-3">
+                        <div class="form_boxes">
+                            {{ form.origin.label_tag }} {{ form.origin }}
+                            {{ form.origin.errors }}
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-3">
+                        <div class="form_boxes">
+                            {{ form.destination.label_tag }} {{ form.destination }}
+                            {{ form.destination.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 mb-3">
+                        <div class="form_boxes">
+                            {{ form.departure_date.label_tag }} {{ form.departure_date }}
+                            {{ form.departure_date.errors }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="form_boxes">
+                            {{ form.return_date.label_tag }} {{ form.return_date }}
+                            {{ form.return_date.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <div class="form_boxes">
+                            {{ form.travel_class.label_tag }} {{ form.travel_class }}
+                            {{ form.travel_class.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <div class="form_boxes">
+                            {{ form.num_adults.label_tag }} {{ form.num_adults }}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form_boxes">
+                            {{ form.num_children.label_tag }} {{ form.num_children }}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form_boxes">
+                            {{ form.num_infants.label_tag }} {{ form.num_infants }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 mb-3">
+                        <div class="form_boxes">
+                            {{ form.notes.label_tag }} {{ form.notes }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-submit">
+                            <button type="submit" class="theme-btn">
+                                Send Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            Please <a href="{% url 'auth:getLogin' %}"><strong>login</strong></a> to book a flight.
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
