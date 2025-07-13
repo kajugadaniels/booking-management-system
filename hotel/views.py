@@ -141,6 +141,7 @@ def hotelRooms(request, hotel_id):
         'cleaned_querystring': cleaned_querystring,
         'bed_types': all_bed_types,
         'amenities': all_amenities,
+        'selected_amenities': [int(a) for a in selected_amenities],
     }
 
     return render(request, 'pages/hotels/rooms/index.html', context)
