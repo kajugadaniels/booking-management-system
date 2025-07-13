@@ -417,20 +417,26 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form_boxes">
-                                        {{ booking_form.check_in.label_tag }} {{ booking_form.check_in }}
-                                        {{ booking_form.check_in.errors }}
+                                        {{ booking_form.pickup_date.label_tag }} {{ booking_form.pickup_date }}
+                                        {{ booking_form.pickup_date.errors }}
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form_boxes">
-                                        {{ booking_form.check_out.label_tag }} {{ booking_form.check_out }}
-                                        {{ booking_form.check_out.errors }}
+                                        {{ booking_form.dropoff_date.label_tag }} {{ booking_form.dropoff_date }}
+                                        {{ booking_form.dropoff_date.errors }}
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form_boxes">
-                                        {{ booking_form.guests.label_tag }} {{ booking_form.guests }}
-                                        {{ booking_form.guests.errors }}
+                                        {{ booking_form.pickup_location.label_tag }} {{ booking_form.pickup_location }}
+                                        {{ booking_form.pickup_location.errors }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form_boxes">
+                                        {{ booking_form.dropoff_location.label_tag }} {{ booking_form.dropoff_location }}
+                                        {{ booking_form.dropoff_location.errors }}
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -438,6 +444,10 @@
                                         {{ booking_form.special_requests.label_tag }} {{ booking_form.special_requests }}
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="total-price mt-3 mb-2">
+                                <strong>Total Price: $<span id="total-price">0.00</span></strong>
                             </div>
 
                             <div class="btn-box">
@@ -452,6 +462,42 @@
                                 </button>
                             </div>
                         </form>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const checkInInput = document.getElementById("id_pickup_date");
+                                const checkOutInput = document.getElementById("id_dropoff_date");
+                                const pricePerDayparseFloat("{{ car.price_per_day");
+                                const totalPriceDisplay = document.getElementById("total-price");
+
+                                // Disable past dates for check-in and check-out
+                                const today = new Date().toISOString().split("T")[0];
+                                checkInInput.setAttribute("min", today);
+                                checkOutInput.setAttribute("min", today);
+
+                                // Calculate total price
+                                function calculateTotal() {
+                                    const checkIn = new Date(checkInInput.value);
+                                    const checkOut = new Date(checkOutInput.value);
+                                    const timeDiff = checkOut - checkIn;
+                                    const nights = timeDiff / (1000 * 60 * 60 * 24);
+
+                                    if (nights > 0) {
+                                        const total = nights * pricePerDay
+                                        totalPriceDisplay.textContent = total.toFixed(2);
+                                    } else {
+                                        totalPriceDisplay.textContent = "0.00";
+                                    }
+                                }
+
+                                checkInInput.addEventListener("change", function () {
+                                    checkOutInput.setAttribute("min", checkInInput.value);
+                                    calculateTotal();
+                                });
+
+                                checkOutInput.addEventListener("change", calculateTotal);
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
