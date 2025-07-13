@@ -23,108 +23,25 @@
                 </a>
             </div>
             <div class="row">
+                {% for brand in car_brands %}
                 <!-- cars-block -->
                 <div class="cars-block style-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="inner-box wow fadeInUp">
+                    <div class="inner-box wow fadeInUp" data-wow-delay="{{ forloop.counter0|add:"0" }}00ms">
                         <div class="image-box">
                             <figure class="image">
                                 <a href="#">
-                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/brand-1.png" alt="">
+                                    <img src="{{ brand.thumbnail.url }}" alt="{{ brand.name }}">
                                 </a>
                             </figure>
                         </div>
                         <div class="content-box">
                             <h6 class="title">
-                                <a href="#">Audi</a>
+                                <a href="#">{{ brand.name }}</a>
                             </h6>
                         </div>
                     </div>
                 </div>
-                <!-- cars-block -->
-                <div class="cars-block style-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="inner-box wow fadeInUp" data-wow-delay="100ms">
-                        <div class="image-box">
-                            <figure class="image">
-                                <a href="#">
-                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/brand-2.png" alt="">
-                                </a>
-                            </figure>
-                        </div>
-                        <div class="content-box">
-                            <h6 class="title">
-                                <a href="#">BMW</a>
-                            </h6>
-                        </div>
-                    </div>
-                </div>
-                <!-- cars-block -->
-                <div class="cars-block style-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="inner-box wow fadeInUp" data-wow-delay="200ms">
-                        <div class="image-box">
-                            <figure class="image">
-                                <a href="#">
-                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/brand-3.png" alt="">
-                                </a>
-                            </figure>
-                        </div>
-                        <div class="content-box">
-                            <h6 class="title">
-                                <a href="#">ford</a>
-                            </h6>
-                        </div>
-                    </div>
-                </div>
-                <!-- cars-block -->
-                <div class="cars-block style-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="inner-box wow fadeInUp" data-wow-delay="300ms">
-                        <div class="image-box">
-                            <figure class="image">
-                                <a href="#">
-                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/brand-4.png" alt="">
-                                </a>
-                            </figure>
-                        </div>
-                        <div class="content-box">
-                            <h6 class="title">
-                                <a href="#">Mercedes Benz</a>
-                            </h6>
-                        </div>
-                    </div>
-                </div>
-                <!-- cars-block -->
-                <div class="cars-block style-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="inner-box wow fadeInUp" data-wow-delay="400ms">
-                        <div class="image-box">
-                            <figure class="image">
-                                <a href="#">
-                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/brand-5.png" alt="">
-                                </a>
-                            </figure>
-                        </div>
-                        <div class="content-box">
-                            <h6 class="title">
-                                <a href="#">Peugeot</a>
-                            </h6>
-                        </div>
-                    </div>
-                </div>
-                <!-- cars-block -->
-                <div class="cars-block style-1 col-lg-2 col-md-6 col-sm-6">
-                    <div class="inner-box wow fadeInUp" data-wow-delay="500ms">
-                        <div class="image-box">
-                            <figure class="image">
-                                <a href="#">
-                                    <img src="https://creativelayers.net/themes/boxcar-html/images/resource/brand-6.png" alt="">
-                                </a>
-                            </figure>
-                        </div>
-                        <div class="content-box">
-                            <h6 class="title">
-                                <a href="#">Volkswagen</a>
-                            </h6>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
