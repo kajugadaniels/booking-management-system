@@ -1,114 +1,218 @@
-<style>
-    /* Ensure dropdown is scrollable with max height */
-    .drop-menu .dropdown {
-        max-height: 200px !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        scrollbar-width: thin !important;
-        scrollbar-color: #ccc transparent !important;
-    }
-
-    /* Webkit scroll (Chrome, Edge, Safari) */
-    .drop-menu .dropdown::-webkit-scrollbar {
-        width: 6px !important;
-    }
-    .drop-menu .dropdown::-webkit-scrollbar-thumb {
-        background-color: #ccc !important;
-        border-radius: 4px !important;
-    }
-    .drop-menu .dropdown::-webkit-scrollbar-track {
-        background: transparent !important;
-    }
-
-    .selected-amenities {
-        margin-bottom: 5px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-</style>
-
-<form method="get">
+<form method="get" class="filter-form">
     <div class="inventory-sidebar">
         <div class="inventroy-widget widget-location">
             <div class="row">
+                <!-- Car Brand -->
                 <div class="col-lg-12">
                     <div class="form_boxes">
-                        <label>Car Brand</label>
+                        <label>Brand</label>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>{{ selected_brand|default:"Any Brand" }}</span>
+                                <span>{{ request.GET.car_brand|default:"Any" }}</span>
                                 <i class="fa fa-angle-down"></i>
                             </div>
-                            <input type="hidden" name="brand" value="{{ selected_brand }}">
-                            <ul class="dropdown scrollable-dropdown" style="display: none;">
+                            <input type="hidden" name="car_brand" value="{{ request.GET.car_brand }}">
+                            <ul class="dropdown scrollable-dropdown">
                                 <li data-value="">Any</li>
-                                {% for brand in brands %}
-                                    <li data-value="{{ brand }}" {% if brand == selected_brand %}class="selected"{% endif %}>
-                                        {{ brand }}
+                                {% for brand in car_brands %}
+                                    <li data-value="{{ brand.id }}" {% if request.GET.car_brand == brand.id|stringformat:"s" %}class="selected"{% endif %}>
+                                        {{ brand.name }}
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
+
+                <!-- Car Type -->
+                <div class="col-lg-12">
+                    <div class="form_boxes">
+                        <label>Type</label>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>{{ request.GET.car_type|default:"Any" }}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <input type="hidden" name="car_type" value="{{ request.GET.car_type }}">
+                            <ul class="dropdown scrollable-dropdown">
+                                <li data-value="">Any</li>
+                                {% for type in car_types %}
+                                    <li data-value="{{ type.id }}" {% if request.GET.car_type == type.id|stringformat:"s" %}class="selected"{% endif %}>
+                                        {{ type.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Condition -->
+                <div class="col-lg-12">
+                    <div class="form_boxes">
+                        <label>Condition</label>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>{{ request.GET.condition|default:"Any" }}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <input type="hidden" name="condition" value="{{ request.GET.condition }}">
+                            <ul class="dropdown">
+                                <li data-value="">Any</li>
+                                <li data-value="new">New</li>
+                                <li data-value="used">Used</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fuel Type -->
+                <div class="col-lg-12">
+                    <div class="form_boxes">
+                        <label>Fuel Type</label>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>{{ request.GET.fuel_type|default:"Any" }}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <input type="hidden" name="fuel_type" value="{{ request.GET.fuel_type }}">
+                            <ul class="dropdown">
+                                <li data-value="">Any</li>
+                                <li data-value="diesel">Diesel</li>
+                                <li data-value="petrol">Petrol</li>
+                                <li data-value="electric">Electric</li>
+                                <li data-value="hybrid">Hybrid</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transmission -->
+                <div class="col-lg-12">
+                    <div class="form_boxes">
+                        <label>Transmission</label>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>{{ request.GET.transmission|default:"Any" }}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <input type="hidden" name="transmission" value="{{ request.GET.transmission }}">
+                            <ul class="dropdown">
+                                <li data-value="">Any</li>
+                                <li data-value="automatic">Automatic</li>
+                                <li data-value="manual">Manual</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="col-lg-12">
+                    <div class="form_boxes">
+                        <label>Color</label>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>{{ request.GET.color|default:"Any" }}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <input type="hidden" name="color" value="{{ request.GET.color }}">
+                            <ul class="dropdown">
+                                <li data-value="">Any</li>
+                                {% for key, name in car_color_choices.items %}
+                                    <li data-value="{{ key }}" {% if request.GET.color == key %}class="selected"{% endif %}>{{ name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Year Range -->
                 <div class="col-lg-6">
-                    <button type="submit" class="side-btn-three mb-3" style="background-color: transparent; text-align: center;">
-                        Apply Filters
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
-                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M20.058 9.723c.948-.534 1.423-.801 1.682-1.232c.26-.43.26-.949.26-1.987v-.69c0-1.326 0-1.99-.44-2.402C21.122 3 20.415 3 19 3H5c-1.414 0-2.121 0-2.56.412S2 4.488 2 5.815v.69c0 1.037 0 1.556.26 1.986s.733.698 1.682 1.232l2.913 1.64c.636.358.955.537 1.183.735c.474.411.766.895.898 1.49c.064.284.064.618.064 1.285v2.67c0 .909 0 1.364.252 1.718c.252.355.7.53 1.594.88c1.879.734 2.818 1.101 3.486.683S15 19.452 15 17.542v-2.67c0-.666 0-1 .064-1.285a2.68 2.68 0 0 1 .899-1.49" />
-                        </svg>
-                    </button>
+                    <div class="form_boxes">
+                        <label>Min Year</label>
+                        <input type="number" name="min_year" value="{{ request.GET.min_year }}">
+                    </div>
                 </div>
                 <div class="col-lg-6">
-                    <a href="{% url 'car:getCars' %}" style="background-color: transparent; text-align: center;">
-                        Reset Filters
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 21 21">
-                            <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
-                                <path d="M14.5 3.5c2.414 1.377 4 4.022 4 7a8 8 0 1 1-8-8" />
-                                <path d="M14.5 7.5v-4h4" />
-                            </g>
-                        </svg>
-                    </a>
+                    <div class="form_boxes">
+                        <label>Max Year</label>
+                        <input type="number" name="max_year" value="{{ request.GET.max_year }}">
+                    </div>
+                </div>
+
+                <!-- Price Range -->
+                <div class="col-lg-6">
+                    <div class="form_boxes">
+                        <label>Min Price ($)</label>
+                        <input type="number" name="min_price" value="{{ request.GET.min_price }}">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form_boxes">
+                        <label>Max Price ($)</label>
+                        <input type="number" name="max_price" value="{{ request.GET.max_price }}">
+                    </div>
+                </div>
+
+                <!-- Features (Multi Select with Tag Display) -->
+                <div class="col-lg-12">
+                    <div class="form_boxes">
+                        <label>Features</label>
+                        <div class="drop-menu multi-select" data-name="features">
+                            <div class="select">
+                                <span>
+                                    {% if selected_features %}
+                                        {{ selected_features|length }} selected
+                                    {% else %}
+                                        Any
+                                    {% endif %}
+                                </span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+
+                            {% for feature in car_features %}
+                                {% if feature.id in selected_features %}
+                                    <input type="hidden" name="features" value="{{ feature.id }}">
+                                {% endif %}
+                            {% endfor %}
+
+                            <ul class="dropdown scrollable-dropdown">
+                                {% for feature in car_features %}
+                                    <li data-value="{{ feature.id }}" data-label="{{ feature.name }}"
+                                        class="{% if feature.id in selected_features %}selected{% endif %}">
+                                        {{ feature.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Feature Tags -->
+                <div class="col-lg-12">
+                    <div class="categories-box border-none-bottom m-0">
+                        <h6 class="title">Features</h6>
+                        <div class="cheak-box selected-amenities" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            {% for feature in car_features %}
+                                {% if feature.id in selected_features %}
+                                    <label class="contain" data-id="{{ feature.id }}">
+                                        {{ feature.name }}
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit & Reset -->
+                <div class="col-lg-6">
+                    <button type="submit" class="side-btn-three mb-3">Apply Filters</button>
+                </div>
+                <div class="col-lg-6">
+                    <a href="{% url 'cars:car_list' %}" class="side-btn-three mb-3">Reset</a>
                 </div>
             </div>
         </div>
     </div>
 </form>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.drop-menu').forEach(dropdown => {
-            const select = dropdown.querySelector('.select');
-            const dropdownList = dropdown.querySelector('.dropdown');
-            const span = select.querySelector('span');
-            const input = dropdown.querySelector('input[type="hidden"]');
-
-            select.addEventListener('click', e => {
-                e.stopPropagation();
-                closeAllDropdowns();
-                dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
-            });
-
-            dropdownList.querySelectorAll('li').forEach(item => {
-                item.addEventListener('click', () => {
-                    const value = item.getAttribute('data-value');
-                    const label = item.textContent.trim();
-
-                    dropdownList.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
-                    item.classList.add('selected');
-
-                    input.value = value;
-                    span.textContent = label;
-                    dropdownList.style.display = 'none';
-                });
-            });
-        });
-
-        function closeAllDropdowns() {
-            document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
-        }
-
-        document.addEventListener('click', closeAllDropdowns);
-    });
-</script>

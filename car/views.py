@@ -7,35 +7,37 @@ def getCars(request):
     site_settings = Setting.objects.first()
     cars = Car.objects.filter(is_available=True)
 
-    # === Retrieve filters ===
-    sort = request.GET.get('sort')
-    selected_brand = request.GET.get('brand')
-    location = request.GET.get('location')
-    zip_code = request.GET.get('zip_code')
+    # === Filters ===
+    brand = request.GET.get('car_brand')
+    car_type = request.GET.get('car_type')
+    condition = request.GET.get('condition')
+    fuel_type = request.GET.get('fuel_type')
+    transmission = request.GET.get('transmission')
+    color = request.GET.get('color')
     min_year = request.GET.get('min_year')
     max_year = request.GET.get('max_year')
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
-    mileage = request.GET.get('mileage')
-    doors = request.GET.get('doors')
-    cylinders = request.GET.get('cylinders')
-    drive_type = request.GET.get('drive_type')
-    fuel_types = request.GET.getlist('fuel_type')
-    transmissions = request.GET.getlist('transmission')
-    body_types = request.GET.getlist('body_type')
-    makes = request.GET.getlist('make')
-    models = request.GET.getlist('model')
     features = request.GET.getlist('features')
 
-    # === Apply filters ===
-    if selected_brand:
-        cars = cars.filter(make__iexact=selected_brand)
+    # Apply filters
+    if brand:
+        cars = cars.filter(car_brand_id=brand)
 
-    if location:
-        cars = cars.filter(location__iexact=location)
+    if car_type:
+        cars = cars.filter(car_type_id=car_type)
 
-    if zip_code:
-        cars = cars.filter(zip_code__iexact=zip_code)
+    if condition:
+        cars = cars.filter(condition=condition)
+
+    if fuel_type:
+        cars = cars.filter(fuel_type=fuel_type)
+
+    if transmission:
+        cars = cars.filter(transmission=transmission)
+
+    if color:
+        cars = cars.filter(color=color)
 
     if min_year:
         cars = cars.filter(year__gte=min_year)
@@ -49,38 +51,11 @@ def getCars(request):
     if max_price:
         cars = cars.filter(price_per_day__lte=max_price)
 
-    if mileage:
-        cars = cars.filter(mileage__lte=mileage)
-
-    if doors:
-        cars = cars.filter(doors=doors)
-
-    if cylinders:
-        cars = cars.filter(cylinders=cylinders)
-
-    if drive_type:
-        cars = cars.filter(drive_type__iexact=drive_type)
-
-    if fuel_types:
-        cars = cars.filter(fuel_type__in=fuel_types)
-
-    if transmissions:
-        cars = cars.filter(transmission__in=transmissions)
-
-    if body_types:
-        cars = cars.filter(body_type__in=body_types)
-
-    if makes:
-        cars = cars.filter(make__in=makes)
-
-    if models:
-        cars = cars.filter(model__in=models)
-
     if features:
-        for feature in features:
-            cars = cars.filter(features__id=feature)
+        cars = cars.filter(carfeature__feature_id__in=features).distinct()
 
     # === Sorting ===
+    sort = request.GET.get('sort')
     if sort == 'price_asc':
         cars = cars.order_by('price_per_day')
     elif sort == 'price_desc':
@@ -88,20 +63,21 @@ def getCars(request):
     else:
         cars = cars.order_by('-created_at')
 
-    car_brands = Car.objects.values_list('year', flat=True).distinct().order_by('year')
-
     # === Pagination ===
-    paginator = Paginator(cars.distinct(), 9)
+    paginator = Paginator(cars, 9)
     page_number = request.GET.get('page')
     cars_page = paginator.get_page(page_number)
 
-    # === Context ===
     context = {
         'settings': site_settings,
         'cars': cars_page,
         'sort': sort,
-        'selected_brand': selected_brand,
-        'filter_params': request.GET,  # Pass GET for UI re-fill if needed
+
+        # Required for filter form
+        'car_brands': CarBrand.objects.all(),
+        'car_types': CarType.objects.all(),
+        'car_features': Feature.objects.all(),
+        'selected_features': list(map(int, features)) if features else [],
     }
 
     return render(request, 'pages/cars/index.html', context)
