@@ -99,6 +99,15 @@ def hotelRooms(request, hotel_id):
         for amenity_id in selected_amenities:
             rooms = rooms.filter(room_amenities__amenity_id=amenity_id)
 
+    sort = request.GET.get('sort')
+
+    if sort == 'price_asc':
+        rooms = rooms.order_by('price_per_night')
+    elif sort == 'price_desc':
+        rooms = rooms.order_by('-price_per_night')
+    else:
+        rooms = rooms.order_by('-created_at')
+
     rooms = rooms.distinct()
     paginator = Paginator(rooms, 6)
     page_number = request.GET.get('page')
@@ -133,25 +142,16 @@ def hotelRooms(request, hotel_id):
     all_bed_types = HotelRoom.objects.values_list('bed_type', flat=True).distinct()
     all_amenities = Amenity.objects.all()
 
-    sort = request.GET.get('sort')
-
-    if sort == 'price_asc':
-        rooms = rooms.order_by('price_per_night')
-    elif sort == 'price_desc':
-        rooms = rooms.order_by('-price_per_night')
-    else:
-        rooms = rooms.order_by('-created_at')
-
     context = {
         'settings': site_settings,
         'hotel': hotel,
         'page_obj': page_obj,
+        'sort': sort,
         'room_data': room_data,
         'cleaned_querystring': cleaned_querystring,
         'bed_types': all_bed_types,
         'amenities': all_amenities,
         'selected_amenities': [int(a) for a in selected_amenities],
-        'sort': sort,
     }
 
     return render(request, 'pages/hotels/rooms/index.html', context)
