@@ -51,6 +51,15 @@ def home(request):
 
     return render(request, 'pages/index.html', context)
 
+def brands(request):
+    site_settings = Setting.objects.first()
+
+    context = {
+        'settings': site_settings
+    }
+
+    return render (request, 'pages/brands.html', context)
+
 def howItWorks(request):
     site_settings = Setting.objects.first()
 
