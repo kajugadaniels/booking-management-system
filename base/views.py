@@ -36,11 +36,16 @@ def home(request):
         rooms = HotelRoom.objects.order_by('-price_per_night')[:6]
 
     # 4. Cars: high-rated or fallback to price
-    rated_cars = Car.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
-    if rated_cars.exists():
-        cars = rated_cars.order_by('-avg_rating')[:6]
+    rated_cars_qs = Car.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
+    rated_cars = list(rated_cars_qs.order_by('-avg_rating')[:6])
+
+    # If less than 6, fill the rest with highest-priced unrated or not-yet-selected cars
+    if len(rated_cars) < 6:
+        exclude_ids = [car.id for car in rated_cars]
+        filler_cars = Car.objects.exclude(id__in=exclude_ids).order_by('-price_per_day')[:6 - len(rated_cars)]
+        cars = rated_cars + list(filler_cars)
     else:
-        cars = Car.objects.order_by('-price_per_day')[:6]
+        cars = rated_cars
 
     context = {
         'settings': site_settings,
