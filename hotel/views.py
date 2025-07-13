@@ -75,9 +75,9 @@ def getHotels(request):
 def hotelRooms(request, hotel_id):
     site_settings = Setting.objects.first()
     hotel = get_object_or_404(Hotel, id=hotel_id)
-    rooms = HotelRoom.objects.filter(hotel=hotel).order_by('-created_at')
+    rooms = HotelRoom.objects.filter(hotel=hotel, is_available=True)
 
-    # Apply filters
+    # Filters
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
     occupancy = request.GET.get('occupancy')
@@ -102,8 +102,8 @@ def hotelRooms(request, hotel_id):
         for amenity_id in selected_amenities:
             rooms = rooms.filter(room_amenities__amenity_id=amenity_id)
 
+    # Sorting
     sort = request.GET.get('sort')
-
     if sort == 'price_asc':
         rooms = rooms.order_by('price_per_night')
     elif sort == 'price_desc':
@@ -111,16 +111,16 @@ def hotelRooms(request, hotel_id):
     else:
         rooms = rooms.order_by('-created_at')
 
-    rooms = rooms.distinct()
-    paginator = Paginator(rooms, 6)
+    # Pagination
+    paginator = Paginator(rooms.distinct(), 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Image & amenities processing
     room_data = []
     for room in page_obj:
-        room_images = RoomImage.objects.filter(room=room)
         image_url = DEFAULT_IMAGE
-        for img in room_images:
+        for img in RoomImage.objects.filter(room=room):
             try:
                 if img.image and hasattr(img.image, 'url'):
                     image_url = img.image.url
@@ -134,29 +134,26 @@ def hotelRooms(request, hotel_id):
         room_data.append({
             'instance': room,
             'image_url': image_url,
-            'amenities': [ra.amenity.name for ra in random_amenities]
+            'amenities': [ra.amenity.name for ra in random_amenities],
         })
 
+    # Query string for clean pagination links
     get_params = request.GET.copy()
     if 'page' in get_params:
         del get_params['page']
     cleaned_querystring = get_params.urlencode()
 
-    all_room_types = HotelRoom.ROOM_TYPE_CHOICES
-    all_bed_types = HotelRoom.BED_TYPE_CHOICES
-    all_amenities = Amenity.objects.all()
-
     context = {
         'settings': site_settings,
         'hotel': hotel,
         'page_obj': page_obj,
-        'sort': sort,
         'room_data': room_data,
-        'cleaned_querystring': cleaned_querystring,
-        'room_types': all_room_types,
-        'bed_types': all_bed_types,
-        'amenities': all_amenities,
+        'room_types': HotelRoom.ROOM_TYPE_CHOICES,
+        'bed_types': HotelRoom.BED_TYPE_CHOICES,
+        'amenities': Amenity.objects.all(),
         'selected_amenities': [int(a) for a in selected_amenities],
+        'sort': sort,
+        'cleaned_querystring': cleaned_querystring,
     }
 
     return render(request, 'pages/hotels/rooms/index.html', context)
