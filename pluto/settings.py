@@ -85,14 +85,14 @@ WSGI_APPLICATION = 'pluto.wsgi.application'
 #     }
 # }
 
-DATABASES =  {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("cometboo_pluto"),
-        'USER': os.getenv("cometboo_pluto"),
-        'PASSWORD': os.getenv("WyT%.ZGGme3W4ucd"),
-        'HOST': os.getenv("localhost"),
-        'PORT': os.getenv("3306"),
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT", "3306"),
     }
 }
 
