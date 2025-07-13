@@ -83,7 +83,7 @@
                                     </a>
                                 </figure>
                                 <span>
-                                    {{ hotel.available_rooms }} Available
+                                    {{ hotel.instance.stars }} Stars
                                 </span>
                                 <a class="icon-box">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -102,14 +102,10 @@
                                 <h6 class="title">
                                     <a href="{% url 'hotel:hotelRooms' hotel.instance.id %}">{{ hotel.instance.name|truncatechars:23 }}</a>
                                 </h6>
-                                <ul>
-                                    <li><i class="flaticon-gasoline-pump"></i>{{ hotel.instance.province }}</li>
-                                    <li><i class="flaticon-speedometer"></i>{{ hotel.instance.stars }} Stars</li>
-                                    <li><i class="flaticon-gearbox"></i>{{ hotel.instance.created_at|date:"Y" }}</li>
-                                </ul>
                                 <div class="btn-box">
-                                    <span>Rooms</span>
-                                    <small>{{ hotel.room_count }}</small>
+                                    <span>Available Rooms</span>
+                                    {% comment %} <small>{{ hotel.room_count }}</small> {% endcomment %}
+                                    <small>{{ hotel.available_rooms }}</small>
                                     <a href="{% url 'hotel:hotelRooms' hotel.instance.id %}" class="details">
                                         View Details
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
