@@ -6,8 +6,9 @@ from random import sample
 from hotel.models import *
 from django.conf import settings
 from django.contrib import messages
+from django.db.models import Avg, Q
 from django.core.mail import send_mail
-from django.db.models import Avg, Count
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
@@ -54,11 +55,36 @@ def home(request):
 def brands(request):
     site_settings = Setting.objects.first()
 
+    # Query params
+    query = request.GET.get('q', '')
+    sort_by = request.GET.get('sort', 'latest')
+
+    # Base queryset
+    brands = CarBrand.objects.all()
+
+    # Filter by search
+    if query:
+        brands = brands.filter(Q(name__icontains=query))
+
+    # Sorting
+    if sort_by == 'oldest':
+        brands = brands.order_by('created_at')
+    else:
+        brands = brands.order_by('-created_at')
+
+    # Pagination
+    paginator = Paginator(brands, 12)  # 12 per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'settings': site_settings
+        'settings': site_settings,
+        'brands': page_obj,
+        'query': query,
+        'sort_by': sort_by,
     }
 
-    return render (request, 'pages/brands.html', context)
+    return render(request, 'pages/brands.html', context)
 
 def howItWorks(request):
     site_settings = Setting.objects.first()
