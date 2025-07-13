@@ -7,7 +7,6 @@ from django.utils.text import slugify
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 from django.db.models.signals import post_delete
-from django.db.models.signals import post_delete, pre_save
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 def car_image_upload_path(instance, filename):
@@ -112,7 +111,7 @@ class Car(models.Model):
         ordering = ['-created_at']
 
 class CarImage(models.Model):
-    car = models.ForeignKey('Car', on_delete=models.CASCADE, related_name='images')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='images')
     image = ProcessedImageField(
         upload_to=car_image_upload_path,
         processors=[ResizeToFill(1280, 720)],
@@ -124,30 +123,6 @@ class CarImage(models.Model):
 
     def __str__(self):
         return f"Image of {self.car.name}"
-
-# ✅ Delete the file from storage when CarImage is deleted
-@receiver(post_delete, sender=CarImage)
-def delete_car_image_file(sender, instance, **kwargs):
-    if instance.image and instance.image.storage.exists(instance.image.name):
-        instance.image.delete(save=False)
-
-# ✅ Delete old file from storage if image is being updated
-@receiver(pre_save, sender=CarImage)
-def auto_delete_old_image_on_change(sender, instance, **kwargs):
-    if not instance.pk:
-        return  # New object, no old image to delete
-
-    try:
-        old_instance = CarImage.objects.get(pk=instance.pk)
-    except CarImage.DoesNotExist:
-        return
-
-    old_image = old_instance.image
-    new_image = instance.image
-
-    if old_image and old_image != new_image:
-        if old_image.storage.exists(old_image.name):
-            old_image.delete(save=False)
 
 # Delete image file from media folder when model is deleted
 @receiver(post_delete, sender=CarImage)
