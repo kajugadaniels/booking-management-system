@@ -114,6 +114,11 @@ def planeBooking(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Add formatted fields for display
+    for booking in page_obj:
+        booking.pretty_trip_type = booking.trip_type.replace('_', ' ').title()
+        booking.pretty_travel_class = booking.travel_class.replace('_', ' ').title()
+
     context = {
         'settings': site_settings,
         'bookings': page_obj,

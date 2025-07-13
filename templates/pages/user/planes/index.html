@@ -74,12 +74,12 @@
                                         </div>
                                         <div class="shop-product-cart-info">
                                             <h3>
-                                                <a href="#" title="{{ booking.origin }} → {{ booking.destination }}">
-                                                    From {{ booking.origin }} To {{ booking.destination }}
+                                                <a href="#" title="{{ booking.full_name }}">
+                                                    {{ booking.full_name }}
                                                 </a>
                                             </h3>
                                             <p>
-                                                {{ booking.car.car_brand.name }}
+                                                From <span style="font-weight: bold !important;">{{ booking.origin }}</span> To <span style="font-weight: bold !important;">{{ booking.destination }}</span>
                                             </p>
                                             <div class="price">
                                                 <span>
@@ -104,12 +104,12 @@
                                 </td>
                                 <td>
                                     <span>
-                                        {{ booking.travel_class|capfirst }}
+                                        {{ booking.travel_class|title }}
                                     </span>
                                 </td>
                                 <td>
                                     <span>
-                                        {{ booking.trip_type|capfirst }}
+                                        {{ booking.pretty_trip_type }}
                                     </span>
                                 </td>
                                 <td>
