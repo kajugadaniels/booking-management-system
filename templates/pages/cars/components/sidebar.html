@@ -34,17 +34,20 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form_boxes">
-                        <label>Location</label>
+                        <label>Car Brand</label>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>New York</span>
+                                <span>{{ selected_brand|default:"Any Brand" }}</span>
                                 <i class="fa fa-angle-down"></i>
                             </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
+                            <input type="hidden" name="brand" value="{{ selected_brand }}">
+                            <ul class="dropdown scrollable-dropdown" style="display: none;">
+                                <li data-value="">Any</li>
+                                {% for brand in brands %}
+                                    <li data-value="{{ brand }}" {% if brand == selected_brand %}class="selected"{% endif %}>
+                                        {{ brand }}
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -74,5 +77,38 @@
 </form>
 
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.drop-menu').forEach(dropdown => {
+            const select = dropdown.querySelector('.select');
+            const dropdownList = dropdown.querySelector('.dropdown');
+            const span = select.querySelector('span');
+            const input = dropdown.querySelector('input[type="hidden"]');
 
+            select.addEventListener('click', e => {
+                e.stopPropagation();
+                closeAllDropdowns();
+                dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
+            });
+
+            dropdownList.querySelectorAll('li').forEach(item => {
+                item.addEventListener('click', () => {
+                    const value = item.getAttribute('data-value');
+                    const label = item.textContent.trim();
+
+                    dropdownList.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                    item.classList.add('selected');
+
+                    input.value = value;
+                    span.textContent = label;
+                    dropdownList.style.display = 'none';
+                });
+            });
+        });
+
+        function closeAllDropdowns() {
+            document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
+        }
+
+        document.addEventListener('click', closeAllDropdowns);
+    });
 </script>
