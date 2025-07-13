@@ -81,6 +81,7 @@ def hotelRooms(request, hotel_id):
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
     occupancy = request.GET.get('occupancy')
+    room_type = request.GET.get('room_type')
     bed_type = request.GET.get('bed_type')
     refundable = request.GET.get('refundable')
     selected_amenities = request.GET.getlist('amenities')
@@ -91,6 +92,8 @@ def hotelRooms(request, hotel_id):
         rooms = rooms.filter(price_per_night__lte=max_price)
     if occupancy:
         rooms = rooms.filter(occupancy=occupancy)
+    if room_type:
+        rooms = rooms.filter(room_type__iexact=room_type)
     if bed_type:
         rooms = rooms.filter(bed_type__iexact=bed_type)
     if refundable in ['true', 'false']:
@@ -139,6 +142,7 @@ def hotelRooms(request, hotel_id):
         del get_params['page']
     cleaned_querystring = get_params.urlencode()
 
+    all_room_types = HotelRoom.ROOM_TYPE_CHOICES
     all_bed_types = HotelRoom.BED_TYPE_CHOICES
     all_amenities = Amenity.objects.all()
 
@@ -149,6 +153,7 @@ def hotelRooms(request, hotel_id):
         'sort': sort,
         'room_data': room_data,
         'cleaned_querystring': cleaned_querystring,
+        'room_types': all_room_types,
         'bed_types': all_bed_types,
         'amenities': all_amenities,
         'selected_amenities': [int(a) for a in selected_amenities],
