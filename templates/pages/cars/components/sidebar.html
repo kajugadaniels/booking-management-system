@@ -1,393 +1,78 @@
-<div class="sidebar-handle">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.75 4.50903C13.9446 4.50903 12.4263 5.80309 12.0762 7.50903H2.25C1.83579 7.50903 1.5 7.84482 1.5 8.25903C1.5 8.67324 1.83579 9.00903 2.25 9.00903H12.0762C12.4263 10.715 13.9446 12.009 15.75 12.009C17.5554 12.009 19.0737 10.715 19.4238 9.00903H21.75C22.1642 9.00903 22.5 8.67324 22.5 8.25903C22.5 7.84482 22.1642 7.50903 21.75 7.50903H19.4238C19.0737 5.80309 17.5554 4.50903 15.75 4.50903ZM15.75 6.00903C17.0015 6.00903 18 7.00753 18 8.25903C18 9.51054 17.0015 10.509 15.75 10.509C14.4985 10.509 13.5 9.51054 13.5 8.25903C13.5 7.00753 14.4985 6.00903 15.75 6.00903Z" fill="#050B20"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12.009C6.44461 12.009 4.92634 13.3031 4.57617 15.009H2.25C1.83579 15.009 1.5 15.3448 1.5 15.759C1.5 16.1732 1.83579 16.509 2.25 16.509H4.57617C4.92634 18.215 6.44461 19.509 8.25 19.509C10.0554 19.509 11.5737 18.215 11.9238 16.509H21.75C22.1642 16.509 22.5 16.1732 22.5 15.759C22.5 15.3448 22.1642 15.009 21.75 15.009H11.9238C11.5737 13.3031 10.0554 12.009 8.25 12.009ZM8.25 13.509C9.5015 13.509 10.5 14.5075 10.5 15.759C10.5 17.0105 9.5015 18.009 8.25 18.009C6.9985 18.009 6 17.0105 6 15.759C6 14.5075 6.9985 13.509 8.25 13.509Z" fill="#050B20"/>
-    </svg>
-    Show Filter 
-</div>
-<div class="inventory-sidebar">
-    <div class="inventroy-widget widget-location">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Location</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>New York</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div class="form_boxes">
-                    <label>Search within</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>200 miles</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>200 miles</li>
-                            <li>200 miles</li>
-                            <li>200 miles</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="form_boxes">
-                    <label>Zip Code</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>02111</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>02111</li>
-                            <li>02111</li>
-                            <li>02111</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Condition</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>New and Used</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="categories-box">
-                    <h6 class="title">Type</h6>
-                    <div class="cheak-box">
-                        <label class="contain">SUV  (1,456)
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Sedan  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Hatchback  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Coupe  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Convertible  (1,456)
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Make</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>Add Make</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Model</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>Add Model</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form_boxes">
-                    <label>Min year</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>2019</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>2020</li>
-                            <li>2021</li>
-                            <li>2022</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form_boxes">
-                    <label>Max year</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>2023</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>2020</li>
-                            <li>2021</li>
-                            <li>2022</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Mileage</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>Any Mileage</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Drive Type</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>Any Type</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="price-box">
-                    <h6 class="title">Price</h6>
-                    <form class="row g-0">
-                        <div class="form-column col-lg-6">
-                            <div class="form_boxes">
-                                <label>Min price</label>
-                                <div class="drop-menu">
-                                    <!-- <input type="text" id="slider-range-value1" name="gender"> -->
-                                    <span id="slider-range-value1"></span>
-                                    
-                                </div>
+<style>
+    /* Ensure dropdown is scrollable with max height */
+    .drop-menu .dropdown {
+        max-height: 200px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: #ccc transparent !important;
+    }
+
+    /* Webkit scroll (Chrome, Edge, Safari) */
+    .drop-menu .dropdown::-webkit-scrollbar {
+        width: 6px !important;
+    }
+    .drop-menu .dropdown::-webkit-scrollbar-thumb {
+        background-color: #ccc !important;
+        border-radius: 4px !important;
+    }
+    .drop-menu .dropdown::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+
+    .selected-amenities {
+        margin-bottom: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+</style>
+
+<form method="get">
+    <div class="inventory-sidebar">
+        <div class="inventroy-widget widget-location">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form_boxes">
+                        <label>Location</label>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>New York</span>
+                                <i class="fa fa-angle-down"></i>
                             </div>
-                        </div>
-                        <div class="form-column v2 col-lg-6">
-                            <div class="form_boxes">
-                                <label>Max price</label>
-                                <div class="drop-menu">
-                                <span id="slider-range-value2"></span>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- <div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div class="ui-slider-range ui-corner-all ui-widget-header" style="left: 39.3939%; width: 60.6061%;"></div><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 39.3939%;"></span><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 100%;"></span></div> -->
-                    <div class="widget-price">
-                        
-                        <div id="slider-val"></div>
-                        <div class="slider-labels">
-                            <input type="hidden" name="min-value" value="">
-                            <input type="hidden" name="max-value" value="">                                                                                  
+                            <input type="hidden" name="gender">
+                            <ul class="dropdown" style="display: none;">
+                                <li>New York</li>
+                                <li>Los Vegas</li>
+                                <li>California</li>
+                            </ul>
                         </div>
                     </div>
-                    
-                    
                 </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="categories-box border-none-bottom">
-                    <h6 class="title">Transmission</h6>
-                    <div class="cheak-box">
-                        <label class="contain">Automatic  (1,456)
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Manual  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">CVT  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
+                <div class="col-lg-6">
+                    <button type="submit" class="side-btn-three mb-3" style="background-color: transparent; text-align: center;">
+                        Apply Filters
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M20.058 9.723c.948-.534 1.423-.801 1.682-1.232c.26-.43.26-.949.26-1.987v-.69c0-1.326 0-1.99-.44-2.402C21.122 3 20.415 3 19 3H5c-1.414 0-2.121 0-2.56.412S2 4.488 2 5.815v.69c0 1.037 0 1.556.26 1.986s.733.698 1.682 1.232l2.913 1.64c.636.358.955.537 1.183.735c.474.411.766.895.898 1.49c.064.284.064.618.064 1.285v2.67c0 .909 0 1.364.252 1.718c.252.355.7.53 1.594.88c1.879.734 2.818 1.101 3.486.683S15 19.452 15 17.542v-2.67c0-.666 0-1 .064-1.285a2.68 2.68 0 0 1 .899-1.49" />
+                        </svg>
+                    </button>
                 </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="categories-box border-none-bottom">
-                    <h6 class="title">Fuel Type</h6>
-                    <div class="cheak-box">
-                        <label class="contain">Diesel  (1,456)
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Petrol  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Hybird  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Electric  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Exterior Color</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>Blue</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Interior Color</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>Black</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Doors</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>3</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form_boxes">
-                    <label>Cylinders</label>
-                    <div class="drop-menu">
-                        <div class="select">
-                            <span>6</span>
-                            <i class="fa fa-angle-down"></i>
-                        </div>
-                        <input type="hidden" name="gender">
-                        <ul class="dropdown" style="display: none;">
-                            <li>New York</li>
-                            <li>Los Vegas</li>
-                            <li>California</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="categories-box border-none-bottom m-0">
-                    <h6 class="title">Key Features</h6>
-                    <div class="cheak-box">
-                        <label class="contain">360-degree camera  (1,456)
-                            <input type="checkbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Bluetooth  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Keyless start  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Navigation System  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Active head restraints  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Brake assist  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="contain">Parking assist systems  (1,456)
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                    <a href="#" title="" class="show-more">Show 8 more</a>
+                <div class="col-lg-6">
+                    <a href="{% url 'car:getCars' %}" style="background-color: transparent; text-align: center;">
+                        Reset Filters
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 21 21">
+                            <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                                <path d="M14.5 3.5c2.414 1.377 4 4.022 4 7a8 8 0 1 1-8-8" />
+                                <path d="M14.5 7.5v-4h4" />
+                            </g>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
-    </div><!--widget end-->
-</div>
+    </div>
+</form>
+
+<script>
+
+</script>

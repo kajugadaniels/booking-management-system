@@ -9,6 +9,7 @@ def getCars(request):
 
     # === Retrieve filters ===
     sort = request.GET.get('sort')
+    selected_brand = request.GET.get('brand')
     location = request.GET.get('location')
     zip_code = request.GET.get('zip_code')
     min_year = request.GET.get('min_year')
@@ -27,6 +28,9 @@ def getCars(request):
     features = request.GET.getlist('features')
 
     # === Apply filters ===
+    if selected_brand:
+        cars = cars.filter(make__iexact=selected_brand)
+
     if location:
         cars = cars.filter(location__iexact=location)
 
@@ -84,6 +88,8 @@ def getCars(request):
     else:
         cars = cars.order_by('-created_at')
 
+    car_brands = Car.objects.values_list('year', flat=True).distinct().order_by('year')
+
     # === Pagination ===
     paginator = Paginator(cars.distinct(), 9)
     page_number = request.GET.get('page')
@@ -94,6 +100,7 @@ def getCars(request):
         'settings': site_settings,
         'cars': cars_page,
         'sort': sort,
+        'selected_brand': selected_brand,
         'filter_params': request.GET,  # Pass GET for UI re-fill if needed
     }
 
