@@ -15,11 +15,12 @@ class CarReviewForm(forms.ModelForm):
 class CarBookingForm(forms.ModelForm):
     class Meta:
         model = CarBooking
-        fields = ['pickup_location', 'dropoff_location', 'pickup_date', 'dropoff_date']
+        fields = ['pickup_date', 'dropoff_date', 'pickup_location', 'dropoff_location', 'special_requests']
         widgets = {
             'pickup_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'dropoff_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'guests': forms.NumberInput(attrs={'min': 1, 'class': 'form-control'}),
+            'pickup_location': forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}),
+            'dropoff_location': forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}),
             'special_requests': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Any special needs...'}),
         }
 
