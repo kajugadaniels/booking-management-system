@@ -165,7 +165,7 @@ def roomDetails(request, hotel_id, room_id):
     images = room.images.all()
     amenities = room.room_amenities.select_related('amenity')
     reviews = RoomReview.objects.filter(room=room).select_related('user')
-    similar_rooms = HotelRoom.objects.filter(hotel=hotel).exclude(id=room.id)[:4]
+    similar_rooms = HotelRoom.objects.filter(hotel=hotel).exclude(id=room.id)[:7]
     average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
 
     review_form = None
