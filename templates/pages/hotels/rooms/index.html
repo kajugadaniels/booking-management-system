@@ -31,18 +31,32 @@
                             <div class="text">
                                 Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} rooms
                             </div>
-                            <form>
+                            <form method="get" id="sortForm">
+                                {% for key, value in request.GET.items %}
+                                    {% if key != 'sort' and key != 'page' %}
+                                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                                    {% endif %}
+                                {% endfor %}
                                 <div class="form_boxes v3">
                                     <small>Sort by</small>
                                     <div class="drop-menu">
                                         <div class="select">
-                                            <span>Any Makes</span>
+                                            <span>
+                                                {% if request.GET.sort == 'price_asc' %}
+                                                    Price: Low to High
+                                                {% elif request.GET.sort == 'price_desc' %}
+                                                    Price: High to Low
+                                                {% else %}
+                                                    Default
+                                                {% endif %}
+                                            </span>
                                             <i class="fa fa-angle-down"></i>
                                         </div>
-                                        <input type="hidden" name="gender">
+                                        <input type="hidden" name="sort" value="{{ request.GET.sort }}">
                                         <ul class="dropdown" style="display: none;">
-                                            <li>Audi</li>
-                                            <li>Honda</li>
+                                            <li data-value="">Default</li>
+                                            <li data-value="price_asc">Price: Low to High</li>
+                                            <li data-value="price_desc">Price: High to Low</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -251,5 +265,41 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sortForm = document.getElementById('sortForm');
+            const dropdown = sortForm.querySelector('.drop-menu');
+            const select = dropdown.querySelector('.select');
+            const dropdownList = dropdown.querySelector('.dropdown');
+            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+            const span = select.querySelector('span');
+
+            // Toggle dropdown
+            select.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Select option
+            dropdownList.querySelectorAll('li').forEach(item => {
+                item.addEventListener('click', () => {
+                    const value = item.getAttribute('data-value');
+                    const label = item.textContent.trim();
+
+                    hiddenInput.value = value;
+                    span.textContent = label;
+                    dropdownList.style.display = 'none';
+
+                    sortForm.submit();  // auto submit
+                });
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', () => {
+                dropdownList.style.display = 'none';
+            });
+        });
+    </script>
 
 {% endblock content %}
