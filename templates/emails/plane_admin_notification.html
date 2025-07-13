@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Contact Submission</title>
+</head>
+<body>
+    <p>New plane booking request received:</p>
+    <ul>
+        <li><strong>User:</strong> {{ user.get_full_name }} ({{ user.email }})</li>
+        <li><strong>From:</strong> {{ booking.origin }}</li>
+        <li><strong>To:</strong> {{ booking.destination }}</li>
+        <li><strong>Date:</strong> {{ booking.departure_date }}</li>
+        <li><strong>Class:</strong> {{ booking.get_travel_class_display }}</li>
+        <li><strong>Notes:</strong> {{ booking.notes|default:"None" }}</li>
+    </ul>
+</body>
+</html>

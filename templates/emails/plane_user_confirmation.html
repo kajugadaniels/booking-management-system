@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Contact Submission</title>
+</head>
+<body>
+    <p>Hi {{ user.first_name }},</p>
+    <p>Thank you for your flight booking request from <strong>{{ booking.origin }}</strong> to <strong>{{ booking.destination }}</strong> on <strong>{{ booking.departure_date }}</strong>.</p>
+    <p>We’ll be in touch shortly to confirm the details.</p>
+    <p>Best regards,<br>{{ settings.site_name }} Team</p>
+</body>
+</html>
