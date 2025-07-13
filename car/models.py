@@ -43,7 +43,7 @@ class CarBrand(models.Model):
     name = models.CharField(max_length=100, unique=True)
     thumbnail = ProcessedImageField(
         upload_to=brand_thumbnail_upload_path,
-        processors=[ResizeToFill(100, 100)],
+        processors=[ResizeToFill(174, 174)],
         format='JPEG',
         options={'quality': 90},
         null=True,

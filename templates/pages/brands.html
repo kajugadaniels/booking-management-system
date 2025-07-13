@@ -49,24 +49,30 @@
             <!-- Brands List -->
             <div class="row">
                 {% for brand in brands %}
-                <div class="dealer-block col-lg-3 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <div class="image-box">
-                            <figure class="image">
-                                <a href="#"><img src="{{ brand.thumbnail.url }}" alt="{{ brand.name }}"></a>
-                            </figure>
-                        </div>
-                        <div class="content-box">
-                            <h6 class="title"><a href="#">{{ brand.name }}</a></h6>
-                            <div class="text">Explore cars from {{ brand.name }}</div>
-                            <a href="#" class="deal-btn">See More</a>
+                    <div class="dealer-block col-lg-3 col-md-6 col-sm-12">
+                        <div class="inner-box">
+                            <div class="image-box">
+                                <figure class="image">
+                                    <a href="#" style="width: 174px; height: 174px; overflow: hidden;">
+                                        {% if brand.thumbnail %}
+                                            <img src="{{ brand.thumbnail.url }}" alt="{{ brand.name }}">
+                                        {% else %}
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s" alt="{{ brand.name }}">
+                                        {% endif %}
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="content-box">
+                                <h6 class="title"><a href="#">{{ brand.name }}</a></h6>
+                                <div class="text">Explore cars from {{ brand.name }}</div>
+                                <a href="#" class="deal-btn">See More</a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% empty %}
-                <div class="col-12 text-center">
-                    <p>No brands found.</p>
-                </div>
+                    <div class="col-12 text-center">
+                        <p>No brands found.</p>
+                    </div>
                 {% endfor %}
             </div>
 
