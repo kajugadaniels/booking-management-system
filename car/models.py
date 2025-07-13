@@ -149,11 +149,29 @@ class CarImage(models.Model):
     def __str__(self):
         return f"Image of {self.car.name}"
 
-# Delete image file from media folder when model is deleted
+# ✅ Delete image from storage when CarImage is deleted
 @receiver(post_delete, sender=CarImage)
 def delete_car_image_file(sender, instance, **kwargs):
     if instance.image and instance.image.storage.exists(instance.image.name):
         instance.image.delete(save=False)
+
+# ✅ Delete old file from storage when image is updated
+@receiver(pre_save, sender=CarImage)
+def auto_delete_old_car_image_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return  # New image, nothing to replace
+
+    try:
+        old_instance = CarImage.objects.get(pk=instance.pk)
+    except CarImage.DoesNotExist:
+        return
+
+    old_image = old_instance.image
+    new_image = instance.image
+
+    if old_image and old_image != new_image:
+        if old_image.storage.exists(old_image.name):
+            old_image.delete(save=False)
 
 class CarFeature(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
