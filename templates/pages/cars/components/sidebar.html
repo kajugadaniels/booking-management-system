@@ -259,80 +259,90 @@
 </form>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const multiSelectFeatures = document.querySelector('.drop-menu.multi-select[data-name="features"]');
-    const featureInputsContainer = multiSelectFeatures; // where hidden inputs are
-    const featureSelectList = multiSelectFeatures.querySelectorAll('li');
-    const labelSpan = multiSelectFeatures.querySelector('.select span');
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdowns = document.querySelectorAll('.drop-menu');
 
-    const selectedTagContainer = document.querySelector('.selected-amenities');
+        dropdowns.forEach(dropdown => {
+            const select = dropdown.querySelector('.select');
+            const options = dropdown.querySelector('.dropdown');
+            const labelSpan = select.querySelector('span');
+            const isMulti = dropdown.classList.contains('multi-select');
+            const name = dropdown.dataset.name || dropdown.querySelector('input[type="hidden"]')?.name;
 
-    function updateLabelCount() {
-        const selectedCount = featureInputsContainer.querySelectorAll('input[name="features"]').length;
-        labelSpan.textContent = selectedCount > 0 ? `${selectedCount} selected` : 'Any';
-    }
+            select.addEventListener('click', e => {
+                e.stopPropagation();
+                document.querySelectorAll('.drop-menu .dropdown').forEach(el => el.style.display = 'none');
+                options.style.display = options.style.display === 'block' ? 'none' : 'block';
+            });
 
-    // Dropdown selection logic
-    featureSelectList.forEach(item => {
-        item.addEventListener('click', () => {
-            const value = item.getAttribute('data-value');
-            const label = item.getAttribute('data-label') || item.textContent.trim();
-            item.classList.toggle('selected');
+            options.querySelectorAll('li').forEach(option => {
+                option.addEventListener('click', () => {
+                    const value = option.getAttribute('data-value');
+                    const label = option.getAttribute('data-label') || option.textContent.trim();
 
-            const existingInput = featureInputsContainer.querySelector(`input[name="features"][value="${value}"]`);
+                    if (isMulti) {
+                        option.classList.toggle('selected');
 
-            if (existingInput) {
-                existingInput.remove();
-                const tag = selectedTagContainer.querySelector(`label[data-id="${value}"]`);
-                if (tag) tag.remove();
-            } else {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'features';
-                input.value = value;
-                featureInputsContainer.appendChild(input);
+                        const exists = dropdown.querySelector(`input[name="${name}"][value="${value}"]`);
+                        if (exists) {
+                            exists.remove();
+                            document.querySelector(`.selected-amenities label[data-id="${value}"]`)?.remove();
+                        } else {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = name;
+                            input.value = value;
+                            dropdown.appendChild(input);
 
-                const tag = document.createElement('label');
-                tag.className = 'contain';
-                tag.setAttribute('data-id', value);
-                tag.innerHTML = `
-                    ${label}
-                    <input type="checkbox" checked>
-                    <span class="checkmark"></span>
-                `;
-                selectedTagContainer.appendChild(tag);
+                            const featureLabel = document.createElement('label');
+                            featureLabel.className = 'contain';
+                            featureLabel.setAttribute('data-id', value);
+                            featureLabel.innerHTML = `
+                                ${label}
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                            `;
+                            document.querySelector('.selected-amenities')?.appendChild(featureLabel);
+                        }
 
-                tag.querySelector('input').addEventListener('change', function () {
-                    if (!this.checked) {
-                        item.classList.remove('selected');
-                        input.remove();
-                        tag.remove();
-                        updateLabelCount();
+                        const count = dropdown.querySelectorAll(`input[name="${name}"]`).length;
+                        labelSpan.textContent = count ? `${count} selected` : 'Any';
+                    } else {
+                        dropdown.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                        option.classList.add('selected');
+                        labelSpan.textContent = label;
+
+                        const hiddenInput = dropdown.querySelector(`input[name="${name}"]`);
+                        if (hiddenInput) hiddenInput.value = value;
+
+                        options.style.display = 'none';
                     }
                 });
-            }
+            });
+        });
 
-            updateLabelCount();
+        // Checkbox uncheck handler to remove selected feature
+        document.addEventListener('change', function (e) {
+            if (e.target.matches('.selected-amenities input[type="checkbox"]') && !e.target.checked) {
+                const label = e.target.closest('label.contain');
+                const value = label.getAttribute('data-id');
+                label.remove();
+
+                // Remove hidden input
+                document.querySelectorAll(`input[name="features"][value="${value}"]`).forEach(input => input.remove());
+
+                // Unselect dropdown option
+                document.querySelector(`.drop-menu.multi-select .dropdown li[data-value="${value}"]`)?.classList.remove('selected');
+
+                // Update count
+                const dropdown = document.querySelector('.drop-menu.multi-select');
+                const count = dropdown.querySelectorAll(`input[name="features"]`).length;
+                dropdown.querySelector('.select span').textContent = count ? `${count} selected` : 'Any';
+            }
+        });
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.drop-menu .dropdown').forEach(el => el.style.display = 'none');
         });
     });
-
-    // Handle already rendered feature tags (from page load)
-    selectedTagContainer.querySelectorAll('label input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const tag = this.closest('label');
-            const value = tag.getAttribute('data-id');
-
-            if (!this.checked) {
-                const listItem = multiSelectFeatures.querySelector(`li[data-value="${value}"]`);
-                const input = featureInputsContainer.querySelector(`input[name="features"][value="${value}"]`);
-
-                if (input) input.remove();
-                if (listItem) listItem.classList.remove('selected');
-                tag.remove();
-
-                updateLabelCount();
-            }
-        });
-    });
-});
 </script>
