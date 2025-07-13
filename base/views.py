@@ -1,12 +1,13 @@
+import random
 from base.forms import *
 from base.models import *
 from car.models import *
 from random import sample
 from hotel.models import *
 from django.conf import settings
-from django.db.models import Avg
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.db.models import Avg, Count
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
@@ -14,7 +15,8 @@ def home(request):
     site_settings = Setting.objects.first()
 
     # 1. Car Brands
-    car_brands = CarBrand.objects.only('name', 'thumbnail')
+    car_brands = list(CarBrand.objects.all())
+    car_brands = random.sample(car_brands, min(6, len(car_brands)))
 
     # 2. Hotels: based on rating or fallback to stars
     rated_hotels = Hotel.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)

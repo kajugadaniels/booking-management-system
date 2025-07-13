@@ -5000,3 +5000,16 @@ Traceback (most recent call last):
     raise self.error(
 django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 75: 'static', expected 'endif'. Did you forget to register or load this tag?
 "GET /users/car-booking/ HTTP/1.1" 500 145
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\base\views.py", line 17, in home
+    car_brands = CarBrand.objects.all()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: BaseManager.all() takes 1 positional argument but 3 were given
+"GET / HTTP/1.1" 500 145
