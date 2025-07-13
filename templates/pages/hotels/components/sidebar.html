@@ -1,4 +1,4 @@
-<form>
+<form method="get">
     <div class="inventory-sidebar">
         <div class="inventroy-widget widget-location">
             <div class="row">
@@ -22,344 +22,67 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="form_boxes">
-                        <label>Condition</label>
+                        <label>Refundable</label>
                         <div class="drop-menu">
                             <div class="select">
-                                <span>New and Used</span>
+                                <span>
+                                    {% if request.GET.refundable == 'true' %}
+                                        Yes
+                                    {% elif request.GET.refundable == 'false' %}
+                                        No
+                                    {% else %}
+                                        Any
+                                    {% endif %}
+                                </span>
                                 <i class="fa fa-angle-down"></i>
                             </div>
-                            <input type="hidden" name="gender">
+                            <input type="hidden" name="refundable" value="{{ request.GET.refundable }}">
                             <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="categories-box">
-                        <h6 class="title">Type</h6>
-                        <div class="cheak-box">
-                            <label class="contain">
-                                SUV  (1,456)
-                        <input type="checkbox" checked="checked">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Sedan  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Hatchback  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Coupe  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Convertible  (1,456)
-                        <input type="checkbox" checked="checked">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form_boxes">
-                        <label>Make</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>Add Make</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form_boxes">
-                        <label>Model</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>Add Model</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
+                                <li data-value="">Any</li>
+                                <li data-value="true">Yes</li>
+                                <li data-value="false">No</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form_boxes">
-                        <label>Min year</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>2019</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>2020</li>
-                                <li>2021</li>
-                                <li>2022</li>
-                            </ul>
-                        </div>
+                        <label>
+                            Min Price ($)
+                        </label>
+                        <input type="number" name="min_price" value="{{ request.GET.min_price }}">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form_boxes">
-                        <label>Max year</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>2023</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>2020</li>
-                                <li>2021</li>
-                                <li>2022</li>
-                            </ul>
-                        </div>
+                        <label>
+                            Max Price ($)
+                        </label>
+                        <input type="number" name="max_price" value="{{ request.GET.max_price }}">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="form_boxes">
-                        <label>Mileage</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>Any Mileage</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
+                        <label>
+                            Occupancy
+                        </label>
+                        <input type="number" name="occupancy" value="{{ request.GET.occupancy }}">
                     </div>
                 </div>
                 <div class="col-lg-12">
-                    <div class="form_boxes">
-                        <label>Drive Type</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>Any Type</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="price-box">
-                        <h6 class="title">Price</h6>
-                        <form class="row g-0">
-                            <div class="form-column col-lg-6">
-                                <div class="form_boxes">
-                                    <label>Min price</label>
-                                    <div class="drop-menu">
-                                        <span id="slider-range-value1"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-column v2 col-lg-6">
-                                <div class="form_boxes">
-                                    <label>Max price</label>
-                                    <div class="drop-menu">
-                                        <span id="slider-range-value2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="widget-price">
-                            <div id="slider-val"></div>
-                            <div class="slider-labels">
-                                <input type="hidden" name="min-value" value="">
-                                <input type="hidden" name="max-value" value="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="categories-box border-none-bottom">
-                        <h6 class="title">Transmission</h6>
-                        <div class="cheak-box">
-                            <label class="contain">
-                                Automatic  (1,456)
-                        <input type="checkbox" checked="checked">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Manual  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                CVT  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="categories-box border-none-bottom">
-                        <h6 class="title">Fuel Type</h6>
-                        <div class="cheak-box">
-                            <label class="contain">
-                                Diesel  (1,456)
-                        <input type="checkbox" checked="checked">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Petrol  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Hybird  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Electric  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form_boxes">
-                        <label>Exterior Color</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>Blue</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form_boxes">
-                        <label>Interior Color</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>Black</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form_boxes">
-                        <label>Doors</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>3</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form_boxes">
-                        <label>Cylinders</label>
-                        <div class="drop-menu">
-                            <div class="select">
-                                <span>6</span>
-                                <i class="fa fa-angle-down"></i>
-                            </div>
-                            <input type="hidden" name="gender">
-                            <ul class="dropdown" style="display: none;">
-                                <li>New York</li>
-                                <li>Los Vegas</li>
-                                <li>California</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="categories-box border-none-bottom m-0">
-                        <h6 class="title">Key Features</h6>
-                        <div class="cheak-box">
-                            <label class="contain">
-                                360-degree camera  (1,456)
-                        <input type="checkbox" checked="checked">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Bluetooth  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Keyless start  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Navigation System  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Active head restraints  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Brake assist  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="contain">
-                                Parking assist systems  (1,456)
-                        <input type="checkbox">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                        <a href="#" title="" class="show-more">Show 8 more</a>
-                    </div>
+                    <button type="submit" class="side-btn-three mb-3" style="background-color: transparent; text-align: center;">
+                        Apply Filters
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" fill="none">
+                            <g clip-path="url(#clip0_881_10193)">
+                                <path d="M13.6111 0H5.05558C4.84062 0 4.66668 0.173943 4.66668 0.388901C4.66668 0.603859 4.84062 0.777802 5.05558 0.777802H12.6723L0.113941 13.3362C-0.0379805 13.4881 -0.0379805 13.7342 0.113941 13.8861C0.189884 13.962 0.289415 14 0.38891 14C0.488405 14 0.5879 13.962 0.663879 13.8861L13.2222 1.3277V8.94447C13.2222 9.15943 13.3962 9.33337 13.6111 9.33337C13.8261 9.33337 14 9.15943 14 8.94447V0.388901C14 0.173943 13.8261 0 13.6111 0Z" fill="#050B20"></path>
+                            </g>
+                            <defs>
+                                <clippath id="clip0_881_10193">
+                                    <rect width="14" height="14" fill="white"></rect>
+                                </clippath>
+                            </defs>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
