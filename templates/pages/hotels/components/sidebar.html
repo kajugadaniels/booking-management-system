@@ -67,6 +67,38 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="form_boxes">
+                        <label>Amenities</label>
+                        <div class="drop-menu multi-select">
+                            <div class="select">
+                                <span>
+                                    {% if selected_amenities %}
+                                        {{ selected_amenities|length }} selected
+                                    {% else %}
+                                        Any
+                                    {% endif %}
+                                </span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <!-- Hidden inputs for each selected amenity -->
+                            {% for amenity in amenities %}
+                                {% if amenity.id in selected_amenities %}
+                                    <input type="hidden" name="amenities" value="{{ amenity.id }}">
+                                {% endif %}
+                            {% endfor %}
+
+                            <ul class="dropdown scrollable-dropdown">
+                                {% for amenity in amenities %}
+                                    <li data-value="{{ amenity.id }}"
+                                        class="{% if amenity.id in selected_amenities %}selected{% endif %}">
+                                        {{ amenity.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form_boxes">
                         <label>Refundable</label>
                         <div class="drop-menu">
                             <div class="select">
@@ -137,6 +169,70 @@
         </div>
     </div>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.drop-menu').forEach(dropdown => {
+        const select = dropdown.querySelector('.select');
+        const options = dropdown.querySelector('.dropdown');
+        const labelSpan = select.querySelector('span');
+        const isMulti = dropdown.classList.contains('multi-select');
+
+        // Toggle dropdown visibility
+        select.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeAllDropdowns();
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Handle single or multi selection
+        options.querySelectorAll('li').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const value = option.getAttribute('data-value');
+                const text = option.textContent.trim();
+
+                if (isMulti) {
+                    // Toggle selected class
+                    option.classList.toggle('selected');
+
+                    // Remove old input if exists
+                    const oldInput = dropdown.querySelector(`input[name="amenities"][value="${value}"]`);
+                    if (oldInput) {
+                        oldInput.remove();
+                    } else {
+                        // Create new hidden input
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'amenities';
+                        input.value = value;
+                        dropdown.appendChild(input);
+                    }
+
+                    // Update label
+                    const selectedCount = dropdown.querySelectorAll('input[name="amenities"]').length;
+                    labelSpan.textContent = selectedCount ? `${selectedCount} selected` : 'Any';
+                } else {
+                    // Single select behavior
+                    dropdown.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                    option.classList.add('selected');
+                    dropdown.querySelector('input[type="hidden"]').value = value;
+                    labelSpan.textContent = text;
+                    options.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+        closeAllDropdowns();
+    });
+
+    function closeAllDropdowns() {
+        document.querySelectorAll('.drop-menu .dropdown').forEach(d => d.style.display = 'none');
+    }
+});
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
