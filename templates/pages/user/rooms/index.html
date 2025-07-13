@@ -140,48 +140,61 @@
                     </tbody>
                 </table>
 
-                <div class="pagination-sec">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">
-                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2.57983 5.99992C2.57983 5.78493 2.66192 5.5699 2.82573 5.40593L7.98559 0.2462C8.31382 -0.082026 8.84598 -0.082026 9.17408 0.2462C9.50217 0.574293 9.50217 1.10635 9.17408 1.4346L4.60841 5.99992L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59407C2.66176 6.43002 2.57983 6.21498 2.57983 5.99992Z" fill="#050B20"/>
-                                </svg>
-                                    
-                            </span>
-                            <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">20</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#clip0_2968_14909)">
-                                        <path d="M9.42017 6.00008C9.42017 6.21507 9.33808 6.4301 9.17427 6.59407L4.01441 11.7538C3.68618 12.082 3.15402 12.082 2.82592 11.7538C2.49783 11.4257 2.49783 10.8936 2.82592 10.5654L7.39159 6.00008L2.82624 1.43458C2.49815 1.10649 2.49815 0.574352 2.82624 0.246285C3.15434 -0.0821014 3.68634 -0.0821014 4.01457 0.246285L9.17446 5.40593C9.33824 5.56998 9.42017 5.78502 9.42017 6.00008Z" fill="#050B20"/>
-                                        </g>
-                                        <defs>
-                                        <clipPath id="clip0_2968_14909">
-                                        <rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)"/>
-                                        </clipPath>
-                                        </defs>
-                                    </svg>
-                                </span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                        </ul>
-                        <div class="text">Showing results 1-30 of 1,415</div>
-                    </nav>
-                </div>
+                {% if bookings.has_other_pages %}
+                    <div class="pagination-sec">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <!-- Previous button -->
+                                <li class="page-item {% if not bookings.has_previous %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if bookings.has_previous %}?{% if query %}q={{ query }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ bookings.previous_page_number }}{% else %}#{% endif %}" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2.57983 5.99992C2.57983 5.78493 2.66192 5.5699 2.82573 5.40593L7.98559 0.2462C8.31382 -0.082026 8.84598 -0.082026 9.17408 0.2462C9.50217 0.574293 9.50217 1.10635 9.17408 1.4346L4.60841 5.99992L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59407C2.66176 6.43002 2.57983 6.21498 2.57983 5.99992Z" fill="#050B20"/>
+                                            </svg>
+                                        </span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+
+                                <!-- Page numbers with ellipsis -->
+                                {% for num in bookings.paginator.page_range %}
+                                    {% if num == bookings.number %}
+                                        <li class="page-item active"><a class="page-link" href="#" style="border: 1px solid #050B20;">{{ num }}</a></li>
+                                    {% elif num <= bookings.number|add:'2' and num >= bookings.number|add:'-2' %}
+                                        <li class="page-item"><a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+                                    {% elif num == 1 or num == bookings.paginator.num_pages %}
+                                        <li class="page-item"><a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+                                    {% elif forloop.first or forloop.last %}
+                                        <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!-- Next button -->
+                                <li class="page-item {% if not bookings.has_next %}disabled{% endif %}">
+                                    <a class="page-link" href="{% if bookings.has_next %}?{% if query %}q={{ query }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ bookings.next_page_number }}{% else %}#{% endif %}" aria-label="Next">
+                                        <span aria-hidden="true">
+                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_2968_14909)">
+                                                    <path d="M9.42017 6.00008C9.42017 6.21507 9.33808 6.4301 9.17427 6.59407L4.01441 11.7538C3.68618 12.082 3.15402 12.082 2.82592 11.7538C2.49783 11.4257 2.49783 10.8936 2.82592 10.5654L7.39159 6.00008L2.82624 1.43458C2.49815 1.10649 2.49815 0.574352 2.82624 0.246285C3.15434 -0.0821014 3.68634 -0.0821014 4.01457 0.246285L9.17446 5.40593C9.33824 5.56998 9.42017 5.78502 9.42017 6.00008Z" fill="#050B20"/>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2968_14909">
+                                                        <rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)"/>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="text">
+                                Showing results {{ bookings.start_index }} - {{ bookings.end_index }} of {{ bookings.paginator.count }}
+                            </div>
+                        </nav>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
