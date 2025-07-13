@@ -1,8 +1,13 @@
+from car.forms import *
 from car.models import *
 from base.models import *
 from django.db.models import Avg
+from django.contrib import messages
+from django.db import IntegrityError
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string
+from django.shortcuts import render, get_object_or_404, redirect
 
 def getCars(request):
     site_settings = Setting.objects.first()
@@ -92,6 +97,36 @@ def carDetails(request, id):
     features = Feature.objects.filter(carfeature__car=car)
     reviews = car.reviews.select_related('user').all()
     average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+
+    review_form = None
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            review_form = CarReviewForm(request.POST)
+            if review_form.is_valid():
+                # Check if user has already submitted a review for this car
+                if CarReview.objects.filter(user=request.user, car=car).exists():
+                    messages.warning(request, "You have already submitted a review for this car.")
+                else:
+                    review = review_form.save(commit=False)
+                    review.user = request.user
+                    review.car = car
+                    try:
+                        review.save()
+                        # Send thank-you email
+                        subject = 'Thank You for Your Review!'
+                        message = render_to_string('emails/review_thanks.html', {
+                            'user': request.user,
+                            'car': car,
+                            'settings': site_settings
+                        })
+                        send_mail(subject, '', settings.EMAIL_HOST_USER, [request.user.email], html_message=message)
+
+                        messages.success(request, 'Your review has been submitted. Thank you!')
+                        return redirect('hotel:carDetails', car_id=car.id)
+                    except IntegrityError:
+                        messages.error(request, "You have already submitted a review for this car.")
+        else:
+            review_form = CarReviewForm()
 
     context = {
         'settings': site_settings,
