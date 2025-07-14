@@ -36,7 +36,7 @@
         </div>
 
         <div class="btn-box">
-            <button type="submit" name="book_room" class="side-btn">
+            <button type="button" class="side-btn" onclick="startPayment()">Book Room Now</button>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
                     <g fill="none">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M14 22h-4c-3.771 0-5.657 0-6.828-1.172S2 17.771 2 14v-2c0-3.771 0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172S22 8.229 22 12v2c0 3.771 0 5.657-1.172 6.828c-.653.654-1.528.943-2.828 1.07M7 4V2.5M17 4V2.5M21.5 9H10.75M2 9h3.875" />
@@ -60,6 +60,35 @@
         </div>
     {% endif %}
 </form>
+
+<script src="https://dashboard.sandbox.irembopay.com/assets/payment/inline.js"></script>
+
+<script>
+    function startPayment() {
+        const invoice = "{{ invoice_number|default:'' }}";
+        const publicKey = "YOUR_PUBLIC_KEY_HERE";  // Replace with real sandbox key
+
+        if (!invoice) {
+            alert("Invoice not generated.");
+            return;
+        }
+
+        IremboPay.initiate({
+            publicKey: publicKey,
+            invoiceNumber: invoice,
+            locale: IremboPay.locale.EN,
+            callback: function(err, resp) {
+                if (!err && resp?.payment_status === 'success') {
+                    // Success - reload to show booking confirmation
+                    window.location.reload();
+                } else {
+                    alert("Payment failed or canceled. Please try again.");
+                }
+            }
+        });
+    }
+</script>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
