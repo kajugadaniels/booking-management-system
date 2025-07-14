@@ -1,3 +1,6 @@
+<script src="https://dashboard.sandbox.irembopay.com/assets/payment/inline.js"></script>
+
+{% if user.is_authenticated %}
 <form method="POST" class="contact-box-two v2">
     {% csrf_token %}
     <span>Price Per Night</span>
@@ -30,46 +33,30 @@
         </div>
     </div>
 
-    {% if user.is_authenticated %}
-        <div class="total-price mt-3 mb-2">
-            <strong>Total Price: $<span id="total-price">0.00</span></strong>
-        </div>
+    <div class="total-price mt-3 mb-2">
+        <strong>Total Price: $<span id="total-price">0.00</span></strong>
+    </div>
 
-        <div class="btn-box">
-            <button type="button" class="side-btn" onclick="startPayment()">Book Room Now</button>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                    <g fill="none">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M14 22h-4c-3.771 0-5.657 0-6.828-1.172S2 17.771 2 14v-2c0-3.771 0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172S22 8.229 22 12v2c0 3.771 0 5.657-1.172 6.828c-.653.654-1.528.943-2.828 1.07M7 4V2.5M17 4V2.5M21.5 9H10.75M2 9h3.875" />
-                        <path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0" />
-                    </g>
-                </svg>
-                Book Room Now
-            </button>
-        </div>
-    {% else %}
-        <div class="btn-box">
-            <a href="{% url 'auth:getLogin' %}" type="submit" class="side-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                    <g fill="none">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M14 22h-4c-3.771 0-5.657 0-6.828-1.172S2 17.771 2 14v-2c0-3.771 0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172S22 8.229 22 12v2c0 3.771 0 5.657-1.172 6.828c-.653.654-1.528.943-2.828 1.07M7 4V2.5M17 4V2.5M21.5 9H10.75M2 9h3.875" />
-                        <path fill="currentColor" d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0" />
-                    </g>
-                </svg>
-                Login to Book
-            </a>
-        </div>
-    {% endif %}
+    <div class="btn-box">
+        <button type="submit" class="side-btn">Create Booking</button>
+    </div>
 </form>
 
-<script src="https://dashboard.sandbox.irembopay.com/assets/payment/inline.js"></script>
+{% if invoice_number %}
+<div class="mt-4">
+    <button type="button" class="side-btn" onclick="startPayment()">
+        Pay Now
+    </button>
+</div>
+{% endif %}
 
 <script>
     function startPayment() {
-        const invoice = "{{ invoice_number|default:'' }}";
-        const publicKey = "YOUR_PUBLIC_KEY_HERE";  // Replace with real sandbox key
+        const invoice = "{{ invoice_number }}";
+        const publicKey = "pk_live_a780e931399b42f6a135dd09e897ec32";
 
         if (!invoice) {
-            alert("Invoice not generated.");
+            alert("Invoice not found.");
             return;
         }
 
@@ -77,17 +64,64 @@
             publicKey: publicKey,
             invoiceNumber: invoice,
             locale: IremboPay.locale.EN,
-            callback: function(err, resp) {
+            callback: function (err, resp) {
                 if (!err && resp?.payment_status === 'success') {
-                    // Success - reload to show booking confirmation
+                    alert("Payment successful. Reloading...");
                     window.location.reload();
                 } else {
-                    alert("Payment failed or canceled. Please try again.");
+                    alert("Payment cancelled or failed.");
                 }
             }
         });
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkInInput = document.getElementById("id_check_in");
+        const checkOutInput = document.getElementById("id_check_out");
+        const guestsInput = document.getElementById("id_guests");
+        const pricePerNight = parseFloat("{{ room.price_per_night }}");
+        const maxGuests = {{ room.occupancy }};
+        const totalPriceDisplay = document.getElementById("total-price");
+
+        const today = new Date().toISOString().split("T")[0];
+        checkInInput.setAttribute("min", today);
+        checkOutInput.setAttribute("min", today);
+
+        function calculateTotal() {
+            const checkIn = new Date(checkInInput.value);
+            const checkOut = new Date(checkOutInput.value);
+            const timeDiff = checkOut - checkIn;
+            const nights = timeDiff / (1000 * 60 * 60 * 24);
+
+            if (nights > 0) {
+                const total = nights * pricePerNight;
+                totalPriceDisplay.textContent = total.toFixed(2);
+            } else {
+                totalPriceDisplay.textContent = "0.00";
+            }
+        }
+
+        checkInInput.addEventListener("change", function () {
+            checkOutInput.setAttribute("min", checkInInput.value);
+            calculateTotal();
+        });
+
+        checkOutInput.addEventListener("change", calculateTotal);
+
+        guestsInput.addEventListener("input", function () {
+            let val = parseInt(guestsInput.value);
+            if (val > maxGuests) {
+                guestsInput.value = maxGuests;
+                alert(`This room allows up to ${maxGuests} guest${maxGuests > 1 ? 's' : ''}.`);
+            } else if (val < 1) {
+                guestsInput.value = 1;
+            }
+        });
+    });
 </script>
+{% else %}
+    <a href="{% url 'auth:getLogin' %}" class="side-btn">Login to Book</a>
+{% endif %}
 
 
 <script>

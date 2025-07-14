@@ -1,7 +1,9 @@
+import uuid
 from random import sample
 from base.models import *
 from hotel.forms import *
 from hotel.models import *
+from payment.models import *
 from django.db.models import Avg
 from django.contrib import messages
 from django.db import IntegrityError
@@ -201,7 +203,7 @@ def roomDetails(request, hotel_id, room_id):
     # Booking logic
     booking_form = None
     if request.user.is_authenticated:
-        if request.method == 'POST' and 'book_room' in request.POST:
+        if request.method == 'POST' and 'book_room' not in request.POST:
             booking_form = RoomBookingForm(request.POST)
             if booking_form.is_valid():
                 booking = booking_form.save(commit=False)
@@ -212,6 +214,16 @@ def roomDetails(request, hotel_id, room_id):
                 nights = (booking.check_out - booking.check_in).days
                 booking.total_price = nights * room.price_per_night
                 booking.save()
+
+                # Create invoice number
+                invoice_number = str(uuid.uuid4())
+
+                # Save payment record
+                RoomPayment.objects.create(
+                    booking=booking,
+                    invoice_number=invoice_number,
+                    status='pending'
+                )
 
                 # Send confirmation email to user
                 user_subject = "Your Room Booking Has Been Received"
@@ -263,5 +275,6 @@ def roomDetails(request, hotel_id, room_id):
         'similar_rooms': similar_rooms,
         'review_form': review_form,
         'booking_form': booking_form,
+        'invoice_number': invoice_number,
     }
     return render(request, 'pages/hotels/rooms/show.html', context)
