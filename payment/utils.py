@@ -12,7 +12,7 @@ IREMBO_SECRET_KEY = os.getenv("IREMBO_SECRET_KEY")
 PAYMENT_ACCOUNT_IDENTIFIER = "PI-3631756955"
 PRODUCT_CODE = "PC-cbcb0ba1e3"
 
-def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, customerEmail, customerName, phoneNumber="0780000001"):
+def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, customerEmail, customerName, customerPhone="0780000001"):
     url = f"{IREMBO_BASE_URL}/payments/invoices"
 
     payload = {
@@ -20,7 +20,7 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, cu
         "paymentAccountIdentifier": PAYMENT_ACCOUNT_IDENTIFIER,
         "customer": {
             "email": customerEmail,
-            "phoneNumber": phoneNumber,
+            "phoneNumber": customerPhone,
             "name": customerName,
         },
         "paymentItems": [

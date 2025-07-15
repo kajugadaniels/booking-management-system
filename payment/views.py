@@ -1,6 +1,10 @@
+import os
+from dotenv import load_dotenv
 from payment.models import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
+
+load_dotenv()
 
 
 @login_required
@@ -17,6 +21,6 @@ def payRoomBooking(request, invoice_number):
 
     context = {
         'payment': payment,
-        'public_key': "pk_live_a780e931399b42f6a135dd09e897ec32",
+        'public_key': os.getenv("IREMBO_PUBLIC_KEY"),
     }
     return render(request, 'pages/payment/room_payment.html', context)

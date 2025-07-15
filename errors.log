@@ -66,3 +66,16 @@ Traceback (most recent call last):
                     ^^^^^^^^^^^^^^^^^^
 TypeError: 'str' object is not callable
 "POST /hotels/hotel/31/room/484/ HTTP/1.1" 500 85289
+Internal Server Error: /hotels/hotel/31/room/484/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\hotel\views.py", line 243, in roomDetails
+    status_code, invoice_response = createInvoiceOnIremboPay(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: createInvoiceOnIremboPay() got an unexpected keyword argument 'customerPhone'
+"POST /hotels/hotel/31/room/484/ HTTP/1.1" 500 86335
