@@ -268,7 +268,8 @@ def roomDetails(request, hotel_id, room_id):
                 )
 
                 messages.success(request, f"Booking confirmed for {nights} night(s)! Proceed to payment.")
-                return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
+                # return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
+                return redirect('payment:payRoomBooking', invoice_number=invoice_number)
         else:
             booking_form = RoomBookingForm()
 
