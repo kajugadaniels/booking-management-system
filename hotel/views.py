@@ -171,11 +171,14 @@ def roomDetails(request, hotel_id, room_id):
     average_rating = reviews.aggregate(avg=Avg('rating'))['avg'] or 0
 
     review_form = None
+    booking_form = None
+    invoice_number = None  # ✅ Important: declare before any condition
+
+    # --- Handle review submission ---
     if request.user.is_authenticated:
-        if request.method == 'POST':
+        if request.method == 'POST' and 'book_room' not in request.POST:
             review_form = RoomReviewForm(request.POST)
             if review_form.is_valid():
-                # Check if user has already submitted a review for this room
                 if RoomReview.objects.filter(user=request.user, room=room).exists():
                     messages.warning(request, "You have already submitted a review for this room.")
                 else:
@@ -184,7 +187,7 @@ def roomDetails(request, hotel_id, room_id):
                     review.room = room
                     try:
                         review.save()
-                        # Send thank-you email
+
                         subject = 'Thank You for Your Review!'
                         message = render_to_string('emails/review_thanks.html', {
                             'user': request.user,
@@ -200,10 +203,9 @@ def roomDetails(request, hotel_id, room_id):
         else:
             review_form = RoomReviewForm()
 
-    # Booking logic
-    booking_form = None
+    # --- Handle booking form ---
     if request.user.is_authenticated:
-        if request.method == 'POST' and 'book_room' not in request.POST:
+        if request.method == 'POST' and 'book_room' in request.POST:
             booking_form = RoomBookingForm(request.POST)
             if booking_form.is_valid():
                 booking = booking_form.save(commit=False)
@@ -215,10 +217,10 @@ def roomDetails(request, hotel_id, room_id):
                 booking.total_price = nights * room.price_per_night
                 booking.save()
 
-                # Create invoice number
+                # Generate a unique invoice number
                 invoice_number = str(uuid.uuid4())
 
-                # Save payment record
+                # Create a RoomPayment record
                 RoomPayment.objects.create(
                     booking=booking,
                     invoice_number=invoice_number,
@@ -242,7 +244,7 @@ def roomDetails(request, hotel_id, room_id):
                     html_message=user_message
                 )
 
-                # Send notification email to admin/site team
+                # Notify admin team
                 admin_subject = "New Room Booking Received"
                 admin_message = render_to_string('emails/admin_booking_notification.html', {
                     'booking': booking,
@@ -255,7 +257,7 @@ def roomDetails(request, hotel_id, room_id):
                     subject=admin_subject,
                     message='',
                     from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[settings.EMAIL_HOST_USER],  # or any admin list
+                    recipient_list=[settings.EMAIL_HOST_USER],
                     html_message=admin_message
                 )
 
@@ -264,6 +266,7 @@ def roomDetails(request, hotel_id, room_id):
         else:
             booking_form = RoomBookingForm()
 
+    # --- Final context ---
     context = {
         'settings': site_settings,
         'room': room,
@@ -275,6 +278,7 @@ def roomDetails(request, hotel_id, room_id):
         'similar_rooms': similar_rooms,
         'review_form': review_form,
         'booking_form': booking_form,
-        'invoice_number': invoice_number,
+        'invoice_number': invoice_number,  # Always defined
     }
+
     return render(request, 'pages/hotels/rooms/show.html', context)
