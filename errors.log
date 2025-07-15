@@ -37,3 +37,32 @@ Traceback (most recent call last):
                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: createInvoiceOnIremboPay() missing 2 required positional arguments: 'customerEmail' and 'customerName'
 "POST /hotels/hotel/31/room/484/ HTTP/1.1" 500 85421
+Internal Server Error: /hotels/hotel/31/room/484/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\hotel\views.py", line 236, in roomDetails
+    customer_name = request.user.get_full_name() or request.user.username
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\utils\functional.py", line 268, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'User' object has no attribute 'get_full_name'
+"POST /hotels/hotel/31/room/484/ HTTP/1.1" 500 89561
+Internal Server Error: /hotels/hotel/31/room/484/
+Traceback (most recent call last):
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP-\Desktop\projects\pluto\hotel\views.py", line 236, in roomDetails
+    customer_name = request.user.name
+                    ^^^^^^^^^^^^^^^^^^
+TypeError: 'str' object is not callable
+"POST /hotels/hotel/31/room/484/ HTTP/1.1" 500 85289

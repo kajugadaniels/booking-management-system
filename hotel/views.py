@@ -233,7 +233,7 @@ def roomDetails(request, hotel_id, room_id):
 
                 # --- Extract user contact info ---
                 customer_email = request.user.email
-                customer_name = request.user.get_full_name() or request.user.username
+                customer_name = getattr(request.user, 'name', None) or request.user.username
                 customer_phone = getattr(request.user, 'phone_number', '0780000001')  # fallback if not defined
 
                 # --- Build callback URL ---
