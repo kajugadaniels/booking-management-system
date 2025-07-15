@@ -10,10 +10,13 @@ load_dotenv()
 
 IREMBO_BASE_URL = os.getenv("IREMBO_BASE_URL", "https://api.sandbox.irembopay.com")
 IREMBO_SECRET_KEY = os.getenv("IREMBO_SECRET_KEY")
+IREMBO_PAYMENT_ACCOUNT_ID = os.getenv("IREMBO_PAYMENT_ACCOUNT_ID", "PI-3631756955")
+IREMBO_PRODUCT_CODE = os.getenv("IREMBO_PRODUCT_CODE", "PC-cbcb0ba1e3")
 
-def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl):
+
+def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, customerEmail, customerName, customerPhone="0780000001"):
     """
-    Creates a valid invoice on IremboPay using proper headers and payload structure.
+    Creates a valid invoice on IremboPay using their API.
     """
 
     url = f"{IREMBO_BASE_URL}/payments/invoices"
@@ -24,20 +27,19 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl):
         "irembopay-secretKey": IREMBO_SECRET_KEY
     }
 
-    # Dummy customer info for now; should be passed in dynamically for production
     payload = {
         "transactionId": invoiceNumber,
-        "paymentAccountIdentifier": "TST-RWF",  # Replace with real ID from Irembo dashboard
+        "paymentAccountIdentifier": IREMBO_PAYMENT_ACCOUNT_ID,
         "customer": {
-            "email": "user@email.com",           # Replace with request.user.email
-            "phoneNumber": "0780000001",         # Optional unless required
-            "name": "John Doe"                   # Replace with request.user.get_full_name()
+            "email": customerEmail,
+            "phoneNumber": customerPhone,
+            "name": customerName
         },
         "paymentItems": [
             {
-                "unitAmount": int(float(amount) * 1300),  # USD → RWF approx
+                "unitAmount": int(float(amount)),  # already in RWF
                 "quantity": 1,
-                "code": "PC-aaf751b73f"  # Replace with real product code
+                "code": IREMBO_PRODUCT_CODE
             }
         ],
         "description": description,
@@ -45,7 +47,7 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl):
         "language": "EN"
     }
 
-    # Debug logging
+    # Log request for debugging
     print("🔄 Creating Irembo Invoice...")
     print("📦 Payload:", json.dumps(payload, indent=2))
     print("🔐 Headers:", headers)
