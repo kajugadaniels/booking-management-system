@@ -234,14 +234,14 @@ def roomDetails(request, hotel_id, room_id):
                 # Set your real domain or a testing endpoint
                 callback_url = f"https://plutobooking.com/callback/{invoice_number}"
 
-                status_code, invoice_response = createInvoiceOnIremboPay(
+                statusCode, invoiceResponse = createInvoiceOnIremboPay(
                     invoiceNumber=invoice_number,
                     amount=booking.total_price,
                     description=f"Room booking for {booking.user.name} at {booking.room.hotel.name}",
-                    callbackUrl=callback_url
+                    callbackUrl=f"https://plutobooking.com/callback/{invoice_number}"
                 )
 
-                if status_code != 201:
+                if statusCode != 201:
                     messages.error(request, "Failed to register invoice with payment gateway.")
                     # optionally delete the booking here if it's a hard failure
                     return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
