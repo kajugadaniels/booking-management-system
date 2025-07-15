@@ -11,6 +11,7 @@ urlpatterns = [
     path('auth/', include('account.urls')),
     path('hotels/', include('hotel.urls')),
     path('planes/', include('plane.urls')),
+    path('payment/', include('payment.urls')),
 ]
 
 # Serve static and media files manually if DEBUG is False

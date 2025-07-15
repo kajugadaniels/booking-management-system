@@ -172,7 +172,10 @@ def roomDetails(request, hotel_id, room_id):
 
     review_form = None
     booking_form = None
-    invoice_number = None  # ✅ Important: declare before any condition
+    invoice_number = None  # ✅ Will be set via session or after booking
+
+    # ✅ Retrieve invoice from session (set after redirect)
+    invoice_number = request.session.pop('recent_invoice', None)
 
     # --- Handle review submission ---
     if request.user.is_authenticated:
@@ -227,6 +230,9 @@ def roomDetails(request, hotel_id, room_id):
                     status='pending'
                 )
 
+                # Store invoice number in session to survive redirect
+                request.session['recent_invoice'] = invoice_number
+
                 # Send confirmation email to user
                 user_subject = "Your Room Booking Has Been Received"
                 user_message = render_to_string('emails/user_booking_confirmation.html', {
@@ -261,7 +267,7 @@ def roomDetails(request, hotel_id, room_id):
                     html_message=admin_message
                 )
 
-                messages.success(request, f"Booking confirmed for {nights} night(s)!")
+                messages.success(request, f"Booking confirmed for {nights} night(s)! Proceed to payment.")
                 return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
         else:
             booking_form = RoomBookingForm()
@@ -278,7 +284,7 @@ def roomDetails(request, hotel_id, room_id):
         'similar_rooms': similar_rooms,
         'review_form': review_form,
         'booking_form': booking_form,
-        'invoice_number': invoice_number,  # Always defined
+        'invoice_number': invoice_number,  # ✅ now always set properly
     }
 
     return render(request, 'pages/hotels/rooms/show.html', context)
