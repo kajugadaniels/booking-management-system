@@ -222,14 +222,14 @@ def roomDetails(request, hotel_id, room_id):
                 booking.save()
 
                 # Generate a unique invoice number
-                invoice_number = str(uuid.uuid4())
+                # invoice_number = str(uuid.uuid4())
 
-                # Create a RoomPayment record
-                RoomPayment.objects.create(
-                    booking=booking,
-                    invoice_number=invoice_number,
-                    status='pending'
-                )
+                # # Create a RoomPayment record
+                # RoomPayment.objects.create(
+                #     booking=booking,
+                #     invoice_number=invoice_number,
+                #     status='pending'
+                # )
 
                 # --- Extract user contact info ---
                 customer_email = request.user.email
@@ -240,8 +240,9 @@ def roomDetails(request, hotel_id, room_id):
                 callback_url = f"https://plutobooking.com/callback/{invoice_number}"
 
                 # --- Attempt invoice registration with IremboPay ---
-                status_code, invoice_response = createInvoiceOnIremboPay(
-                    invoiceNumber=invoice_number,
+                # Create invoice via IremboPay
+                status_code, real_invoice_number = createInvoiceOnIremboPay(
+                    invoiceNumber=str(uuid.uuid4()),  # Used as transactionId
                     amount=booking.total_price,
                     description=f"Room booking for {customer_name} at {booking.room.hotel.name}",
                     callbackUrl=callback_url,
@@ -250,12 +251,18 @@ def roomDetails(request, hotel_id, room_id):
                     customerPhone=customer_phone
                 )
 
-                if status_code != 201:
+                if status_code != 201 or not real_invoice_number:
                     messages.error(request, "Failed to register invoice with payment gateway.")
                     return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
 
-                # Store invoice in session for redirection
-                request.session['recent_invoice'] = invoice_number
+                # Save real invoiceNumber (from Irembo) to DB
+                RoomPayment.objects.create(
+                    booking=booking,
+                    invoice_number=real_invoice_number,
+                    status='pending'
+                )
+
+                request.session['recent_invoice'] = real_invoice_number
 
                 # Send confirmation emails
                 user_subject = "Your Room Booking Has Been Received"
