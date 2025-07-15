@@ -1,0 +1,34 @@
+{% extends 'layouts/app.html' %}
+
+{% block content %}
+<section class="layout-radius pt-5 pb-5">
+    <div class="boxcar-container text-center">
+        <h2 class="mb-4">Complete Your Payment</h2>
+        <p class="lead mb-4">Booking: {{ payment.booking.room.name }} at {{ payment.booking.room.hotel.name }}</p>
+        <p class="mb-3">Total: <strong>${{ payment.booking.total_price }}</strong></p>
+
+        <button onclick="startPayment()" class="side-btn">
+            Proceed to Pay
+        </button>
+    </div>
+</section>
+
+<script src="https://dashboard.sandbox.irembopay.com/assets/payment/inline.js"></script>
+<script>
+    function startPayment() {
+        IremboPay.initiate({
+            publicKey: "{{ public_key }}",
+            invoiceNumber: "{{ payment.invoice_number }}",
+            locale: IremboPay.locale.EN,
+            callback: function (err, resp) {
+                if (!err && resp?.payment_status === 'success') {
+                    alert("Payment successful!");
+                    location.href = "{% url 'hotel:roomDetails' payment.booking.room.hotel.id payment.booking.room.id %}";
+                } else {
+                    alert("Payment cancelled or failed.");
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

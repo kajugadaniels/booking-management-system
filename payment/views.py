@@ -19,4 +19,4 @@ def payRoomBooking(request, invoice_number):
         'payment': payment,
         'public_key': "pk_live_a780e931399b42f6a135dd09e897ec32",
     }
-    return render(request, 'pages/payment/pay_now.html', context)
+    return render(request, 'pages/payment/room_payment.html', context)
