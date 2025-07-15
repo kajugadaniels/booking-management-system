@@ -3,6 +3,7 @@ from random import sample
 from base.models import *
 from hotel.forms import *
 from hotel.models import *
+from payment.utils import *
 from payment.models import *
 from django.db.models import Avg
 from django.contrib import messages
@@ -229,6 +230,21 @@ def roomDetails(request, hotel_id, room_id):
                     invoice_number=invoice_number,
                     status='pending'
                 )
+
+                # Set your real domain or a testing endpoint
+                callback_url = f"https://plutobooking.com/callback/{invoice_number}"
+
+                status_code, invoice_response = createInvoiceOnIremboPay(
+                    invoiceNumber=invoice_number,
+                    amount=booking.total_price,
+                    description=f"Room booking for {booking.user.name} at {booking.room.hotel.name}",
+                    callbackUrl=callback_url
+                )
+
+                if status_code != 201:
+                    messages.error(request, "Failed to register invoice with payment gateway.")
+                    # optionally delete the booking here if it's a hard failure
+                    return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
 
                 # Store invoice number in session to survive redirect
                 request.session['recent_invoice'] = invoice_number
