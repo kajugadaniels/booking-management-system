@@ -5,41 +5,29 @@ import logging
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-# Load environment variables from .env
 load_dotenv()
 
 IREMBO_BASE_URL = os.getenv("IREMBO_BASE_URL", "https://api.sandbox.irembopay.com")
 IREMBO_SECRET_KEY = os.getenv("IREMBO_SECRET_KEY")
-IREMBO_PAYMENT_ACCOUNT_ID = os.getenv("IREMBO_PAYMENT_ACCOUNT_ID", "PI-3631756955")
-IREMBO_PRODUCT_CODE = os.getenv("IREMBO_PRODUCT_CODE", "PC-cbcb0ba1e3")
+PAYMENT_ACCOUNT_IDENTIFIER = "PI-3631756955"
+PRODUCT_CODE = "PC-cbcb0ba1e3"
 
-
-def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, customerEmail, customerName, customerPhone="0780000001"):
-    """
-    Creates a valid invoice on IremboPay using their API.
-    """
-
+def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, customerEmail, customerName, phoneNumber="0780000001"):
     url = f"{IREMBO_BASE_URL}/payments/invoices"
-
-    headers = {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "irembopay-secretKey": IREMBO_SECRET_KEY
-    }
 
     payload = {
         "transactionId": invoiceNumber,
-        "paymentAccountIdentifier": IREMBO_PAYMENT_ACCOUNT_ID,
+        "paymentAccountIdentifier": PAYMENT_ACCOUNT_IDENTIFIER,
         "customer": {
             "email": customerEmail,
-            "phoneNumber": customerPhone,
-            "name": customerName
+            "phoneNumber": phoneNumber,
+            "name": customerName,
         },
         "paymentItems": [
             {
-                "unitAmount": int(float(amount)),  # already in RWF
+                "unitAmount": int(amount),
                 "quantity": 1,
-                "code": IREMBO_PRODUCT_CODE
+                "code": PRODUCT_CODE
             }
         ],
         "description": description,
@@ -47,13 +35,19 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, cu
         "language": "EN"
     }
 
-    # Log request for debugging
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": "PlutoBookingApp",
+        "irembopay-secretKey": IREMBO_SECRET_KEY
+    }
+
     print("🔄 Creating Irembo Invoice...")
     print("📦 Payload:", json.dumps(payload, indent=2))
     print("🔐 Headers:", headers)
 
     try:
-        response = requests.post(url, headers=headers, json=payload)
+        response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
         data = response.json()
     except ValueError:
         data = {"error": "Invalid JSON response"}
