@@ -1,8 +1,9 @@
+import json
 import requests
 import logging
 
 IREMBO_BASE_URL = "https://api.sandbox.irembopay.com"
-IREMBO_SECRET_KEY = "sk_live_0dfc743de0684ab29df884a8c36d8da9"
+IREMBO_SECRET_KEY = "pk_live_a780e931399b42f6a135dd09e897ec32"
 
 def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl):
     """
@@ -23,6 +24,10 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl):
         "callbackUrl": callbackUrl
     }
 
+    print("🔄 Creating Irembo Invoice...")
+    print("📦 Payload:", json.dumps(payload, indent=2))
+    print("🔐 Auth Header:", headers["Authorization"])
+
     response = requests.post(url, headers=headers, json=payload)
 
     try:
@@ -30,5 +35,6 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl):
     except ValueError:
         data = {"error": "Invalid JSON response"}
 
-    logging.info(f"IremboPay Invoice Response: {response.status_code} - {data}")
+    print(f"📡 IremboPay Response [{response.status_code}]:", data)
+
     return response.status_code, data
