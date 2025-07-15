@@ -1,48 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pay for Room Booking</title>
-    <script src="https://sandbox.irembopay.com/widget.js"></script>
-</head>
-<body>
-    <h1>Complete Payment</h1>
+{% extends 'layouts/app.html' %}
 
-    <div>
-        <p><strong>Hotel:</strong> {{ payment.booking.room.hotel.name }}</p>
-        <p><strong>Room:</strong> {{ payment.booking.room.name }}</p>
-        <p><strong>Invoice Number:</strong> {{ payment.invoice_number }}</p>
-        <p><strong>Total:</strong> {{ payment.booking.total_price }} USD</p>
-    </div>
+{% block content %}
+    <section class="layout-radius pt-5 pb-5">
+        <div class="boxcar-container text-center">
+            <h2 class="mb-4">Complete Your Payment</h2>
+            <p class="lead mb-4">Booking: {{ payment.booking.room.name }} at {{ payment.booking.room.hotel.name }}</p>
+            <p class="mb-3">Total: <strong>${{ payment.booking.total_price }}</strong></p>
 
-    <button id="payButton">Pay Now</button>
+            <button onclick="startPayment()" class="side-btn">
+                Proceed to Pay
+            </button>
+        </div>
+    </section>
+
+    <!-- IremboPay Inline Script -->
+    <script src="https://dashboard.sandbox.irembopay.com/assets/payment/inline.js"></script>
 
     <script>
-        const publicKey = "{{ public_key }}";
-        const invoiceNumber = "{{ payment.invoice_number }}";
-
-        document.getElementById("payButton").addEventListener("click", function () {
-            if (!publicKey || !invoiceNumber) {
-                alert("Missing public key or invoice number");
-                return;
-            }
+        function startPayment() {
+            const publicKey = "{{ public_key }}";
+            const invoiceNumber = "{{ payment.invoice_number }}";
 
             console.log("🚀 Initiating IremboPay...");
-            console.log("🧾 Invoice Number:", invoiceNumber);
-            console.log("🔐 Public Key:", publicKey);
+            console.log("Public Key:", publicKey);
+            console.log("Invoice Number:", invoiceNumber);
 
-            IremboPay.init({
-                invoiceNumber: invoiceNumber,
+            IremboPay.initiate({
                 publicKey: publicKey,
-                onComplete: function (response) {
-                    console.log("✅ Payment Complete:", response);
-                    // Optional: redirect to success page
-                },
-                onError: function (error) {
-                    console.error("❌ Payment Failed:", error);
+                invoiceNumber: invoiceNumber,
+                locale: IremboPay.locale.EN,
+                callback: function (err, resp) {
+                    console.log("🧾 IremboPay Callback Triggered");
+                    console.log("❌ Error:", err);
+                    console.log("📋 Response:", resp);
+
+                    if (!err && resp?.payment_status === 'success') {
+                        alert("✅ Payment successful!");
+                        window.location.href = "{% url 'hotel:roomDetails' payment.booking.room.hotel.id payment.booking.room.id %}";
+                    } else {
+                        alert("❌ Payment cancelled or failed. See console for details.");
+                    }
                 }
             });
-        });
+        }
     </script>
-</body>
-</html>
+{% endblock %}

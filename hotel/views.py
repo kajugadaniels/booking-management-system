@@ -217,23 +217,32 @@ def roomDetails(request, hotel_id, room_id):
                 booking.room = room
                 booking.status = 'pending'
 
-                # Calculate total based on stay duration
                 nights = (booking.check_out - booking.check_in).days
                 booking.total_price = nights * room.price_per_night
                 booking.save()
 
+                # Generate a unique invoice number
+                # invoice_number = str(uuid.uuid4())
+
+                # # Create a RoomPayment record
+                # RoomPayment.objects.create(
+                #     booking=booking,
+                #     invoice_number=invoice_number,
+                #     status='pending'
+                # )
+
                 # --- Extract user contact info ---
                 customer_email = request.user.email
                 customer_name = getattr(request.user, 'name', None) or request.user.username
-                customer_phone = getattr(request.user, 'phone_number', '0780000001')  # fallback if not set
+                customer_phone = getattr(request.user, 'phone_number', '0780000001')  # fallback if not defined
 
-                # --- Generate unique transactionId for Irembo ---
-                transaction_id = str(uuid.uuid4())
-                callback_url = f"https://plutobooking.com/callback/{transaction_id}"
+                # --- Build callback URL ---
+                callback_url = f"https://plutobooking.com/callback/{invoice_number}"
 
-                # --- Register invoice on IremboPay ---
-                status_code, irembo_invoice_number = createInvoiceOnIremboPay(
-                    invoiceNumber=transaction_id,
+                # --- Attempt invoice registration with IremboPay ---
+                # Create invoice via IremboPay
+                status_code, real_invoice_number = createInvoiceOnIremboPay(
+                    invoiceNumber=str(uuid.uuid4()),  # Used as transactionId
                     amount=booking.total_price,
                     description=f"Room booking for {customer_name} at {booking.room.hotel.name}",
                     callbackUrl=callback_url,
@@ -242,21 +251,20 @@ def roomDetails(request, hotel_id, room_id):
                     customerPhone=customer_phone
                 )
 
-                if status_code != 201 or not irembo_invoice_number:
-                    messages.error(request, "❌ Failed to register invoice with payment gateway.")
+                if status_code != 201 or not real_invoice_number:
+                    messages.error(request, "Failed to register invoice with payment gateway.")
                     return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
 
-                # --- Save RoomPayment using Irembo's actual invoice number ---
+                # Save real invoiceNumber (from Irembo) to DB
                 RoomPayment.objects.create(
                     booking=booking,
-                    invoice_number=irembo_invoice_number,
+                    invoice_number=real_invoice_number,
                     status='pending'
                 )
 
-                # Store for redirect
-                request.session['recent_invoice'] = irembo_invoice_number
+                request.session['recent_invoice'] = real_invoice_number
 
-                # --- Send emails ---
+                # Send confirmation emails
                 user_subject = "Your Room Booking Has Been Received"
                 user_message = render_to_string('emails/user_booking_confirmation.html', {
                     'user': request.user,
@@ -277,8 +285,8 @@ def roomDetails(request, hotel_id, room_id):
                 })
                 send_mail(admin_subject, '', settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER], html_message=admin_message)
 
-                messages.success(request, f"✅ Booking confirmed for {nights} night(s)! Proceed to payment.")
-                return redirect('payment:payRoomBooking', invoice_number=irembo_invoice_number)
+                messages.success(request, f"Booking confirmed for {nights} night(s)! Proceed to payment.")
+                return redirect('payment:payRoomBooking', invoice_number=invoice_number)
         else:
             booking_form = RoomBookingForm()
 
