@@ -231,25 +231,33 @@ def roomDetails(request, hotel_id, room_id):
                     status='pending'
                 )
 
-                # Set your real domain or a testing endpoint
+                # --- Extract user contact info ---
+                customer_email = request.user.email
+                customer_name = request.user.get_full_name() or request.user.username
+                customer_phone = getattr(request.user, 'phone_number', '0780000001')  # fallback if not defined
+
+                # --- Build callback URL ---
                 callback_url = f"https://plutobooking.com/callback/{invoice_number}"
 
-                status_code, invoiceResponse = createInvoiceOnIremboPay(
+                # --- Attempt invoice registration with IremboPay ---
+                status_code, invoice_response = createInvoiceOnIremboPay(
                     invoiceNumber=invoice_number,
                     amount=booking.total_price,
-                    description=f"Room booking for {booking.user.name} at {booking.room.hotel.name}",
-                    callbackUrl=f"https://plutobooking.com/callback/{invoice_number}"
+                    description=f"Room booking for {customer_name} at {booking.room.hotel.name}",
+                    callbackUrl=callback_url,
+                    customerEmail=customer_email,
+                    customerName=customer_name,
+                    customerPhone=customer_phone
                 )
 
                 if status_code != 201:
                     messages.error(request, "Failed to register invoice with payment gateway.")
-                    # optionally delete the booking here if it's a hard failure
                     return redirect('hotel:roomDetails', hotel_id=hotel.id, room_id=room.id)
 
-                # Store invoice number in session to survive redirect
+                # Store invoice in session for redirection
                 request.session['recent_invoice'] = invoice_number
 
-                # Send confirmation email to user
+                # Send confirmation emails
                 user_subject = "Your Room Booking Has Been Received"
                 user_message = render_to_string('emails/user_booking_confirmation.html', {
                     'user': request.user,
@@ -258,15 +266,8 @@ def roomDetails(request, hotel_id, room_id):
                     'hotel': hotel,
                     'settings': site_settings
                 })
-                send_mail(
-                    subject=user_subject,
-                    message='',
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[request.user.email],
-                    html_message=user_message
-                )
+                send_mail(user_subject, '', settings.EMAIL_HOST_USER, [customer_email], html_message=user_message)
 
-                # Notify admin team
                 admin_subject = "New Room Booking Received"
                 admin_message = render_to_string('emails/admin_booking_notification.html', {
                     'booking': booking,
@@ -275,13 +276,7 @@ def roomDetails(request, hotel_id, room_id):
                     'hotel': hotel,
                     'settings': site_settings
                 })
-                send_mail(
-                    subject=admin_subject,
-                    message='',
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[settings.EMAIL_HOST_USER],
-                    html_message=admin_message
-                )
+                send_mail(admin_subject, '', settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER], html_message=admin_message)
 
                 messages.success(request, f"Booking confirmed for {nights} night(s)! Proceed to payment.")
                 return redirect('payment:payRoomBooking', invoice_number=invoice_number)
