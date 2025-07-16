@@ -1,6 +1,7 @@
 from car.forms import *
 from car.models import *
 from base.models import *
+from payment.models import *
 from django.db.models import Avg
 from django.contrib import messages
 from django.db import IntegrityError
