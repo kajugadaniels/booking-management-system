@@ -51,7 +51,5 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, cu
         logging.error(f"🔌 Network error: {e}")
         return 500, {"error": "Network error"}
 
-    print(f"📡 IremboPay Response [{response.status_code}]:", json.dumps(data, indent=2))
-
     invoice_number = data.get("data", {}).get("invoiceNumber")
     return response.status_code, invoice_number
