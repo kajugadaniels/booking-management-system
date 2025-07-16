@@ -131,7 +131,6 @@ def carDetails(request, id):
             review_form = CarReviewForm()
 
     # Booking logic
-    booking_form = None
     if request.user.is_authenticated:
         if request.method == 'POST' and 'book_car' in request.POST:
             booking_form = CarBookingForm(request.POST)
@@ -145,7 +144,36 @@ def carDetails(request, id):
                 booking.total_price = days * car.price_per_day
                 booking.save()
 
-                # Send confirmation email to user
+                # Create Irembo Invoice
+                customer_email = request.user.email
+                customer_name = getattr(request.user, 'name', None) or request.user.username
+                customer_phone = getattr(request.user, 'phone_number', '0780000001')
+                transaction_id = str(uuid.uuid4())
+                callback_url = f"https://plutobooking.com/callback/{transaction_id}"
+
+                status_code, irembo_invoice_number = createInvoiceOnIremboPay(
+                    invoiceNumber=transaction_id,
+                    amount=booking.total_price,
+                    description=f"Car booking for {customer_name} ({booking.car.name})",
+                    callbackUrl=callback_url,
+                    customerEmail=customer_email,
+                    customerName=customer_name,
+                    customerPhone=customer_phone
+                )
+
+                if status_code != 201 or not irembo_invoice_number:
+                    messages.error(request, "Failed to initiate payment.")
+                    return redirect('car:carDetails', id=car.id)
+
+                CarPayment.objects.create(
+                    booking=booking,
+                    invoice_number=irembo_invoice_number,
+                    status='pending'
+                )
+
+                request.session['recent_invoice'] = irembo_invoice_number
+
+                # Emails
                 user_subject = "Your Car Booking Has Been Received"
                 user_message = render_to_string('emails/user_car_booking_confirmation.html', {
                     'user': request.user,
@@ -153,32 +181,19 @@ def carDetails(request, id):
                     'car': car,
                     'settings': site_settings
                 })
-                send_mail(
-                    subject=user_subject,
-                    message='',
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[request.user.email],
-                    html_message=user_message
-                )
+                send_mail(user_subject, '', settings.EMAIL_HOST_USER, [customer_email], html_message=user_message)
 
-                # Send notification email to admin/site team
-                admin_subject = "New car Booking Received"
+                admin_subject = "New Car Booking Received"
                 admin_message = render_to_string('emails/admin_car_booking_notification.html', {
                     'booking': booking,
                     'user': request.user,
                     'car': car,
                     'settings': site_settings
                 })
-                send_mail(
-                    subject=admin_subject,
-                    message='',
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[settings.EMAIL_HOST_USER],
-                    html_message=admin_message
-                )
+                send_mail(admin_subject, '', settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER], html_message=admin_message)
 
-                messages.success(request, f"Booking confirmed for {days} day(s)!")
-                return redirect('car:carDetails', id=car.id)
+                messages.success(request, f"Booking confirmed for {days} day(s)! Proceed to payment.")
+                return redirect('payment:payCarBooking', invoice_number=irembo_invoice_number)
         else:
             booking_form = CarBookingForm()
 
