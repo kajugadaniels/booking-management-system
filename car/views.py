@@ -1,6 +1,8 @@
+import uuid
 from car.forms import *
 from car.models import *
 from base.models import *
+from payment.utils import *
 from payment.models import *
 from django.db.models import Avg
 from django.contrib import messages
