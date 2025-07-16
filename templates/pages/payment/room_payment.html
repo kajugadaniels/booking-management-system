@@ -1,47 +1,167 @@
-{% extends 'layouts/app.html' %}
+{% load static %}
+{% load humanize %}
 
-{% block content %}
-    <section class="layout-radius pt-5 pb-5">
-        <div class="boxcar-container text-center">
-            <h2 class="mb-4">Complete Your Payment</h2>
-            <p class="lead mb-4">Booking: {{ payment.booking.room.name }} at {{ payment.booking.room.hotel.name }}</p>
-            <p class="mb-3">Total: <strong>${{ payment.booking.total_price }}</strong></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Pluto Booking - Room Payment</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
 
-            <button onclick="startPayment()" class="side-btn">
-                Proceed to Pay
-            </button>
+<body class="wrapper-invoice">
+    <section class="invoice-section">
+        <div class="cus-container2">
+
+            <!-- PAY BUTTON -->
+            <div class="top">
+                <button onclick="startPayment()" class="btn-default">
+                    Proceed to Payment
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.6111 0H5.05558C4.84062 0 4.66668 0.173943 4.66668 0.388901C4.66668 0.603859 4.84062 0.777802 5.05558 0.777802H12.6723L0.113941 13.3362C-0.0379805 13.4881 -0.0379805 13.7342 0.113941 13.8861C0.189884 13.962 0.289415 14 0.38891 14C0.488405 14 0.5879 13.962 0.663879 13.8861L13.2222 1.3277V8.94447C13.2222 9.15943 13.3962 9.33337 13.6111 9.33337C13.8261 9.33337 14 9.15943 14 8.94447V0.388901C14 0.173943 13.8261 0 13.6111 0Z" fill="white"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- INVOICE BOX -->
+            <div class="box-invoice">
+                <div class="header">
+                    <div class="wrap-top">
+                        <div class="box-left">
+                            <div class="logo">
+                                <img src="{% static 'images/logo-w.png' %}" alt="Pluto Booking" width="130">
+                            </div>
+                        </div>
+                        <div class="box-right">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="title">Invoice #</div>
+                                <span class="code-num">{{ payment.invoice_number }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wrap-date">
+                        <div class="box-left">
+                            <label>Invoice date:</label>
+                            <span class="date">{{ payment.created_at|date:"M d, Y" }}</span>
+                        </div>
+                        <div class="box-right">
+                            <label>Due date:</label>
+                            <span class="date">{{ payment.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+
+                    <div class="wrap-info">
+                        <div class="box-left">
+                            <div class="title">Supplier</div>
+                            <div class="sub">Pluto Booking</div>
+                            <p class="desc">
+                                {{ settings.address|default:'Norrsken House Kigali 1 KN 78 St, Kigali' }}<br>
+                                {{ settings.email|default:'plutobooking@gmail.com' }}
+                            </p>
+                        </div>
+                        <div class="box-right">
+                            <div class="title">Customer</div>
+                            <div class="sub">{{ payment.booking.user.name }}</div>
+                            <p class="desc">{{ payment.booking.user.email }}<br>{{ payment.booking.user.phone_number|default:"N/A" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="wrap-table">
+                        <table class="invoice-table">
+                            <thead>
+                                <tr class="title">
+                                    <th>Description</th>
+                                    <th>Price/Night</th>
+                                    <th>Stay Period</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="content">
+                                    <td>Room Booking: {{ payment.booking.room.name }} at {{ payment.booking.room.hotel.name }}</td>
+                                    <td>${{ payment.booking.room.price_per_night|intcomma }}</td>
+                                    <td>
+                                        {{ payment.booking.check_in|date:"M d" }} – {{ payment.booking.check_out|date:"M d" }}
+                                    </td>
+                                    <td>${{ payment.booking.total_price|intcomma }}</td>
+                                </tr>
+                                <tr class="content">
+                                    <td class="total">Total Due</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="total">${{ payment.booking.total_price|intcomma }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <ul class="box-contact">
+                        <li>www.plutobooking.com</li>
+                        <li>{{ settings.email|default:'plutobooking@gmail.com' }}</li>
+                        <li>{{ settings.phone_number|default:'+250 780 084 902' }}</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- IremboPay Inline Script -->
+    <!-- IremboPay -->
     <script src="https://dashboard.sandbox.irembopay.com/assets/payment/inline.js"></script>
-
     <script>
         function startPayment() {
-            const publicKey = "{{ public_key }}";
-            const invoiceNumber = "{{ payment.invoice_number }}";
-
-            console.log("🚀 Initiating IremboPay...");
-            console.log("Public Key:", publicKey);
-            console.log("Invoice Number:", invoiceNumber);
-
             IremboPay.initiate({
-                publicKey: publicKey,
-                invoiceNumber: invoiceNumber,
+                publicKey: "{{ public_key }}",
+                invoiceNumber: "{{ payment.invoice_number }}",
                 locale: IremboPay.locale.EN,
                 callback: function (err, resp) {
-                    console.log("🧾 IremboPay Callback Triggered");
-                    console.log("❌ Error:", err);
-                    console.log("📋 Response:", resp);
-
                     if (!err && resp?.payment_status === 'success') {
                         alert("✅ Payment successful!");
                         window.location.href = "{% url 'hotel:roomDetails' payment.booking.room.hotel.id payment.booking.room.id %}";
                     } else {
-                        alert("❌ Payment cancelled or failed. See console for details.");
+                        alert("❌ Payment failed or cancelled.");
+                        console.error(err, resp);
                     }
                 }
             });
         }
     </script>
-{% endblock %}
+
+    <!-- Scripts -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/slick-animation.min.js' %}"></script>
+    <script src="{% static 'js/jquery.fancybox.js' %}"></script>
+    <script src="{% static 'js/wow.js' %}"></script>
+    <script src="{% static 'js/appear.js' %}"></script>
+    <script src="{% static 'js/knob.js' %}"></script>
+    <script src="{% static 'js/mmenu.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "timeOut": "5000",
+                };
+                toastr["{{ message.tags }}"]("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
+
+</body>
+</html>
