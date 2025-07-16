@@ -42,10 +42,6 @@ def createInvoiceOnIremboPay(invoiceNumber, amount, description, callbackUrl, cu
         "irembopay-secretKey": IREMBO_SECRET_KEY
     }
 
-    print("🔄 Creating Irembo Invoice...")
-    print("📦 Payload:", json.dumps(payload, indent=2))
-    print("🔐 Headers:", headers)
-
     try:
         response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
         data = response.json()
