@@ -24,3 +24,21 @@ def payRoomBooking(request, invoice_number):
         'public_key': os.getenv("IREMBO_PUBLIC_KEY"),
     }
     return render(request, 'pages/payment/room_payment.html', context)
+
+@login_required
+def payCarBooking(request, invoice_number):
+    payment = get_object_or_404(CarPayment, invoice_number=invoice_number)
+
+    # Ensure the logged-in user owns the booking
+    if payment.booking.user != request.user:
+        return redirect('base:home')
+
+    # Prevent duplicate payments
+    if payment.status != 'pending':
+        return redirect('car:carDetails', id=payment.booking.car.id)
+
+    context = {
+        'payment': payment,
+        'public_key': os.getenv("IREMBO_PUBLIC_KEY"),
+    }
+    return render(request, 'pages/payment/car_payment.html', context)
