@@ -7,3 +7,9 @@ class RoomPaymentAdmin(admin.ModelAdmin):
     search_fields = ('invoice_number', 'booking__user__name', 'booking__room__name')
     list_filter = ('status', 'created_at')
     readonly_fields = ('created_at', 'updated_at')
+
+@admin.register(CarPayment)
+class CarPaymentAdmin(admin.ModelAdmin):
+    list_display = ('booking', 'invoice_number', 'status', 'created_at')
+    search_fields = ('invoice_number', 'booking__user__name')
+    list_filter = ('status', 'created_at')
