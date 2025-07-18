@@ -11,7 +11,9 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.views.decorators.cache import cache_page
 
+@cache_page(60 * 10)
 def home(request):
     site_settings = Setting.objects.first()
 
@@ -57,6 +59,7 @@ def home(request):
 
     return render(request, 'pages/index.html', context)
 
+@cache_page(60 * 10)
 def brands(request):
     site_settings = Setting.objects.first()
 
@@ -91,6 +94,7 @@ def brands(request):
 
     return render(request, 'pages/brands.html', context)
 
+@cache_page(60 * 10)
 def howItWorks(request):
     site_settings = Setting.objects.first()
 
@@ -100,6 +104,7 @@ def howItWorks(request):
 
     return render (request, 'pages/how-it-works.html', context)
 
+@cache_page(60 * 10)
 def privacyPolicy(request):
     site_settings = Setting.objects.first()
 

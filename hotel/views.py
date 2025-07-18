@@ -11,11 +11,13 @@ from django.db import IntegrityError
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
+from django.views.decorators.cache import cache_page
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 DEFAULT_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp184pVTen_MQe-LEqhLZxhWAWj9A&s"
 
+@cache_page(60 * 10)
 def getHotels(request):
     site_settings = Setting.objects.first()
     province_filter = request.GET.get('province')
@@ -75,6 +77,7 @@ def getHotels(request):
 
     return render(request, 'pages/hotels/index.html', context)
 
+@cache_page(60 * 10)
 def hotelRooms(request, hotel_id):
     site_settings = Setting.objects.first()
     hotel = get_object_or_404(Hotel, id=hotel_id)
