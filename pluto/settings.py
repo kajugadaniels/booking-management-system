@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-5_i%@9rq^#@p8)2#qx0#401ofqe=(6h5&uzf57@zo92uyv%@d_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['plutobooking.com', 'www.plutobooking.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -61,7 +61,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR,'templates')],
-        'APP_DIRS': True,
+        # 'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -85,23 +85,23 @@ WSGI_APPLICATION = 'pluto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
-        'USER': os.getenv("DB_USER", "cometboo_pluto"),
-        'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
-        'HOST': os.getenv("DB_HOST", "localhost"),
-        'PORT': os.getenv("DB_PORT", "3306"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
+#         'USER': os.getenv("DB_USER", "cometboo_pluto"),
+#         'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
+#         'HOST': os.getenv("DB_HOST", "localhost"),
+#         'PORT': os.getenv("DB_PORT", "3306"),
+#     }
+# }
 
 
 # Password validation
