@@ -14,9 +14,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5_i%@9rq^#@p8)2#qx0#401ofqe=(6h5&uzf57@zo92uyv%@d_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['plutobooking.com', 'www.plutobooking.com']
 
 
 # Application definition
@@ -69,6 +69,12 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
+            ],
         },
     },
 ]
@@ -79,23 +85,23 @@ WSGI_APPLICATION = 'pluto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
-#         'USER': os.getenv("DB_USER", "cometboo_pluto"),
-#         'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
-#         'HOST': os.getenv("DB_HOST", "localhost"),
-#         'PORT': os.getenv("DB_PORT", "3306"),
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
+        'USER': os.getenv("DB_USER", "cometboo_pluto"),
+        'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
+        'HOST': os.getenv("DB_HOST", "localhost"),
+        'PORT': os.getenv("DB_PORT", "3306"),
+    }
+}
 
 
 # Password validation
@@ -209,4 +215,10 @@ LOGGING = {
             'propagate': True,
         },
     },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
 }
