@@ -28,12 +28,23 @@ def home(request):
 
     hotels = sample(list(hotels), min(6, len(hotels)))  # Random 6 from selected
 
-    # 3. Hotel Rooms: high-rated or fallback to price
-    rated_rooms = HotelRoom.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
-    if rated_rooms.exists():
-        rooms = rated_rooms.order_by('-avg_rating')[:6]
+    # 3. Hotel Rooms: rated first, fallback to random-named to reach total of 6
+    rated_rooms = list(
+        HotelRoom.objects.annotate(avg_rating=Avg('reviews__rating'))
+        .filter(avg_rating__isnull=False)
+        .order_by('-avg_rating')[:6]
+    )
+
+    # If less than 6, get additional rooms by name ordering and randomize
+    if len(rated_rooms) < 6:
+        exclude_ids = [room.id for room in rated_rooms]
+        fillers = list(
+            HotelRoom.objects.exclude(id__in=exclude_ids)
+            .order_by('?')[:6 - len(rated_rooms)]
+        )
+        rooms = rated_rooms + fillers
     else:
-        rooms = HotelRoom.objects.order_by('-price_per_night')[:6]
+        rooms = rated_rooms
 
     # 4. Cars: high-rated or fallback to price
     rated_cars_qs = Car.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
