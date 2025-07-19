@@ -56,6 +56,22 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="form_boxes v3" style="padding-right: 30px;">
+                        <small>Sort by Reviews</small>
+                        <div class="drop-menu">
+                            <div class="select">
+                                <span>
+                                    {% if review_sort == "high" %}Highest Reviews{% elif review_sort == "low" %}Lowest Reviews{% else %}Review Sort{% endif %}
+                                </span>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                            <input type="hidden" name="review_sort" id="review_sort">
+                            <ul class="dropdown" style="display: none;">
+                                <li onclick="document.getElementById('review_sort').value='high'; this.closest('form').submit();">Highest Reviews</li>
+                                <li onclick="document.getElementById('review_sort').value='low'; this.closest('form').submit();">Lowest Reviews</li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="form_boxes v3">
                         <a href="{% url 'hotel:getHotels' %}">
                             <small>
