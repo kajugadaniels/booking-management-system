@@ -46,7 +46,13 @@ def home(request):
     else:
         rooms = rated_rooms
 
-    # 4. Cars: high-rated or fallback to price
+    # 4. Best Hotel Rooms: based on highest price
+    best_rooms = list(
+        HotelRoom.objects.filter(is_available=True)
+        .order_by('-price_per_night')[:6]
+    )
+
+    # 5. Cars: high-rated or fallback to price
     rated_cars_qs = Car.objects.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__isnull=False)
     rated_cars = list(rated_cars_qs.order_by('-avg_rating')[:6])
 
@@ -63,6 +69,7 @@ def home(request):
         'car_brands': car_brands,
         'hotels': hotels,
         'rooms': rooms,
+        'best_rooms': best_rooms,
         'cars': cars,
     }
 
