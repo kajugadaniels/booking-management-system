@@ -15,6 +15,14 @@ def hotel_image_upload_path(instance, filename):
     return f'hotels/hotel_{slugify(instance.hotel.name)}_{timezone.now().strftime("%Y%m%d%H%M%S")}{file_extension}'
 
 class Hotel(models.Model):
+    PROVINCE_CHOICES = [
+        ("Kigali City", "Kigali City"),
+        ("Northern", "Northern"),
+        ("Southern", "Southern"),
+        ("Eastern", "Eastern"),
+        ("Western", "Western"),
+    ]
+
     STAR_CHOICES = [(i, f'{i} Star') for i in range(1, 6)]
 
     name = models.CharField(max_length=255)
@@ -25,7 +33,7 @@ class Hotel(models.Model):
 
     # Location fields
     country = models.CharField(max_length=100)
-    province = models.CharField(max_length=100)
+    province = models.CharField(max_length=100, choices=PROVINCE_CHOICES)
     district = models.CharField(max_length=100)
     sector = models.CharField(max_length=100)
     cell = models.CharField(max_length=100)
