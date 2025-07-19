@@ -16,45 +16,84 @@
                 <div class="form-tab-content">
                     <div class="form-tab-content wow fadeInUp" data-wow-delay="300ms">
                         <div class="form-tab-pane current" id="tab-1">
-                            <form>
+                            <form id="hotel-filter-form" onsubmit="redirectToHotelFilters(event)">
                                 <div class="form_boxes line-r">
                                     <div class="drop-menu">
                                         <div class="select">
-                                            <span>Any Province</span>
+                                            <span id="selected-province">Any Province</span>
                                             <i class="fa fa-angle-down"></i>
                                         </div>
-                                        <input type="hidden" name="gender">
+                                        <input type="hidden" name="province" id="province-input">
                                         <ul class="dropdown" style="display: none;">
-                                            <li>Kigali City</li>
-                                            <li>Northern</li>
-                                            <li>Western</li>
-                                            <li>Southern</li>
-                                            <li>Eastern</li>
+                                            <li onclick="setFilter('province', 'Kigali City')">Kigali City</li>
+                                            <li onclick="setFilter('province', 'Northern')">Northern</li>
+                                            <li onclick="setFilter('province', 'Western')">Western</li>
+                                            <li onclick="setFilter('province', 'Southern')">Southern</li>
+                                            <li onclick="setFilter('province', 'Eastern')">Eastern</li>
                                         </ul>
                                     </div>
                                 </div>
+
                                 <div class="form_boxes line-r">
                                     <div class="drop-menu">
                                         <div class="select">
-                                            <span>Any Stars</span>
+                                            <span id="selected-stars">Any Stars</span>
                                             <i class="fa fa-angle-down"></i>
                                         </div>
-                                        <input type="hidden" name="gender">
+                                        <input type="hidden" name="stars" id="stars-input">
                                         <ul class="dropdown" style="display: none;">
-                                            <li>3</li>
-                                            <li>4</li>
-                                            <li>5</li>
+                                            <li onclick="setFilter('stars', '3')">3</li>
+                                            <li onclick="setFilter('stars', '4')">4</li>
+                                            <li onclick="setFilter('stars', '5')">5</li>
                                         </ul>
                                     </div>
                                 </div>
+
+                                <div class="form_boxes line-r">
+                                    <div class="drop-menu">
+                                        <div class="select">
+                                            <span id="selected-review">Sort by Reviews</span>
+                                            <i class="fa fa-angle-down"></i>
+                                        </div>
+                                        <input type="hidden" name="review_sort" id="review-sort-input">
+                                        <ul class="dropdown" style="display: none;">
+                                            <li onclick="setFilter('review_sort', 'high')">Highest Reviews</li>
+                                            <li onclick="setFilter('review_sort', 'low')">Lowest Reviews</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                                 <div class="form-submit">
-                                    <button type="submit" formaction="https://creativelayers.net/themes/boxcar-html/inventory-list-01.html" class="theme-btn">
+                                    <button type="submit" class="theme-btn">
                                         <i class="flaticon-search"></i>
                                         Search Hotels
                                     </button>
                                 </div>
                             </form>
                         </div>
+
+                        <script>
+                            function setFilter(field, value) {
+                                document.getElementById(`${field}-input`).value = value;
+                                document.getElementById(`selected-${field}`).innerText = value;
+                            }
+
+                            function redirectToHotelFilters(event) {
+                                event.preventDefault();
+                                const baseUrl = "{% url 'hotel:getHotels' %}";
+                                const params = new URLSearchParams();
+
+                                const province = document.getElementById('province-input').value;
+                                const stars = document.getElementById('stars-input').value;
+                                const reviewSort = document.getElementById('review-sort-input').value;
+
+                                if (province) params.append('province', province);
+                                if (stars) params.append('stars', stars);
+                                if (reviewSort) params.append('review_sort', reviewSort);
+
+                                window.location.href = `${baseUrl}?${params.toString()}`;
+                            }
+                        </script>
                         <div class="form-tab-pane" id="tab-2">
                             <form>
                                 <div class="form_boxes line-r">
