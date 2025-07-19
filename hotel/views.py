@@ -69,7 +69,7 @@ def getHotels(request):
         })
 
     # --- For filters
-    provinces = Hotel.objects.values_list('province', flat=True).distinct()
+    provinces = [label for _, label in Hotel.PROVINCE_CHOICES]
     stars = Hotel.objects.values_list('stars', flat=True).distinct().order_by()
 
     # --- Clean querystring for pagination links
