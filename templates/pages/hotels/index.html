@@ -36,9 +36,18 @@
                             <input type="hidden" name="province" id="province">
                             <ul class="dropdown" style="display: none;">
                                 {% for province in provinces %}
-                                    <li onclick="document.getElementById('province').value='{{ province }}'; this.closest('form').submit();">{{ province }}</li>
+                                    <li onclick="updateFilter('province', '{{ province }}')">{{ province }}</li>
                                 {% endfor %}
                             </ul>
+
+                            <script>
+                                function updateFilter(key, value) {
+                                    const url = new URL(window.location.href);
+                                    url.searchParams.set(key, value);
+                                    url.searchParams.delete('page');  // reset pagination
+                                    window.location.href = url.toString();
+                                }
+                            </script>
                         </div>
                     </div>
                     <div class="form_boxes v3" style="padding-right: 30px;">
@@ -51,7 +60,7 @@
                             <input type="hidden" name="stars" id="stars">
                             <ul class="dropdown" style="display: none;">
                                 {% for star in stars %}
-                                    <li onclick="document.getElementById('stars').value='{{ star }}'; this.closest('form').submit();">{{ star }} stars</li>
+                                    <li onclick="updateFilter('stars', '{{ star }}')">{{ star }} stars</li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -67,8 +76,8 @@
                             </div>
                             <input type="hidden" name="review_sort" id="review_sort">
                             <ul class="dropdown" style="display: none;">
-                                <li onclick="document.getElementById('review_sort').value='high'; this.closest('form').submit();">Highest Reviews</li>
-                                <li onclick="document.getElementById('review_sort').value='low'; this.closest('form').submit();">Lowest Reviews</li>
+                                <li onclick="updateFilter('review_sort', 'high')">Highest Reviews</li>
+                                <li onclick="updateFilter('review_sort', 'low')">Lowest Reviews</li>
                             </ul>
                         </div>
                     </div>
