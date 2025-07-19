@@ -61,19 +61,13 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR,'templates')],
-        # 'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
-            'loaders': [
-                ('django.template.loaders.cached.Loader', [
-                    'django.template.loaders.filesystem.Loader',
-                    'django.template.loaders.app_directories.Loader',
-                ]),
             ],
         },
     },
@@ -85,23 +79,23 @@ WSGI_APPLICATION = 'pluto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
-        'USER': os.getenv("DB_USER", "cometboo_pluto"),
-        'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
-        'HOST': os.getenv("DB_HOST", "localhost"),
-        'PORT': os.getenv("DB_PORT", "3306"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
+#         'USER': os.getenv("DB_USER", "cometboo_pluto"),
+#         'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
+#         'HOST': os.getenv("DB_HOST", "localhost"),
+#         'PORT': os.getenv("DB_PORT", "3306"),
+#     }
+# }
 
 
 # Password validation
@@ -218,9 +212,9 @@ LOGGING = {
 }
 
 # Caching
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'pluto-cache',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'pluto-cache',
+#     }
+# }

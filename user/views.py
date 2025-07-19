@@ -11,7 +11,6 @@ from django.views.decorators.cache import cache_page
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash, logout
 
-@cache_page(60 * 10)
 @login_required
 def dashboard(request):
     site_settings = Setting.objects.first()
@@ -40,7 +39,6 @@ def dashboard(request):
     return render(request, 'pages/user/dashboard.html', context)
 
 @login_required
-@cache_page(60 * 10)
 def roomBooking(request):
     site_settings = Setting.objects.first()
 
@@ -76,7 +74,6 @@ def roomBooking(request):
     return render(request, 'pages/user/rooms/index.html', context)
 
 @login_required
-@cache_page(60 * 10)
 def carBooking(request):
     site_settings = Setting.objects.first()
 
@@ -110,7 +107,6 @@ def carBooking(request):
     return render(request, 'pages/user/cars/index.html', context)
 
 @login_required
-@cache_page(60 * 10)
 def planeBooking(request):
     site_settings = Setting.objects.first()
 

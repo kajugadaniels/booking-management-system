@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 
 load_dotenv()
 
-
 @login_required
 def payRoomBooking(request, invoice_number):
     payment = get_object_or_404(RoomPayment, invoice_number=invoice_number)
