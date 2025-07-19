@@ -95,17 +95,19 @@
                             }
                         </script>
                         <div class="form-tab-pane" id="tab-2">
-                            <form>
+                            <form id="car-filter-form">
                                 <div class="form_boxes line-r">
                                     <div class="drop-menu">
                                         <div class="select">
-                                            <span>Any Brand</span>
+                                            <span>Select Brand</span>
                                             <i class="fa fa-angle-down"></i>
                                         </div>
-                                        <input type="hidden" name="gender">
+                                        <input type="hidden" name="car_brand">
                                         <ul class="dropdown" style="display: none;">
-                                            <li>Audi</li>
-                                            <li>Honda</li>
+                                            <li data-value="">Any</li>
+                                            {% for brand in car_brands %}
+                                                <li data-value="{{ brand.id }}">{{ brand.name }}</li>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>
@@ -115,31 +117,80 @@
                                             <span>Any Condition</span>
                                             <i class="fa fa-angle-down"></i>
                                         </div>
-                                        <input type="hidden" name="gender">
+                                        <input type="hidden" name="condition">
                                         <ul class="dropdown" style="display: none;">
-                                            <li>New</li>
-                                            <li>Used</li>
+                                            <li data-value="">Any</li>
+                                            <li data-value="new">New</li>
+                                            <li data-value="used">Used</li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="form_boxes">
+                                <div class="form_boxes line-r">
                                     <div class="drop-menu">
                                         <div class="select">
-                                            <span>Any Fuel Type</span>
+                                            <span>Any Fuel</span>
                                             <i class="fa fa-angle-down"></i>
                                         </div>
-                                        <input type="hidden" name="gender">
+                                        <input type="hidden" name="fuel_type">
                                         <ul class="dropdown" style="display: none;">
-                                            <li>200$</li>
-                                            <li>300$</li>
+                                            <li data-value="">Any</li>
+                                            <li data-value="diesel">Diesel</li>
+                                            <li data-value="petrol">Petrol</li>
+                                            <li data-value="electric">Electric</li>
+                                            <li data-value="hybrid">Hybrid</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="form-submit">
-                                    <button type="submit" class="theme-btn">Search 9451 Cars</button>
+                                    <button type="submit" class="theme-btn">Search Cars</button>
                                 </div>
                             </form>
                         </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const dropdowns = document.querySelectorAll('#tab-2 .drop-menu');
+
+                                dropdowns.forEach(dropdown => {
+                                    const select = dropdown.querySelector('.select');
+                                    const options = dropdown.querySelector('.dropdown');
+                                    const span = select.querySelector('span');
+                                    const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+
+                                    select.addEventListener('click', e => {
+                                        e.stopPropagation();
+                                        document.querySelectorAll('.drop-menu .dropdown').forEach(el => el.style.display = 'none');
+                                        options.style.display = options.style.display === 'block' ? 'none' : 'block';
+                                    });
+
+                                    options.querySelectorAll('li').forEach(li => {
+                                        li.addEventListener('click', () => {
+                                            const value = li.getAttribute('data-value');
+                                            const text = li.textContent.trim();
+                                            hiddenInput.value = value;
+                                            span.textContent = text;
+                                            options.style.display = 'none';
+                                        });
+                                    });
+                                });
+
+                                document.getElementById('car-filter-form').addEventListener('submit', function (e) {
+                                    e.preventDefault();
+                                    const params = new URLSearchParams();
+
+                                    this.querySelectorAll('input[type="hidden"]').forEach(input => {
+                                        if (input.value) params.set(input.name, input.value);
+                                    });
+
+                                    const queryString = params.toString();
+                                    const url = `{% url 'car:getCars' %}` + (queryString ? `?${queryString}` : '');
+                                    window.location.href = url;
+                                });
+
+                                document.addEventListener('click', () => {
+                                    document.querySelectorAll('.drop-menu .dropdown').forEach(el => el.style.display = 'none');
+                                });
+                            });
+                        </script>
                         <!-- <div class="form-tab-pane" id="tab-3">
                             <form>
                                 <div class="form_boxes line-r">
