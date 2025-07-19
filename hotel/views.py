@@ -5,10 +5,10 @@ from hotel.forms import *
 from hotel.models import *
 from payment.utils import *
 from payment.models import *
-from django.db.models import Avg
 from django.contrib import messages
 from django.db import IntegrityError
 from django.core.mail import send_mail
+from django.db.models import Avg, Count, Q
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page
@@ -19,11 +19,16 @@ DEFAULT_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQfxEyRp
 
 def getHotels(request):
     site_settings = Setting.objects.first()
+
+    # --- Get filters from query string
     province_filter = request.GET.get('province')
     stars_filter = request.GET.get('stars')
+    review_sort = request.GET.get('review_sort')
 
-    hotels = Hotel.objects.all()
+    # --- Base queryset
+    hotels = Hotel.objects.annotate(avg_rating=Avg('reviews__rating'))
 
+    # --- Apply filters
     if province_filter:
         hotels = hotels.filter(province__iexact=province_filter)
 
@@ -34,34 +39,44 @@ def getHotels(request):
         except ValueError:
             pass
 
-    hotels = hotels.order_by('-created_at')
+    # --- Apply sorting
+    if review_sort == 'high':
+        hotels = hotels.order_by('-avg_rating', '-created_at')
+    elif review_sort == 'low':
+        hotels = hotels.order_by('avg_rating', '-created_at')
+    else:
+        hotels = hotels.order_by('-created_at')
+
+    # --- Pagination
     paginator = Paginator(hotels, 16)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # --- Prepare data for template
     hotel_data = []
     for hotel in page_obj:
         image = HotelImage.objects.filter(hotel=hotel).first()
         image_url = image.image.url if image else DEFAULT_IMAGE
         all_rooms = HotelRoom.objects.filter(hotel=hotel)
         available_rooms = all_rooms.filter(is_available=True)
+
         hotel_data.append({
             'instance': hotel,
             'image': image_url,
             'room_count': all_rooms.count(),
-            'available_rooms': available_rooms.count()
+            'available_rooms': available_rooms.count(),
+            'avg_rating': round(hotel.avg_rating or 0, 1),
         })
 
+    # --- For filters
     provinces = Hotel.objects.values_list('province', flat=True).distinct()
     stars = Hotel.objects.values_list('stars', flat=True).distinct().order_by()
 
-    # Clean querystring: remove any duplicate 'page' key
+    # --- Clean querystring for pagination links
     get_params = request.GET.copy()
     if 'page' in get_params:
         del get_params['page']
     cleaned_querystring = get_params.urlencode()
-    
-    
 
     context = {
         'settings': site_settings,
@@ -71,6 +86,7 @@ def getHotels(request):
         'stars': stars,
         'current_province': province_filter,
         'current_stars': stars_filter,
+        'review_sort': review_sort,
         'cleaned_querystring': cleaned_querystring,
     }
 
