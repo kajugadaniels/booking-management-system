@@ -104,6 +104,8 @@ def carDetails(request, id):
     similar_cars = Car.objects.filter(car_brand=car_brand, is_available=True).exclude(id=car.id)[:7]
 
     review_form = None
+    booking_form = None
+
     if request.user.is_authenticated:
         if request.method == 'POST':
             review_form = CarReviewForm(request.POST)
