@@ -79,23 +79,23 @@ WSGI_APPLICATION = 'pluto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
-        'USER': os.getenv("DB_USER", "cometboo_pluto"),
-        'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
-        'HOST': os.getenv("DB_HOST", "localhost"),
-        'PORT': os.getenv("DB_PORT", "3306"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv("DB_NAME", "cometboo_pluto"),
+#         'USER': os.getenv("DB_USER", "cometboo_pluto"),
+#         'PASSWORD': os.getenv("DB_PASSWORD", "WyT%.ZGGme3W4ucd"),
+#         'HOST': os.getenv("DB_HOST", "localhost"),
+#         'PORT': os.getenv("DB_PORT", "3306"),
+#     }
+# }
 
 
 # Password validation
